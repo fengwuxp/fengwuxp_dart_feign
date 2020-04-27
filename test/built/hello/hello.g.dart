@@ -15,14 +15,16 @@ class _$HelloSerializer implements StructuredSerializer<Hello> {
   final String wireName = 'Hello';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, Hello object, {FullType specifiedType = FullType.unspecified}) {
+  Iterable<Object> serialize(Serializers serializers, Hello object,
+      {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(int)),
       'date',
       serializers.serialize(object.date, specifiedType: const FullType(String)),
       'date_gmt',
-      serializers.serialize(object.dateGmt, specifiedType: const FullType(String)),
+      serializers.serialize(object.dateGmt,
+          specifiedType: const FullType(String)),
       'type',
       serializers.serialize(object.type, specifiedType: const FullType(String)),
       'link',
@@ -30,7 +32,9 @@ class _$HelloSerializer implements StructuredSerializer<Hello> {
       'title',
       serializers.serialize(object.title, specifiedType: const FullType(Title)),
       'tags',
-      serializers.serialize(object.tags, specifiedType: const FullType(BuiltList, const [const FullType(int)])),
+      serializers.serialize(object.tags,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(int)])),
     ];
 
     return result;
@@ -48,26 +52,34 @@ class _$HelloSerializer implements StructuredSerializer<Hello> {
       final dynamic value = iterator.current;
       switch (key) {
         case 'id':
-          result.id = serializers.deserialize(value, specifiedType: const FullType(int)) as int;
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
           break;
         case 'date':
-          result.date = serializers.deserialize(value, specifiedType: const FullType(String)) as String;
+          result.date = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
           break;
         case 'date_gmt':
-          result.dateGmt = serializers.deserialize(value, specifiedType: const FullType(String)) as String;
+          result.dateGmt = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
           break;
         case 'type':
-          result.type = serializers.deserialize(value, specifiedType: const FullType(String)) as String;
+          result.type = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
           break;
         case 'link':
-          result.link = serializers.deserialize(value, specifiedType: const FullType(String)) as String;
+          result.link = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
           break;
         case 'title':
-          result.title.replace(serializers.deserialize(value, specifiedType: const FullType(Title)) as Title);
+          result.title.replace(serializers.deserialize(value,
+              specifiedType: const FullType(Title)) as Title);
           break;
         case 'tags':
           result.tags.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltList, const [const FullType(int)])) as BuiltList<Object>);
+                  specifiedType:
+                      const FullType(BuiltList, const [const FullType(int)]))
+              as BuiltList<Object>);
           break;
       }
     }
@@ -92,9 +104,18 @@ class _$Hello extends Hello {
   @override
   final BuiltList<int> tags;
 
-  factory _$Hello([void Function(HelloBuilder) updates]) => (new HelloBuilder()..update(updates)).build();
+  factory _$Hello([void Function(HelloBuilder) updates]) =>
+      (new HelloBuilder()..update(updates)).build();
 
-  _$Hello._({this.id, this.date, this.dateGmt, this.type, this.link, this.title, this.tags}) : super._() {
+  _$Hello._(
+      {this.id,
+      this.date,
+      this.dateGmt,
+      this.type,
+      this.link,
+      this.title,
+      this.tags})
+      : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('Hello', 'id');
     }
@@ -119,7 +140,8 @@ class _$Hello extends Hello {
   }
 
   @override
-  Hello rebuild(void Function(HelloBuilder) updates) => (toBuilder()..update(updates)).build();
+  Hello rebuild(void Function(HelloBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   HelloBuilder toBuilder() => new HelloBuilder()..replace(this);
@@ -140,7 +162,13 @@ class _$Hello extends Hello {
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc($jc($jc(0, id.hashCode), date.hashCode), dateGmt.hashCode), type.hashCode), link.hashCode),
+        $jc(
+            $jc(
+                $jc(
+                    $jc($jc($jc(0, id.hashCode), date.hashCode),
+                        dateGmt.hashCode),
+                    type.hashCode),
+                link.hashCode),
             title.hashCode),
         tags.hashCode));
   }
@@ -157,52 +185,37 @@ class _$Hello extends Hello {
           ..add('tags', tags))
         .toString();
   }
-
 }
 
 class HelloBuilder implements Builder<Hello, HelloBuilder> {
   _$Hello _$v;
 
   int _id;
-
   int get id => _$this._id;
-
   set id(int id) => _$this._id = id;
 
   String _date;
-
   String get date => _$this._date;
-
   set date(String date) => _$this._date = date;
 
   String _dateGmt;
-
   String get dateGmt => _$this._dateGmt;
-
   set dateGmt(String dateGmt) => _$this._dateGmt = dateGmt;
 
   String _type;
-
   String get type => _$this._type;
-
   set type(String type) => _$this._type = type;
 
   String _link;
-
   String get link => _$this._link;
-
   set link(String link) => _$this._link = link;
 
   TitleBuilder _title;
-
   TitleBuilder get title => _$this._title ??= new TitleBuilder();
-
   set title(TitleBuilder title) => _$this._title = title;
 
   ListBuilder<int> _tags;
-
   ListBuilder<int> get tags => _$this._tags ??= new ListBuilder<int>();
-
   set tags(ListBuilder<int> tags) => _$this._tags = tags;
 
   HelloBuilder();
@@ -240,7 +253,13 @@ class HelloBuilder implements Builder<Hello, HelloBuilder> {
     try {
       _$result = _$v ??
           new _$Hello._(
-              id: id, date: date, dateGmt: dateGmt, type: type, link: link, title: title.build(), tags: tags.build());
+              id: id,
+              date: date,
+              dateGmt: dateGmt,
+              type: type,
+              link: link,
+              title: title.build(),
+              tags: tags.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -249,7 +268,8 @@ class HelloBuilder implements Builder<Hello, HelloBuilder> {
         _$failedField = 'tags';
         tags.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError('Hello', _$failedField, e.toString());
+        throw new BuiltValueNestedFieldError(
+            'Hello', _$failedField, e.toString());
       }
       rethrow;
     }

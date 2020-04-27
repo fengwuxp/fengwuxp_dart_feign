@@ -1,5 +1,5 @@
 import 'package:built_value/serializer.dart';
-import 'package:fengwuxp_dart_openfeign/src/client/clinet_http_response.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/clinet_http_response.dart';
 
 /// Generic callback interface used by {@link RestTemplate}'s retrieval methods
 /// Implementations of this interface perform the actual work of extracting data

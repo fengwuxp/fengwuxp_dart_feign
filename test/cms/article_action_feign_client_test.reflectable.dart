@@ -2,16 +2,11 @@
 // https://github.com/dart-lang/reflectable.
 
 import 'dart:core';
-import 'hello_feign_client.dart' as prefix1;
-import 'mock_feign_configuration.dart' as prefix2;
+import 'article_action_feign_client.dart' as prefix1;
 import 'package:fengwuxp_dart_openfeign/src/annotations/feign_client.dart'
     as prefix0;
-import 'package:fengwuxp_dart_openfeign/src/annotations/query_param.dart'
-    as prefix5;
-import 'package:fengwuxp_dart_openfeign/src/annotations/request_header.dart'
-    as prefix4;
 import 'package:fengwuxp_dart_openfeign/src/annotations/request_mapping.dart'
-    as prefix3;
+    as prefix2;
 
 // ignore_for_file: prefer_adjacent_string_concatenation
 // ignore_for_file: prefer_collection_literals
@@ -29,67 +24,40 @@ final _data = <r.Reflectable, r.ReflectorData>{
   const prefix0.FeignClient(): r.ReflectorData(
       <m.TypeMirror>[
         r.NonGenericClassMirrorImpl(
-            r'HelloFeignClient',
-            r'.HelloFeignClient',
+            r'ArticleActionFeignClient',
+            r'.ArticleActionFeignClient',
             7,
             0,
             const prefix0.FeignClient(),
-            const <int>[0, 1, 2, 3],
-            const <int>[4, 5, 6, 7, 8, 9, 0],
+            const <int>[0, 1],
+            const <int>[2, 3, 4, 5, 6, 7, 0],
             const <int>[],
             -1,
             {},
             {},
-            {r'': (b) => () => b ? prefix1.HelloFeignClient() : null},
+            {r'': (b) => () => b ? prefix1.ArticleActionFeignClient() : null},
             -1,
             0,
             const <int>[],
-            const <Object>[
-              const prefix0.FeignClient(
-                  name: "hello_client",
-                  value: "hello",
-                  configuration: const prefix2.MockFeignConfiguration())
-            ],
+            const <Object>[const prefix0.FeignClient(value: "/article_action")],
             null)
       ],
       <m.DeclarationMirror>[
         r.MethodMirrorImpl(
-            r'getHello',
+            r'query',
             4325378,
             0,
             -1,
             -1,
             -1,
             null,
-            const <int>[0, 1, 2],
+            const <int>[0, 1],
             const prefix0.FeignClient(),
-            const <Object>[const prefix3.GetMapping(value: "/get_hello")]),
-        r.MethodMirrorImpl(
-            r'getHelloForObject',
-            4325890,
-            0,
-            -1,
-            -1,
-            -1,
-            null,
-            const <int>[3, 4, 5],
-            const prefix0.FeignClient(),
-            const <Object>[const prefix3.GetMapping(value: "/get_hello")]),
-        r.MethodMirrorImpl(
-            r'queryHello',
-            4325890,
-            0,
-            -1,
-            -1,
-            -1,
-            null,
-            const <int>[6, 7],
-            const prefix0.FeignClient(),
-            const <Object>[const prefix3.GetMapping(value: "/get_hello")]),
+            const <Object>[const prefix2.GetMapping(value: "/query")]),
         r.MethodMirrorImpl(r'', 64, 0, -1, -1, -1, null, const <int>[],
             const prefix0.FeignClient(), const []),
         r.MethodMirrorImpl(r'==', 131074, null, -1, -1, -1, null,
-            const <int>[8], const prefix0.FeignClient(), const []),
+            const <int>[2], const prefix0.FeignClient(), const []),
         r.MethodMirrorImpl(r'toString', 131074, null, -1, -1, -1, null,
             const <int>[], const prefix0.FeignClient(), const []),
         r.MethodMirrorImpl(
@@ -100,7 +68,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
             -1,
             -1,
             null,
-            const <int>[9],
+            const <int>[3],
             const prefix0.FeignClient(),
             const <Object>[override]),
         r.MethodMirrorImpl(r'hashCode', 131075, null, -1, -1, -1, null,
@@ -108,87 +76,15 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r.MethodMirrorImpl(r'runtimeType', 131075, null, -1, -1, -1, null,
             const <int>[], const prefix0.FeignClient(), const []),
         r.MethodMirrorImpl(r'delegateInvoke', 4325378, null, -1, -1, -1, null,
-            const <int>[10, 11, 12, 13], const prefix0.FeignClient(), const [])
+            const <int>[4, 5, 6, 7], const prefix0.FeignClient(), const [])
       ],
       <m.ParameterMirror>[
-        r.ParameterMirrorImpl(
-            r'name',
-            32774,
-            0,
-            const prefix0.FeignClient(),
-            -1,
-            -1,
-            -1,
-            null,
-            const <Object>[const prefix4.RequestHeader()],
-            null,
-            null),
-        r.ParameterMirrorImpl(
-            r'id',
-            32774,
-            0,
-            const prefix0.FeignClient(),
-            -1,
-            -1,
-            -1,
-            null,
-            const <Object>[const prefix5.QueryParam()],
-            null,
-            null),
-        r.ParameterMirrorImpl(
-            r'feignOptions',
-            45062,
-            0,
-            const prefix0.FeignClient(),
-            -1,
-            -1,
-            -1,
-            null,
-            const [],
-            null,
-            #feignOptions),
-        r.ParameterMirrorImpl(
-            r'name',
-            32774,
-            1,
-            const prefix0.FeignClient(),
-            -1,
-            -1,
-            -1,
-            null,
-            const <Object>[const prefix4.RequestHeader()],
-            null,
-            null),
-        r.ParameterMirrorImpl(
-            r'id',
-            32774,
-            1,
-            const prefix0.FeignClient(),
-            -1,
-            -1,
-            -1,
-            null,
-            const <Object>[const prefix5.QueryParam()],
-            null,
-            null),
-        r.ParameterMirrorImpl(
-            r'feignOptions',
-            45062,
-            1,
-            const prefix0.FeignClient(),
-            -1,
-            -1,
-            -1,
-            null,
-            const [],
-            null,
-            #feignOptions),
-        r.ParameterMirrorImpl(r'req', 32774, 2, const prefix0.FeignClient(), -1,
+        r.ParameterMirrorImpl(r'req', 32774, 0, const prefix0.FeignClient(), -1,
             -1, -1, null, const [], null, null),
         r.ParameterMirrorImpl(
             r'feignOptions',
-            45062,
-            2,
+            36870,
+            0,
             const prefix0.FeignClient(),
             -1,
             -1,
@@ -196,13 +92,13 @@ final _data = <r.Reflectable, r.ReflectorData>{
             null,
             const [],
             null,
-            #feignOptions),
-        r.ParameterMirrorImpl(r'other', 16390, 4, const prefix0.FeignClient(),
+            null),
+        r.ParameterMirrorImpl(r'other', 16390, 2, const prefix0.FeignClient(),
             null, -1, -1, null, const [], null, null),
         r.ParameterMirrorImpl(
             r'invocation',
             32774,
-            6,
+            4,
             const prefix0.FeignClient(),
             -1,
             -1,
@@ -214,7 +110,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r.ParameterMirrorImpl(
             r'methodName',
             32774,
-            9,
+            7,
             const prefix0.FeignClient(),
             -1,
             -1,
@@ -226,7 +122,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r.ParameterMirrorImpl(
             r'positionalArguments',
             2129926,
-            9,
+            7,
             const prefix0.FeignClient(),
             -1,
             -1,
@@ -238,7 +134,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r.ParameterMirrorImpl(
             r'feignOptions',
             45062,
-            9,
+            7,
             const prefix0.FeignClient(),
             -1,
             -1,
@@ -250,7 +146,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r.ParameterMirrorImpl(
             r'serializer',
             2142214,
-            9,
+            7,
             const prefix0.FeignClient(),
             -1,
             -1,
@@ -260,7 +156,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
             null,
             #serializer)
       ],
-      <Type>[prefix1.HelloFeignClient],
+      <Type>[prefix1.ArticleActionFeignClient],
       1,
       {
         r'==': (dynamic instance) => (x) => instance == x,
@@ -269,7 +165,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r'hashCode': (dynamic instance) => instance.hashCode,
         r'runtimeType': (dynamic instance) => instance.runtimeType,
         r'delegateInvoke': (dynamic instance) => instance.delegateInvoke,
-        r'getHello': (dynamic instance) => instance.getHello
+        r'query': (dynamic instance) => instance.query
       },
       {},
       null,

@@ -2,6 +2,11 @@ import 'dart:ffi';
 import 'dart:io';
 
 import 'package:built_value/serializer.dart';
+import 'package:fengwuxp_dart_basic/index.dart';
+import 'package:fengwuxp_dart_openfeign/src/client/cient_http_request_interceptor.dart';
+import 'package:fengwuxp_dart_openfeign/src/client/rest_client_http_request.dart';
+import 'package:fengwuxp_dart_openfeign/src/constant/http/http_media_type.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/client_http_request.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/default_url_template_handler.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/rest_response_extractor.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/uri_template_handler.dart';
@@ -14,68 +19,85 @@ import 'response_extractor.dart';
 import 'rest_operations.dart';
 
 class RestTemplate implements RestOperations {
+  final String defaultProduce;
+
   final UriTemplateHandler uriTemplateHandler;
 
   final List<HttpMessageConverter> messageConverters;
 
+  final List<ClientHttpRequestInterceptor> interceptors;
+
   const RestTemplate({
+    this.defaultProduce = HttpMediaType.FORM_DATA,
     this.uriTemplateHandler = const DefaultUriTemplateHandler(),
-    this.messageConverters,
+    this.messageConverters = const [],
+    this.interceptors = const [],
   }); // GET
 
   @override
   Future<T> getForObject<T>(String url, Serializer<T> responseType,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables}) {
-    return this.execute(url, HttpMethod.GET, this._httpMessageConverterExtractor<T>(responseType));
+      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers}) {
+    return this.execute(url, HttpMethod.GET, this._httpMessageConverterExtractor<T>(responseType),
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers);
   }
 
   @override
   Future<ResponseEntity<T>> getForEntity<T>(String url,
-      {Serializer<T> responseType, Map<String, dynamic> queryParams, List<dynamic> pathVariables}) {
+      {Serializer<T> responseType,
+      Map<String, dynamic> queryParams,
+      List<dynamic> pathVariables,
+      Map<String, String> headers}) {
     return this.execute(url, HttpMethod.GET, this._responseEntityResponseExtractor(responseType),
-        queryParams: queryParams, pathVariables: pathVariables);
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers);
   }
 
   // HEAD
 
   @override
-  Future<HttpHeaders> headForHeaders(String url, {Map<String, dynamic> queryParams, List<dynamic> pathVariables}) {
+  Future<Map<String, String>> headForHeaders(String url,
+      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers}) {
     return this.execute(url, HttpMethod.HEAD, this._headResponseExtractor(),
-        queryParams: queryParams, pathVariables: pathVariables);
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers);
   }
 
   // POST
 
   @override
   Future<T> postForObject<T>(String url, dynamic request, Serializer<T> responseType,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables}) {
+      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers}) {
     return this.execute(url, HttpMethod.POST, this._httpMessageConverterExtractor<T>(responseType),
-        queryParams: queryParams, pathVariables: pathVariables);
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers);
   }
 
   @override
   Future<ResponseEntity<T>> postForEntity<T>(String url, dynamic request,
-      {Serializer<T> responseType, Map<String, dynamic> queryParams, List<dynamic> pathVariables}) {
+      {Serializer<T> responseType,
+      Map<String, dynamic> queryParams,
+      List<dynamic> pathVariables,
+      Map<String, String> headers}) {
     return this.execute(url, HttpMethod.POST, this._responseEntityResponseExtractor(responseType),
-        queryParams: queryParams, pathVariables: pathVariables);
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers);
   }
 
   @override
   Future<Void> put(@required String url, dynamic request,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables}) {
-    return this.execute(url, HttpMethod.PUT, null, queryParams: queryParams, pathVariables: pathVariables);
+      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers}) {
+    return this
+        .execute(url, HttpMethod.PUT, null, queryParams: queryParams, pathVariables: pathVariables, headers: headers);
   }
 
   @override
   Future<T> patchForObject<T>(String url, dynamic request, Serializer<T> responseType,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables}) {
+      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers}) {
     return this.execute(url, HttpMethod.PATCH, this._httpMessageConverterExtractor(responseType),
-        queryParams: queryParams, pathVariables: pathVariables);
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers);
   }
 
   @override
-  Future<Void> delete(String url, {Map<String, dynamic> queryParams, List<dynamic> pathVariables}) {
-    return this.execute(url, HttpMethod.DELETE, null, queryParams: queryParams, pathVariables: pathVariables);
+  Future<Void> delete(String url,
+      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers}) {
+    return this.execute(url, HttpMethod.DELETE, null,
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers);
   }
 
   @override
@@ -87,13 +109,40 @@ class RestTemplate implements RestOperations {
 
   @override
   Future<T> execute<T>(String url, String method, ResponseExtractor<T> responseExtractor,
-      {dynamic request, Map<String, dynamic> queryParams, List<Object> pathVariables}) {
-
+      {dynamic request,
+      Map<String, dynamic> queryParams,
+      List<Object> pathVariables,
+      Map<String, String> headers = const {}}) async {
+    // 处理url， 查询参数
     var uri = uriTemplateHandler.expand(url, queryParams: queryParams, pathVariables: pathVariables);
+    var requestHttpHeaders = Map.of(headers);
+    if (!StringUtils.hasText(requestHttpHeaders[HttpHeaders.contentTypeHeader])) {
+      requestHttpHeaders[HttpHeaders.contentTypeHeader] = this.defaultProduce;
+    }
 
-    //
+    var clientHttpRequest =
+        RestClientHttpRequest(uri, method, messageConverters, requestBody: request, headers: requestHttpHeaders);
+    // 处理请求体
+    var clientHttpResponse;
+    try {
+      await this._preHandleInterceptor(clientHttpRequest);
+      clientHttpResponse = await clientHttpRequest.send();
+    } catch (e) {
+      // 错误处理
+      throw e;
+    }
+    return responseExtractor != null ? responseExtractor.extractData(clientHttpResponse) : null;
+  }
 
-    return responseExtractor != null ? responseExtractor.extractData(null) : null;
+  void _preHandleInterceptor(ClientHttpRequest clientHttpRequest) async {
+    final interceptors = this.interceptors;
+    if (interceptors == null) {
+      return;
+    }
+    final length = interceptors.length;
+    for (int i = 0; i < length; i++) {
+      await interceptors[i].interceptor(clientHttpRequest);
+    }
   }
 
   HttpMessageConverterExtractor<T> _httpMessageConverterExtractor<T>(Serializer<T> responseType) {

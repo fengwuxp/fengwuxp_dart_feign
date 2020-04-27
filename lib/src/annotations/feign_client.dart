@@ -21,14 +21,13 @@ class FeignClient extends Reflectable {
 
   /// default null
   /// independent configuration
-  final FeignConfiguration configuration;
+//  final FeignConfiguration configuration;
 
   const FeignClient(
       {this.apiModule = DEFAULT_MODULE,
       this.name,
       this.value,
-      this.url,
-      this.configuration })
+      this.url})
       : super(
             metadataCapability,
             invokingCapability,

@@ -42,7 +42,7 @@ abstract class HttpMessageConverter<T> {
   /// @param outputMessage the message to write to
   /// @throws IOException in case of I/O errors
   /// @throws HttpMessageNotWritableException in case of conversion errors
-  void write(T data, ContentType mediaType, HttpOutputMessage outputMessage);
+  Future write(T data, ContentType mediaType, HttpOutputMessage outputMessage);
 }
 
 /// A specialization of {@link [HttpMessageConverter]} that can convert an HTTP request

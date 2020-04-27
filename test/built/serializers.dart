@@ -5,14 +5,18 @@
 library serializers;
 
 import 'package:built_collection/built_collection.dart';
+import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:built_value/serializer.dart';
+import 'package:built_value/src/date_time_serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
-import 'package:built_value/serializer.dart';
 
+import '../cms/info/article_action_info.dart';
+import '../cms/req/find_article_actions_req.dart';
+import '../cms/resp/page_info.dart';
 import 'data_model.dart';
-import 'req/query_hello_req.dart';
-import 'hello/title.dart';
 import 'hello/hello.dart';
+import 'hello/title.dart';
+import 'req/query_hello_req.dart';
 
 part 'serializers.g.dart';
 
@@ -28,16 +32,21 @@ part 'serializers.g.dart';
 ///
 /// You usually only need to do this once per project.
 @SerializersFor(const [
-    Hello,
-    QueryHelloReq,
-    Chat,
-    ListUsers,
-    ListUsersResponse,
-    Login,
-    LoginResponse,
-    ShowChat,
-    Status,
-    Welcome,
+  Hello,
+  QueryHelloReq,
+  Chat,
+  ListUsers,
+  ListUsersResponse,
+  Login,
+  LoginResponse,
+  ShowChat,
+  Status,
+  Welcome,
+  PageInfo,
+  ArticleActionInfo,
+  FindArticleActionsReq
 ])
-final Serializers serializers =
-    (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();
+final Serializers serializers = (_$serializers.toBuilder()
+      ..addPlugin(StandardJsonPlugin())
+      ..add(DateTimeSerializer()))
+    .build();

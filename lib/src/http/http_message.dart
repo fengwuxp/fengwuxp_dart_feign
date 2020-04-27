@@ -5,5 +5,5 @@ import 'dart:io';
 abstract class HttpMessage {
   /// Return the headers of this message.
   /// @return a corresponding [HttpHeaders] object (never {@code null})
-  HttpHeaders get headers;
+  Map<String, String> get headers;
 }

@@ -2,13 +2,11 @@ import 'dart:io';
 
 import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
-import 'package:fengwuxp_dart_openfeign/src/client/clinet_http_response.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/message_body_client_http_response_wrapper.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/response_extractor.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/clinet_http_response.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/converter/http_message_converter.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
-
-import 'clinet_http_response.dart';
 
 class HttpMessageConverterExtractor<T> implements ResponseExtractor<T> {
   List<HttpMessageConverter> _messageConverters;
@@ -30,7 +28,7 @@ class HttpMessageConverterExtractor<T> implements ResponseExtractor<T> {
       return Future.value(null);
     }
 
-    final contentType = response.headers.contentType;
+    final contentType = ContentType.parse(response.headers[HttpHeaders.contentTypeHeader]);
     for (HttpMessageConverter messageConverter in this._messageConverters) {
       if (messageConverter is GenericHttpMessageConverter) {
         if (messageConverter.canRead(contentType, serializer: serializer)) {
@@ -64,24 +62,23 @@ class ResponseEntityResponseExtractor<T> implements ResponseExtractor<ResponseEn
   Future<ResponseEntity<T>> extractData(ClientHttpResponse response, {Serializer serializer}) async {
     if (this._delegate != null) {
       T body = await this._delegate.extractData(response);
-      return ResponseEntity<T>(response.statusCode, response.headers, body, response.statusText);
+      return ResponseEntity<T>(response.statusCode, response.headers, body, response.reasonPhrase);
     } else {
-      return ResponseEntity<T>(response.statusCode, response.headers, null, response.statusText);
+      return ResponseEntity<T>(response.statusCode, response.headers, null, response.reasonPhrase);
     }
   }
 }
 
-class HeadResponseExtractor implements ResponseExtractor<HttpHeaders> {
+class HeadResponseExtractor implements ResponseExtractor<Map<String, String>> {
   const HeadResponseExtractor();
 
   /// Extract data from the given {@code ClientHttpResponse} and return it.
-  Future<HttpHeaders> extractData(ClientHttpResponse response, {Serializer serializer}) {
+  Future<Map<String, String>> extractData(ClientHttpResponse response, {Serializer serializer}) {
     return Future.value(response.headers);
   }
 }
 
 class OptionsForAllowResponseExtractor implements ResponseExtractor<Set<String>> {
-
   HeadResponseExtractor _headResponseExtractor = HeadResponseExtractor();
 
   factory() {
@@ -94,7 +91,8 @@ class OptionsForAllowResponseExtractor implements ResponseExtractor<Set<String>>
     if (headers == null) {
       return Future.value(Set.from([]));
     }
-    var header = headers.value("Access-Control-Allow-Methods");
+    // "Access-Control-Allow-Methods"
+    var header = headers["Access-Control-Allow-Methods"];
     if (!StringUtils.hasText(header)) {
       return Future.value(Set.from([]));
     }

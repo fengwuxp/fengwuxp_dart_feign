@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:built_value/serializer.dart';
-import 'package:fengwuxp_dart_openfeign/src/constant/http/http_media_type.dart';
+import 'package:fengwuxp_dart_basic/index.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/client/byte_stream.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/converter/built_value_http_message_converter.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/http_input_message.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,24 +12,17 @@ import '../../built/serializers.dart';
 import 'json_object_http_message_converter.dart';
 
 class InputStreamHttpInputMessage implements HttpInputMessage {
-  StreamController<List<int>> _inputStream;
 
-  /// The sink to which to write data that will be sent as the request body.
-  ///
-  /// This may be safely written to before the request is sent; the data will be
-  /// buffered.
-  ///
-  /// Closing this signals the end of the request.
-  EventSink<List<int>> get sink => _inputStream.sink;
+  ByteStream _inputStream;
+
 
   InputStreamHttpInputMessage(Stream<List<int>> source) {
-    this._inputStream = new StreamController();
-    this._inputStream.addStream(source);
+    this._inputStream = ByteStream(source);
   }
 
-  StreamController get body => _inputStream;
+  ByteStream get stream => _inputStream;
 
-  HttpHeaders get headers => null;
+  Map<String, String> get headers => null;
 }
 
 void main() {
@@ -63,7 +56,7 @@ void main() {
   test('test  built http message converter', () async {
     var codeUnits = jsonText.codeUnits;
     var inputMessage = new InputStreamHttpInputMessage(Stream.value(codeUnits));
-    var builtValueHttpMessageConverter = BuiltValueHttpMessageConverter(serializers);
+    var builtValueHttpMessageConverter = BuiltValueHttpMessageConverter(new BuiltJsonSerializers(serializers));
     if (builtValueHttpMessageConverter.canRead(ContentType.json)) {
       Hello result = await builtValueHttpMessageConverter.read(inputMessage, serializer: Hello.serializer);
       print("==Hello=> $result");

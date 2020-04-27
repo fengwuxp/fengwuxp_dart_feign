@@ -54,15 +54,18 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
       } else {
         var meta = metadata[0];
         if (isQueryParam(meta)) {
-          _margeData(result.body, simpleName, metadata, argument);
+          _margeData(result.queryParams, simpleName, metadata, argument);
         } else if (isRequestHeader(meta)) {
           result.headers[simpleName] = argument;
         } else if (isRequestPart(meta)) {
-          result.body[simpleName] = argument;
+          result.files[simpleName] = argument;
         } else if (isCookieValue(meta)) {
         } else if (isPathVariable(meta)) {
           result.pathVariables.add(argument);
-        } else {}
+        } else {
+          // request body
+          _margeData(result.body, simpleName, metadata, argument);
+        }
       }
     }
 

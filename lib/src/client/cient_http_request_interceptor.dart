@@ -1,11 +1,7 @@
+import 'dart:ffi';
+import '../http/client_http_request.dart';
 
+abstract class ClientHttpRequestInterceptor {
 
-
-
-
-
-abstract class ClientHttpRequestInterceptor{
-
-  Future<ClientHttpRequest> (ClientHttpRequest request);
-
+  Future<Void> interceptor(ClientHttpRequest request);
 }

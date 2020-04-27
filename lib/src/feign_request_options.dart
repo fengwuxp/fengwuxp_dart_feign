@@ -59,7 +59,7 @@ class FeignRequestOptions implements FeignRequestBaseOptions, DataOptions {
   Map<String, dynamic> body;
 
   // 上传的文件
-//  Map<String, dynamic> files;
+  Map<String, dynamic> files;
 
   ///  external request headers
   ///  support '{xxx}' expression，Data can be obtained from request body or query data

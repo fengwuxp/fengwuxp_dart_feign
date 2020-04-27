@@ -1,8 +1,6 @@
 import 'dart:ffi';
-import 'dart:io';
 
 import 'package:built_value/serializer.dart';
-import 'package:fengwuxp_dart_openfeign/src/client/clinet_http_response.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/response_extractor.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,7 +19,7 @@ abstract class RestOperations {
   /// [queryParams]  Strong or num of Map value, the variables to expand the template
   /// return [T]
   Future<T> getForObject<T>(String url, Serializer<T> responseType,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables});
+      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers});
 
   ///  Retrieve a representation by doing a GET on the URL .
   ///  The response is converted and stored in an [ClientHttpResponse].
@@ -30,7 +28,10 @@ abstract class RestOperations {
   /// [queryParams]  Strong or num of Map value, the variables to expand the template
   /// return [ClientHttpResponse]
   Future<ResponseEntity<T>> getForEntity<T>(String url,
-      {Serializer<T> responseType, Map<String, dynamic> queryParams, List<dynamic> pathVariables});
+      {Serializer<T> responseType,
+      Map<String, dynamic> queryParams,
+      List<dynamic> pathVariables,
+      Map<String, String> headers});
 
   // HEAD
 
@@ -40,7 +41,8 @@ abstract class RestOperations {
   /// [pathVariables] String or num of List,  the variables to expand the template
   /// [queryParams]  Strong or num of Map value, the variables to expand the template
   /// return http response headers
-  Future<HttpHeaders> headForHeaders(String url, {Map<String, dynamic> queryParams, List<dynamic> pathVariables});
+  Future<Map<String,String>> headForHeaders(String url,
+      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers});
 
   // POST
 
@@ -61,7 +63,7 @@ abstract class RestOperations {
   /// [queryParams]  the variables to expand the template
   /// return [T]
   Future<T> postForObject<T>(String url, dynamic request, Serializer<T> responseType,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables});
+      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers});
 
   /// Create a new resource by POSTing the given object to the URI template,
   /// and returns the representation found in the response.
@@ -80,14 +82,17 @@ abstract class RestOperations {
   /// [queryParams]  the variables to expand the template
   /// return [ClientHttpResponse]
   Future<ResponseEntity<T>> postForEntity<T>(String url, dynamic request,
-      {Serializer<T> responseType, Map<String, dynamic> queryParams, List<dynamic> pathVariables});
+      {Serializer<T> responseType,
+      Map<String, dynamic> queryParams,
+      List<dynamic> pathVariables,
+      Map<String, String> headers});
 
   /// Create or update a resource by PUTting the given object to the URI.
   /// <p>URI Template variables are expanded using the given URI variables, if any.
   /// <p>The {@code request} parameter can be a {@link HttpRequest} in order to
   /// add additional HTTP headers to the request.
   Future<Void> put(String url, @required dynamic request,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables});
+      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers});
 
   /// Update a resource by PATCHing the given object to the URI template,
   /// and return the representation found in the response.
@@ -103,13 +108,14 @@ abstract class RestOperations {
   /// [queryParams]  the variables to expand the template
   /// return [T]
   Future<T> patchForObject<T>(String url, dynamic request, Serializer<T> responseType,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables});
+      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers});
 
   /// Delete the resources at the specified URI.
   /// <p>URI Template variables are expanded using the given URI variables, if any.
   /// [url] the URL
   /// [pathVariables]  the variables to expand the template
-  Future<Void> delete(String url, {Map<String, dynamic> queryParams, List<dynamic> pathVariables});
+  Future<Void> delete(String url,
+      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers});
 
   /// Return the value of the Allow header for the given URI.
   /// <p>URI Template variables are expanded using the given map.
@@ -122,5 +128,5 @@ abstract class RestOperations {
   /// [pathVariables]  the variables to expand the template
   /// [queryParams]  the variables to expand the template
   Future<T> execute<T>(String url, String method, ResponseExtractor<T> responseExtractor,
-      {dynamic request, Map<String, dynamic> queryParams, List<Object> pathVariables});
+      {dynamic request, Map<String, dynamic> queryParams, List<Object> pathVariables, Map<String, String> headers});
 }

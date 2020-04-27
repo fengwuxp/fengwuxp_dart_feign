@@ -12,9 +12,8 @@ dependencies:
     sdk: flutter
   glob: ^1.2.0
   reflectable:
-     git: git://github.com/dart-lang/reflectable.git
+    git: git://github.com/dart-lang/reflectable.git
   meta: ^1.0.4
-  #  http: ^0.12.1-dev
   built_collection: '>=2.0.0 <5.0.0'
   built_value: ^7.0.2
   fengwuxp_dart_basic:
@@ -28,7 +27,7 @@ dev_dependencies:
   build_runner: any
   build_test: any
   # If you need to run web tests, you will also need this dependency.
-#  build_web_compilers: any
+  #  build_web_compilers: any
   built_value_generator: ^7.0.9
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

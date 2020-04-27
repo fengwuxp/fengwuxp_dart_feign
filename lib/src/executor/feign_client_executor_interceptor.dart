@@ -1,4 +1,6 @@
-import 'package:fengwuxp_dart_openfeign/src/client/clinet_http_response.dart';
+
+
+import 'package:fengwuxp_dart_openfeign/src/http/clinet_http_response.dart';
 
 import '../feign_request_options.dart';
 

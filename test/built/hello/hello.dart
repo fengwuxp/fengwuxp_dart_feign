@@ -1,8 +1,10 @@
 import 'dart:convert';
+
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
+
 import '../serializers.dart';
 import 'title.dart';
 

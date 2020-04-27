@@ -11,37 +11,25 @@ import '../http_output_message.dart';
 class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter {
   BuiltJsonSerializers _builtJsonSerializers;
 
-  BuiltValueHttpMessageConverter(Serializers serializers) : super([ContentType.json]) {
-    this._builtJsonSerializers = BuiltJsonSerializers(serializers);
+  BuiltValueHttpMessageConverter(BuiltJsonSerializers builtJsonSerializers) : super([ContentType.json]) {
+    this._builtJsonSerializers = builtJsonSerializers;
   }
 
-  factory(Serializers serializers) {
-    return new BuiltValueHttpMessageConverter(serializers);
+  factory(BuiltJsonSerializers builtJsonSerializers) {
+    return new BuiltValueHttpMessageConverter(builtJsonSerializers);
   }
 
   Future<E> read<E>(HttpInputMessage inputMessage, {Serializer<E> serializer}) {
-    return inputMessage.body.stream
-        .transform(StreamTransformer<List<int>, String>.fromHandlers(
-          handleData: (List<int> data, EventSink sink) {
-            // 操作数据后，转换为 double 类型
-            var event = new String.fromCharCodes(data);
-            sink.add(event);
-          },
-          handleError: (error, stacktrace, sink) {
-            sink.addError('wrong: $error');
-          },
-          handleDone: (sink) {
-            sink.close();
-          },
-        ))
-        .first
-        .then((data) {
+    return inputMessage.stream.bytesToString().then((data) {
       return this._builtJsonSerializers.parseObject(data, serializer);
     });
   }
 
   @override
-  void write(data, ContentType mediaType, HttpOutputMessage outputMessage) {
-    outputMessage.body.add(this._builtJsonSerializers.toJson(data));
+  Future write(data, ContentType mediaType, HttpOutputMessage outputMessage) {
+    final codeUnits = this._builtJsonSerializers.toJson(data).codeUnits;
+    outputMessage.body.add(codeUnits);
+    outputMessage.addContentLength(codeUnits.length);
+    return Future.value();
   }
 }

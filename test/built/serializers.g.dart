@@ -7,12 +7,15 @@ part of serializers;
 // **************************************************************************
 
 Serializers _$serializers = (new Serializers().toBuilder()
+      ..add(ArticleActionInfo.serializer)
       ..add(Chat.serializer)
+      ..add(FindArticleActionsReq.serializer)
       ..add(Hello.serializer)
       ..add(ListUsers.serializer)
       ..add(ListUsersResponse.serializer)
       ..add(Login.serializer)
       ..add(LoginResponse.serializer)
+      ..add(PageInfo.serializer)
       ..add(QueryHelloReq.serializer)
       ..add(ShowChat.serializer)
       ..add(Status.serializer)

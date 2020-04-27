@@ -3,17 +3,17 @@ import 'dart:io';
 class ResponseEntity<T> {
   num _statusCode;
 
-  HttpHeaders _headers;
+  Map<String, String> _headers;
 
-  String _statusText;
+  String _reasonPhrase;
 
   T body;
 
-  ResponseEntity(this._statusCode, this._headers, T body, this._statusText); // http status code
+  ResponseEntity(this._statusCode, this._headers, T body, this._reasonPhrase); // http status code
 
   factory(
     num statusCode,
-    HttpHeaders headers,
+    Map<String, String> headers,
     T body,
     String statusText,
   ) {
@@ -23,11 +23,11 @@ class ResponseEntity<T> {
   num get statusCode => _statusCode;
 
   ///  http status text
-  String get statusText => _statusText;
+  String get reasonPhrase => _reasonPhrase;
 
   //  request is success
   bool get ok => this.statusCode >= 200 && this.statusCode < 300;
 
   // http response headers
-  HttpHeaders get headers => _headers;
+  Map<String, String> get headers => _headers;
 }
