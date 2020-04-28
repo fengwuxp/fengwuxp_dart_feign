@@ -6,3 +6,4 @@ abstract class FeignClientExecutor {
   /// [namedArguments]
   Future invoke(String methodName, List<Object> positionalArguments, [Map<Symbol, dynamic> namedArguments]);
 }
+

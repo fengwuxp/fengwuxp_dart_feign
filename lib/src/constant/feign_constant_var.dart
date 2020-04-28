@@ -5,5 +5,3 @@ const CONTENT_TYPE_NAME = 'Content-Type';
 const FEIGN_OPTIONS_PARAMETER_NAME = "feignOptions";
 
 const FEIGN_SERIALIZER_PARAMETER_NAME = "serializer";
-const FEIGN_SERIALIZER_SPECIFIED_PARAMETER_NAME = "specifiedType";
-const FEIGN_TIMEOUT_PARAMETER_NAME = "timeout";

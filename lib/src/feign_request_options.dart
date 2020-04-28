@@ -1,3 +1,5 @@
+import 'package:built_value/serializer.dart';
+
 import 'client/response_extractor.dart';
 
 abstract class FeignRequestId {
@@ -9,7 +11,7 @@ abstract class FeignRequestId {
   set requestId(String value);
 }
 
-abstract class FeignRequestBaseOptions implements FeignRequestId {
+abstract class FeignBaseRequest implements FeignRequestId {
   /// external query parameters
   /// value is boolean | number | string | Date |  Array<boolean | string | number | Date>
   Map<String, dynamic> queryParams;
@@ -23,32 +25,10 @@ abstract class FeignRequestBaseOptions implements FeignRequestId {
   Map<String, String> headers;
 
   List<Object> pathVariables;
-
 }
 
-abstract class UIOptions {
-  /// 是否使用统一的提示
-  ///  默认：true
-  bool useUnifiedToast;
+class FeignRequest implements FeignBaseRequest {
 
-  /// 是否使用进度条,如果该值为false 则不会使用统一的提示
-  /// 默认：true
-  bool useProgressBar;
-}
-
-abstract class DataOptions {
-  /// 使用统一响应转换
-  ///  默认：true
-  bool useUnifiedTransformResponse;
-
-  /// 是否过滤提交数据中的 空字符串，null的数据，数值类型的NaN
-  bool filterNoneValue;
-
-  /// 响应数据抓取
-  ResponseExtractor responseExtractor;
-}
-
-class FeignRequestOptions implements FeignRequestBaseOptions, DataOptions {
   String requestId;
 
   /// external query parameters
@@ -68,27 +48,63 @@ class FeignRequestOptions implements FeignRequestBaseOptions, DataOptions {
 
   List<dynamic> pathVariables;
 
+  FeignRequest({this.requestId, this.queryParams, this.body, this.headers, this.pathVariables});
+}
+
+class DataOptions {
   /// 使用统一响应转换
   ///  默认：true
-  bool useUnifiedTransformResponse;
+  final bool useUnifiedTransformResponse;
 
   /// 是否过滤提交数据中的 空字符串，null的数据，数值类型的NaN
-  bool filterNoneValue;
+  final bool filterNoneValue;
 
   /// 响应数据抓取
-  ResponseExtractor responseExtractor;
+  final ResponseExtractor responseExtractor;
 
   /// enable gzip
-  bool enabledGzip = false;
+  final bool enabledGzip;
 
-  FeignRequestOptions(
-      {this.requestId,
-      this.queryParams,
-      this.body,
-      this.headers,
-      this.pathVariables,
-      this.useUnifiedTransformResponse,
-      this.filterNoneValue,
-      this.responseExtractor,
-      this.enabledGzip});
+  const DataOptions(
+      {bool useUnifiedTransformResponse, bool filterNoneValue, ResponseExtractor responseExtractor, bool enabledGzip})
+      : this.useUnifiedTransformResponse = useUnifiedTransformResponse ?? true,
+        this.filterNoneValue = filterNoneValue ?? true,
+        this.responseExtractor = responseExtractor,
+        this.enabledGzip = enabledGzip ?? false;
+}
+
+class UIOptions extends DataOptions {
+  /// 是否使用统一的提示
+  ///  默认：true
+  final bool useUnifiedToast;
+
+  /// 是否使用进度条,如果该值为false 则不会使用统一的提示
+  /// 默认：true
+  final bool useProgressBar;
+
+  final int timeout;
+
+  UIOptions(
+      {bool useUnifiedToast,
+      bool useProgressBar,
+      bool useUnifiedTransformResponse,
+      bool filterNoneValue,
+      ResponseExtractor responseExtractor,
+      bool enabledGzip,
+      int timeout})
+      : this.useUnifiedToast = useUnifiedToast ?? true,
+        this.useProgressBar = useProgressBar ?? true,
+        this.timeout = timeout ?? -1,
+        super(
+            useUnifiedTransformResponse: useUnifiedTransformResponse,
+            filterNoneValue: filterNoneValue,
+            responseExtractor: responseExtractor,
+            enabledGzip: enabledGzip);
+}
+
+class BuiltValueSerializable<T> {
+  final Serializer<T> serializer;
+  final FullType specifiedType;
+
+  const BuiltValueSerializable({this.serializer, this.specifiedType});
 }

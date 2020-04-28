@@ -6,17 +6,21 @@ import '../feign_request_options.dart';
 
 /// Only executed in feign client
 /// [FeignClientExecutor#invoke]
-abstract class FeignClientExecutorInterceptor<T extends FeignRequestBaseOptions> {
+abstract class FeignClientExecutorInterceptor<T extends FeignBaseRequest> {
   /// in request before invoke
-  Future<T> preHandle(T options);
+  Future<T> preHandle(T request, UIOptions uiOptions);
 
   /// in request after invoke
-  /// [options]
+  /// [request]
   /// [response]
-  Future postHandle<E>(T options, ResponseEntity<E> response);
+  Future postHandle<E>(T request, UIOptions uiOptions, ResponseEntity<E> response);
 
   /// in request failure invoke
-  /// [options]
+  /// [request]
   /// [exception]
-  Future postError<E>(T options, ClientException exception);
+  Future postError<E>(T request, UIOptions uiOptions, ClientException exception);
 }
+
+/// execute interceptor
+/// [interceptor] Allow empty
+typedef Future ExecuteInterceptor<T extends FeignBaseRequest>(FeignClientExecutorInterceptor<T> interceptor);

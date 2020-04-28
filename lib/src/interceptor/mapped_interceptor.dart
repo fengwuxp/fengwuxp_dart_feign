@@ -1,8 +1,8 @@
-// use match interceptor is execute
-import 'package:fengwuxp_dart_openfeign/src/constant/http/http_method.dart';
-import 'package:fengwuxp_dart_openfeign/src/match/path_matcher.dart';
-import 'package:fengwuxp_dart_openfeign/src/match/simple_path_matcher.dart';
 
+import 'package:fengwuxp_dart_basic/index.dart';
+import 'package:fengwuxp_dart_openfeign/src/constant/http/http_method.dart';
+
+// use match interceptor is execute
 abstract class MappedInterceptor {
   List<String> _includePatterns;
   List<String> _excludePatterns;
@@ -20,18 +20,18 @@ abstract class MappedInterceptor {
   PathMatcher _pathMatcher = SimplePathMatcher();
 
   MappedInterceptor(
-      {List<String> includePatterns = const [],
-      List<String> excludePatterns = const [],
-      List<String> includeMethods = const [],
-      List<String> excludeMethods = const [],
-      List<Map<String, String>> includeHeaders = const [],
-      List<Map<String, String>> excludeHeaders = const []}) {
-    this._includePatterns = includePatterns;
-    this._excludePatterns = excludePatterns;
-    this._includeMethods = includeMethods;
-    this._excludeMethods = excludeMethods;
-    this._includeHeaders = includeHeaders;
-    this._excludeHeaders = excludeHeaders;
+      {List<String> includePatterns,
+      List<String> excludePatterns,
+      List<String> includeMethods,
+      List<String> excludeMethods,
+      List<Map<String, String>> includeHeaders,
+      List<Map<String, String>> excludeHeaders}) {
+    this._includePatterns = includePatterns ?? [];
+    this._excludePatterns = excludePatterns ?? [];
+    this._includeMethods = includeMethods ?? [];
+    this._excludeMethods = excludeMethods ?? [];
+    this._includeHeaders = includeHeaders ?? [];
+    this._excludeHeaders = excludeHeaders ?? [];
   }
 
 // Determine a match for the given lookup path.

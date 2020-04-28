@@ -27,7 +27,7 @@ class _$ArticleActionInfoSerializer
           specifiedType: const FullType(int)),
       'actionType',
       serializers.serialize(object.actionType,
-          specifiedType: const FullType(String)),
+          specifiedType: const FullType(ArticleActionType)),
       'sourceCode',
       serializers.serialize(object.sourceCode,
           specifiedType: const FullType(String)),
@@ -61,7 +61,8 @@ class _$ArticleActionInfoSerializer
           break;
         case 'actionType':
           result.actionType = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+                  specifiedType: const FullType(ArticleActionType))
+              as ArticleActionType;
           break;
         case 'sourceCode':
           result.sourceCode = serializers.deserialize(value,
@@ -84,7 +85,7 @@ class _$ArticleActionInfo extends ArticleActionInfo {
   @override
   final int articleId;
   @override
-  final String actionType;
+  final ArticleActionType actionType;
   @override
   final String sourceCode;
   @override
@@ -171,9 +172,10 @@ class ArticleActionInfoBuilder
   int get articleId => _$this._articleId;
   set articleId(int articleId) => _$this._articleId = articleId;
 
-  String _actionType;
-  String get actionType => _$this._actionType;
-  set actionType(String actionType) => _$this._actionType = actionType;
+  ArticleActionType _actionType;
+  ArticleActionType get actionType => _$this._actionType;
+  set actionType(ArticleActionType actionType) =>
+      _$this._actionType = actionType;
 
   String _sourceCode;
   String get sourceCode => _$this._sourceCode;

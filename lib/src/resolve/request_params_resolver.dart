@@ -16,28 +16,17 @@ import '../feign_request_options.dart';
 //    {FeignRequestOptions options});
 
 abstract class RequestParamsResolver {
-  FeignRequestOptions resolve(List positionalArguments, List<ParameterMirror> parametersMetadata, String httpMethod,
-      {FeignRequestOptions options});
+  FeignRequest resolve(List positionalArguments, List<ParameterMirror> parametersMetadata, String httpMethod,
+      {UIOptions options});
 }
 
 class DefaultRequestParamsResolver implements RequestParamsResolver {
   const DefaultRequestParamsResolver();
 
   @override
-  FeignRequestOptions resolve(List positionalArguments, List<ParameterMirror> parametersMetadata, String httpMethod,
-      {FeignRequestOptions options}) {
-    var result = FeignRequestOptions(queryParams: {}, body: {}, headers: {}, pathVariables: []);
-    if (options != null) {
-      if (options.queryParams != null) {
-        result.queryParams.addAll(options.queryParams);
-      }
-      if (options.body != null) {
-        result.body.addAll(options.body);
-      }
-      if (options.headers != null) {
-        result.headers.addAll(options.headers);
-      }
-    }
+  FeignRequest resolve(List positionalArguments, List<ParameterMirror> parametersMetadata, String httpMethod,
+      {UIOptions options}) {
+    var result = FeignRequest(queryParams: {}, body: {}, headers: {}, pathVariables: []);
 
     var length = positionalArguments.length;
     for (var i = 0; i < length; i++) {

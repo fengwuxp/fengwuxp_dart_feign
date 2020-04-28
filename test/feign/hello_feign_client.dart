@@ -18,19 +18,19 @@ class HelloFeignClient extends FeignProxyClient {
   /// 返回具体类型
   /// 为了能够返回具体类型 骗过 dart运行时泛型匹配使用如下方式调用
   @GetMapping(value: "/")
-  Future<Hello> getHello(@RequestHeader() String name, @QueryParam() num id, [FeignRequestOptions feignOptions]) {
-    return this.delegateInvoke<Hello>("getHello", [name, id], feignOptions: feignOptions, serializer: Hello.serializer);
+  Future<Hello> getHello(@RequestHeader() String name, @QueryParam() num id, [UIOptions feignOptions]) {
+    return this.delegateInvoke<Hello>("getHello", [name, id], feignOptions: feignOptions, serializer: BuiltValueSerializable(serializer: Hello.serializer));
   }
 
   /// 不返回具体类型  dart运行时泛型匹配的限制
   /// noSuchMethod 永远返回 Future<dynamic>
   @GetMapping(value: "/get_hello")
-  Future getHelloForObject(@RequestHeader() String name, @QueryParam() num id, [FeignRequestOptions feignOptions]);
+  Future getHelloForObject(@RequestHeader() String name, @QueryParam() num id, [UIOptions feignOptions]);
 
   @GetMapping(value: "/get_hello")
   @Signature(["id"])
-  Future queryHello(QueryHelloReq req, [FeignRequestOptions feignOptions]);
+  Future queryHello(QueryHelloReq req, [UIOptions feignOptions]);
 
   @GetMapping(value: "/get_hello/{id}")
-  Future findHelloById(@PathVariable() String id, [FeignRequestOptions feignOptions]);
+  Future findHelloById(@PathVariable() String id, [UIOptions feignOptions]);
 }

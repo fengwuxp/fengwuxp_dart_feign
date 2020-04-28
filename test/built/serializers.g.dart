@@ -8,6 +8,7 @@ part of serializers;
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(ArticleActionInfo.serializer)
+      ..add(ArticleActionType.serializer)
       ..add(Chat.serializer)
       ..add(FindArticleActionsReq.serializer)
       ..add(Hello.serializer)

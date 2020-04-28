@@ -121,17 +121,8 @@ final _data = <r.Reflectable, r.ReflectorData>{
             const <int>[], const prefix0.FeignClient(), const []),
         r.MethodMirrorImpl(r'runtimeType', 131075, null, -1, -1, -1, null,
             const <int>[], const prefix0.FeignClient(), const []),
-        r.MethodMirrorImpl(
-            r'delegateInvoke',
-            4325378,
-            null,
-            -1,
-            -1,
-            -1,
-            null,
-            const <int>[12, 13, 14, 15, 16, 17],
-            const prefix0.FeignClient(),
-            const [])
+        r.MethodMirrorImpl(r'delegateInvoke', 4325378, null, -1, -1, -1, null,
+            const <int>[12, 13, 14, 15], const prefix0.FeignClient(), const [])
       ],
       <m.ParameterMirror>[
         r.ParameterMirrorImpl(
@@ -305,31 +296,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
             null,
             const [],
             null,
-            #serializer),
-        r.ParameterMirrorImpl(
-            r'specifiedType',
-            45062,
-            10,
-            const prefix0.FeignClient(),
-            -1,
-            -1,
-            -1,
-            null,
-            const [],
-            null,
-            #specifiedType),
-        r.ParameterMirrorImpl(
-            r'timeout',
-            45062,
-            10,
-            const prefix0.FeignClient(),
-            -1,
-            -1,
-            -1,
-            null,
-            const [],
-            null,
-            #timeout)
+            #serializer)
       ],
       <Type>[prefix1.HelloFeignClient],
       1,

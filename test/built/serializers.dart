@@ -5,12 +5,11 @@
 library serializers;
 
 import 'package:built_collection/built_collection.dart';
-import 'package:built_value/iso_8601_date_time_serializer.dart';
-import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
-import 'package:built_value/src/date_time_serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
+import 'package:fengwuxp_dart_openfeign/src/built/date_time_serializer.dart';
 
+import '../cms/enums/article_action_type.dart';
 import '../cms/info/article_action_info.dart';
 import '../cms/info/page_article_action_info.dart';
 import '../cms/req/find_article_actions_req.dart';
@@ -47,22 +46,30 @@ part 'serializers.g.dart';
   PageInfo,
   ArticleActionInfo,
   FindArticleActionsReq,
-  PageArticleActionInfo
+  PageArticleActionInfo,
+  ArticleActionType
 ])
 //const FullType(PageInfo,[FullType(ArticleActionInfo)],(){
 //return PageInfo<ArticleActionInfo>;
 final Serializers serializers = (_$serializers.toBuilder()
       ..addBuilderFactory(
         const FullType(PageInfo, [FullType(ArticleActionInfo)]),
-        () => new PageInfoBuilder<ArticleActionInfo>(),
+        () => PageInfoBuilder<ArticleActionInfo>(),
       )
       ..addBuilderFactory(
         const FullType(PageInfo, [FullType(FindArticleActionsReq)]),
-        () => new PageInfoBuilder<FindArticleActionsReq>(),
+        () => PageInfoBuilder<FindArticleActionsReq>(),
       )
-  ..addBuilderFactory(
-      const FullType(BuiltList, const [const FullType(FindArticleActionsReq)]),
+      ..addBuilderFactory(
+        const FullType(BuiltMap, [FullType(String), FullType(ArticleActionInfo)]),
+        () => MapBuilder<String, ArticleActionInfo>(),
+      )
+      ..addBuilderFactory(
+        const FullType(BuiltMap, [FullType(num), FullType(String)]),
+        () => MapBuilder<num, String>(),
+      )
+      ..addBuilderFactory(const FullType(BuiltList, const [const FullType(FindArticleActionsReq)]),
           () => new ListBuilder<FindArticleActionsReq>())
       ..addPlugin(StandardJsonPlugin())
-      ..add(DateTimeSerializer()))
+      ..add(DateTimeMillisecondsSerializer()))
     .build();

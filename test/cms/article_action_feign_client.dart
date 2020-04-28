@@ -10,9 +10,9 @@ import 'req/find_article_actions_req.dart';
 @FeignClient(value: "/article_action")
 class ArticleActionFeignClient extends FeignProxyClient {
   @GetMapping(value: "/query")
-  Future<PageArticleActionInfo> query(FindArticleActionsReq req, [FeignRequestOptions feignOptions]) {
+  Future<PageArticleActionInfo> query(FindArticleActionsReq req, [UIOptions feignOptions]) {
     return this.delegateInvoke<PageArticleActionInfo>("query", [req],
-        feignOptions: feignOptions, serializer: PageArticleActionInfo.serializer);
+        feignOptions: feignOptions, serializer: BuiltValueSerializable(serializer: PageArticleActionInfo.serializer));
   }
 }
 

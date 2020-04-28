@@ -3,8 +3,9 @@ import 'package:fengwuxp_dart_openfeign/src/executor/feign_client_executor_inter
 import '../feign_request_options.dart';
 import 'mapped_interceptor.dart';
 
-class MappedFeignClientExecutorInterceptor<T extends FeignRequestBaseOptions> extends MappedInterceptor
+class MappedFeignClientExecutorInterceptor<T extends FeignBaseRequest> extends MappedInterceptor
     implements FeignClientExecutorInterceptor<T> {
+
   FeignClientExecutorInterceptor<T> _feignClientExecutorInterceptor;
 
   MappedFeignClientExecutorInterceptor(FeignClientExecutorInterceptor<T> feignClientExecutorInterceptor,
@@ -24,15 +25,15 @@ class MappedFeignClientExecutorInterceptor<T extends FeignRequestBaseOptions> ex
     this._feignClientExecutorInterceptor = feignClientExecutorInterceptor;
   }
 
-  preHandle(T options) {
-    return this._feignClientExecutorInterceptor.preHandle(options);
+  preHandle(T request, UIOptions uiOptions) {
+    return this._feignClientExecutorInterceptor.preHandle(request, uiOptions);
   }
 
-  postHandle<E>(T options, response) {
-    return this._feignClientExecutorInterceptor.postHandle<E>(options, response);
+  postHandle<E>(T request, UIOptions uiOptions, response) {
+    return this._feignClientExecutorInterceptor.postHandle<E>(request, uiOptions, response);
   }
 
-  postError<E>(T options, response) {
-    return this._feignClientExecutorInterceptor.postError<E>(options, response);
+  postError<E>(T request, UIOptions uiOptions, response) {
+    return this._feignClientExecutorInterceptor.postError<E>(request, uiOptions, response);
   }
 }

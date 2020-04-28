@@ -16,6 +16,7 @@ dependencies:
   meta: ^1.0.4
   built_collection: '>=2.0.0 <5.0.0'
   built_value: ^7.0.2
+  logging: any
   fengwuxp_dart_basic:
     git: git://github.com/fengwuxp/fengwuxp_dart_basic.git
 
