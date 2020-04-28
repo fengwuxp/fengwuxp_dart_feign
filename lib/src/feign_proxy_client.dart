@@ -20,10 +20,11 @@ abstract class FeignProxyClient {
   /// 委托执行请求
   /// param [T] use convert type
   Future<T> delegateInvoke<T>(String methodName, List<Object> positionalArguments,
-      {FeignRequestOptions feignOptions, Serializer<T> serializer}) async {
+      {FeignRequestOptions feignOptions, Serializer<T> serializer, FullType specifiedType}) async {
     return _delegateInvoke(methodName, positionalArguments, {
       Symbol(FEIGN_OPTIONS_PARAMETER_NAME): feignOptions,
       Symbol(FEIGN_SERIALIZER_PARAMETER_NAME): serializer,
+      Symbol(FEIGN_SERIALIZER_SPECIFIED_PARAMETER_NAME): specifiedType,
     }).then((result) {
       return Future<T>.value(result);
     });
@@ -34,6 +35,7 @@ abstract class FeignProxyClient {
     /// 反射得到元数据
     final Type targetType = this.runtimeType;
     ClassMirror classMirror = FEIGN_REFLECT_ABLE.reflectType(targetType);
+
     /// 获取配置
     final feignConfiguration = getFeignConfiguration(targetType);
     // 代理的执行器

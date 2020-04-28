@@ -36,9 +36,9 @@ class RestTemplate implements RestOperations {
 
   @override
   Future<T> getForObject<T>(String url, Serializer<T> responseType,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers}) {
+      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout}) {
     return this.execute(url, HttpMethod.GET, this._httpMessageConverterExtractor<T>(responseType),
-        queryParams: queryParams, pathVariables: pathVariables, headers: headers);
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout);
   }
 
   @override
@@ -46,27 +46,28 @@ class RestTemplate implements RestOperations {
       {Serializer<T> responseType,
       Map<String, dynamic> queryParams,
       List<dynamic> pathVariables,
-      Map<String, String> headers}) {
+      Map<String, String> headers,
+      int timeout}) {
     return this.execute(url, HttpMethod.GET, this._responseEntityResponseExtractor(responseType),
-        queryParams: queryParams, pathVariables: pathVariables, headers: headers);
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout);
   }
 
   // HEAD
 
   @override
   Future<Map<String, String>> headForHeaders(String url,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers}) {
+      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout}) {
     return this.execute(url, HttpMethod.HEAD, this._headResponseExtractor(),
-        queryParams: queryParams, pathVariables: pathVariables, headers: headers);
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout);
   }
 
   // POST
 
   @override
   Future<T> postForObject<T>(String url, dynamic request, Serializer<T> responseType,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers}) {
+      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout}) {
     return this.execute(url, HttpMethod.POST, this._httpMessageConverterExtractor<T>(responseType),
-        queryParams: queryParams, pathVariables: pathVariables, headers: headers);
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout);
   }
 
   @override
@@ -74,37 +75,38 @@ class RestTemplate implements RestOperations {
       {Serializer<T> responseType,
       Map<String, dynamic> queryParams,
       List<dynamic> pathVariables,
-      Map<String, String> headers}) {
+      Map<String, String> headers,
+      int timeout}) {
     return this.execute(url, HttpMethod.POST, this._responseEntityResponseExtractor(responseType),
-        queryParams: queryParams, pathVariables: pathVariables, headers: headers);
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout);
   }
 
   @override
   Future<Void> put(@required String url, dynamic request,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers}) {
-    return this
-        .execute(url, HttpMethod.PUT, null, queryParams: queryParams, pathVariables: pathVariables, headers: headers);
+      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout}) {
+    return this.execute(url, HttpMethod.PUT, null,
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout);
   }
 
   @override
   Future<T> patchForObject<T>(String url, dynamic request, Serializer<T> responseType,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers}) {
+      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout}) {
     return this.execute(url, HttpMethod.PATCH, this._httpMessageConverterExtractor(responseType),
-        queryParams: queryParams, pathVariables: pathVariables, headers: headers);
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout);
   }
 
   @override
   Future<Void> delete(String url,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers}) {
+      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout}) {
     return this.execute(url, HttpMethod.DELETE, null,
-        queryParams: queryParams, pathVariables: pathVariables, headers: headers);
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout);
   }
 
   @override
   Future<Set<String>> optionsForAllow(String url,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables}) async {
+      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, int timeout}) async {
     return this.execute(url, HttpMethod.DELETE, OptionsForAllowResponseExtractor(),
-        queryParams: queryParams, pathVariables: pathVariables);
+        queryParams: queryParams, pathVariables: pathVariables, timeout: timeout);
   }
 
   @override
@@ -112,6 +114,7 @@ class RestTemplate implements RestOperations {
       {dynamic request,
       Map<String, dynamic> queryParams,
       List<Object> pathVariables,
+      int timeout,
       Map<String, String> headers = const {}}) async {
     // 处理url， 查询参数
     var uri = uriTemplateHandler.expand(url, queryParams: queryParams, pathVariables: pathVariables);
@@ -120,15 +123,15 @@ class RestTemplate implements RestOperations {
       requestHttpHeaders[HttpHeaders.contentTypeHeader] = this.defaultProduce;
     }
 
-    var clientHttpRequest =
-        RestClientHttpRequest(uri, method, messageConverters, requestBody: request, headers: requestHttpHeaders);
+    var clientHttpRequest = RestClientHttpRequest(uri, method, messageConverters,
+        requestBody: request, headers: requestHttpHeaders, timeout: timeout);
     // 处理请求体
     var clientHttpResponse;
     try {
       await this._preHandleInterceptor(clientHttpRequest);
       clientHttpResponse = await clientHttpRequest.send();
     } catch (e) {
-      // 错误处理
+      // 请求异常处理
       throw e;
     }
     return responseExtractor != null ? responseExtractor.extractData(clientHttpResponse) : null;
@@ -146,7 +149,7 @@ class RestTemplate implements RestOperations {
   }
 
   HttpMessageConverterExtractor<T> _httpMessageConverterExtractor<T>(Serializer<T> responseType) {
-    return HttpMessageConverterExtractor<T>(this.messageConverters, responseType);
+    return HttpMessageConverterExtractor<T>(this.messageConverters, responseType: responseType);
   }
 
   ResponseEntityResponseExtractor<T> _responseEntityResponseExtractor<T>(Serializer<T> responseType) {

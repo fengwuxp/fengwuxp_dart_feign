@@ -13,10 +13,13 @@ class HttpMessageConverterExtractor<T> implements ResponseExtractor<T> {
 
   Serializer<T> _responseType;
 
-  HttpMessageConverterExtractor(this._messageConverters, this._responseType);
+  FullType _specifiedType;
 
-  factory(List<HttpMessageConverter> messageConverters, [Serializer<T> responseType]) {
-    return new HttpMessageConverterExtractor(messageConverters, responseType);
+  HttpMessageConverterExtractor._(this._messageConverters, this._responseType, this._specifiedType);
+
+  factory HttpMessageConverterExtractor(List<HttpMessageConverter> messageConverters,
+      {Serializer<T> responseType, FullType specifiedType = FullType.unspecified}) {
+    return HttpMessageConverterExtractor._(messageConverters, responseType, specifiedType);
   }
 
   Future<T> extractData(ClientHttpResponse response, {Serializer serializer}) async {
@@ -49,7 +52,7 @@ class ResponseEntityResponseExtractor<T> implements ResponseExtractor<ResponseEn
 
   ResponseEntityResponseExtractor([List<HttpMessageConverter> messageConverters, Serializer<T> responseType]) {
     if (messageConverters != null && messageConverters.isNotEmpty) {
-      this._delegate = HttpMessageConverterExtractor(messageConverters, responseType);
+      this._delegate = HttpMessageConverterExtractor(messageConverters, responseType: responseType);
     } else {
       this._delegate = null;
     }

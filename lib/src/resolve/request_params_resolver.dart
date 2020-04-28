@@ -62,8 +62,11 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
         } else if (isCookieValue(meta)) {
         } else if (isPathVariable(meta)) {
           result.pathVariables.add(argument);
-        } else {
+        } else if(isRequestBody(metadata)){
           // request body
+          _margeData(result.body, simpleName, metadata, argument);
+        }else{
+          // TODO
           _margeData(result.body, simpleName, metadata, argument);
         }
       }

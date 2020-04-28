@@ -31,9 +31,9 @@ class StreamedRequest extends BaseRequest implements HttpOutputMessage {
   final StreamController<List<int>> _controller;
 
   /// Creates a new streaming request.
-  StreamedRequest(String method, Uri url)
+  StreamedRequest({String method, Uri url, int timeout})
       : _controller = StreamController<List<int>>(sync: true),
-        super(method, url);
+        super(method, url, timeout ?? 0);
 
   /// Freezes all mutable fields other than [stream] and returns a
   /// single-subscription [ByteStream] that emits the data being written to
@@ -47,5 +47,4 @@ class StreamedRequest extends BaseRequest implements HttpOutputMessage {
   @override
   // TODO: implement body
   StreamController<List<int>> get body => _controller;
-
 }

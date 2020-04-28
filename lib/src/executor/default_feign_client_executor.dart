@@ -73,8 +73,9 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
     }
     if (feignRequestOptions.responseExtractor == null) {
       // get response extractor
-      feignRequestOptions.responseExtractor =
-          this._responseExtractor(requestMapping.method, namedArguments[Symbol(FEIGN_SERIALIZER_PARAMETER_NAME)]);
+      feignRequestOptions.responseExtractor = this._responseExtractor(
+          requestMapping.method, namedArguments[Symbol(FEIGN_SERIALIZER_PARAMETER_NAME)],
+          specifiedType: namedArguments[Symbol(FEIGN_SERIALIZER_SPECIFIED_PARAMETER_NAME)]);
     }
 
     /// TODO 文件上传
@@ -172,23 +173,24 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
     return feignClientExecutorInterceptor;
   }
 
-  ResponseExtractor _responseExtractor<T>(String httpMethod, Serializer<T> serializer, {Type responseType}) {
+  ResponseExtractor _responseExtractor<T>(String httpMethod, Serializer<T> serializer,
+      {FullType specifiedType = FullType.unspecified}) {
     if (httpMethod == HttpMethod.OPTIONS) {
       return OptionsForAllowResponseExtractor();
     }
     if (httpMethod == HttpMethod.HEAD) {
       return HeadResponseExtractor();
     }
-
-    if (responseType == null) {
-      return HttpMessageConverterExtractor(feignConfiguration.messageConverters, serializer);
+    if (serializer == null) {
+      return null;
     }
 
-    if (responseType == ResponseEntity) {
+    if (specifiedType != null && specifiedType.root == ResponseEntity) {
       return ResponseEntityResponseExtractor(feignConfiguration.messageConverters, serializer);
+    } else {
+      return HttpMessageConverterExtractor(feignConfiguration.messageConverters,
+          responseType: serializer, specifiedType: specifiedType);
     }
-
-    return null;
   }
 
   /// 初始化

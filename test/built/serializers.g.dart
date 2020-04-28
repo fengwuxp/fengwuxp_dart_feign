@@ -15,6 +15,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(ListUsersResponse.serializer)
       ..add(Login.serializer)
       ..add(LoginResponse.serializer)
+      ..add(PageArticleActionInfo.serializer)
       ..add(PageInfo.serializer)
       ..add(QueryHelloReq.serializer)
       ..add(ShowChat.serializer)
@@ -22,6 +23,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(StatusType.serializer)
       ..add(Title.serializer)
       ..add(Welcome.serializer)
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(ArticleActionInfo)]),
+          () => new ListBuilder<ArticleActionInfo>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Response)]),
           () => new ListBuilder<Response>())

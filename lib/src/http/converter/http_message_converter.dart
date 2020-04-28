@@ -30,7 +30,7 @@ abstract class HttpMessageConverter<T> {
   /// @return the converted object
   /// @throws IOException in case of I/O errors
   /// @throws HttpMessageNotReadableException in case of conversion errors
-  Future<E> read<E>(HttpInputMessage inputMessage, {Serializer<E> serializer});
+  Future<E> read<E>(HttpInputMessage inputMessage, {Serializer<E> serializer, FullType specifiedType});
 
   /// Write an given object to the given output message.
   /// @param t the object to write to the output message. The type of this object must have previously been

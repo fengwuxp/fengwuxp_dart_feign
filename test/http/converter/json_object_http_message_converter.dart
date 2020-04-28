@@ -22,12 +22,11 @@ class JsonObjectHttpMessageConverter implements HttpMessageConverter<JsonSeriali
     return [];
   }
 
-  Future<E> read<E>(HttpInputMessage inputMessage, {Serializer<E> serializer}) {
+  Future<E> read<E>(HttpInputMessage inputMessage, {Serializer<E> serializer, FullType specifiedType}) {
     var body = inputMessage.stream;
-
     return body.bytesToString().then((data) {
       var builtJsonSerializers = BuiltJsonSerializers(serializers);
-      var deserializeWith = builtJsonSerializers.parseObject(data, serializer);
+      var deserializeWith = builtJsonSerializers.parseObject(data, serializer: serializer, specifiedType: specifiedType);
       return deserializeWith;
     });
   }

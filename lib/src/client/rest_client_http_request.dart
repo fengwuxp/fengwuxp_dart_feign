@@ -14,17 +14,22 @@ class RestClientHttpRequest implements ClientHttpRequest {
   Map<String, String> _headers;
 
   List<HttpMessageConverter> _messageConverters;
+
   dynamic _requestBody;
+
+  int _timeout;
 
   RestClientHttpRequest(
     Uri url,
     String method,
     List<HttpMessageConverter> messageConverters, {
+    int timeout,
     dynamic requestBody,
     Map<String, String> headers = const {},
   }) {
     this._url = url;
     this._method = method;
+    this._timeout = timeout ?? 0;
     this._messageConverters = messageConverters == null ? [] : messageConverters;
     this._requestBody = requestBody;
     this._headers = headers;
@@ -32,7 +37,7 @@ class RestClientHttpRequest implements ClientHttpRequest {
 
   @override
   Future<ClientHttpResponse> send() async {
-    var request = StreamedRequest(method, url);
+    var request = StreamedRequest(method: method, url: url);
     if (headers != null) {
       request.headers.addAll(headers);
     }
@@ -55,6 +60,10 @@ class RestClientHttpRequest implements ClientHttpRequest {
 
   @override
   Uri get url => _url;
+
+  @override
+  // TODO: implement timeout
+  int get timeout => this._timeout;
 
   @override
   // TODO: implement method

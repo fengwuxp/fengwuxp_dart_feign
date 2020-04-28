@@ -54,18 +54,16 @@ class RetryClient extends BaseClient {
   /// `response` parameter will be null if the request was retried due to an
   /// error for which [whenError] returned `true`.
   RetryClient(
-      this._inner, {
-        int retries,
-        bool Function(BaseResponse) when,
-        bool Function(Object, StackTrace) whenError,
-        Duration Function(int retryCount) delay,
-        void Function(BaseRequest, BaseResponse, int retryCount) onRetry,
-      })  : _retries = retries ?? 3,
+    this._inner, {
+    int retries,
+    bool Function(BaseResponse) when,
+    bool Function(Object, StackTrace) whenError,
+    Duration Function(int retryCount) delay,
+    void Function(BaseRequest, BaseResponse, int retryCount) onRetry,
+  })  : _retries = retries ?? 3,
         _when = when ?? ((response) => response.statusCode == 503),
         _whenError = whenError ?? ((_, __) => false),
-        _delay = delay ??
-            ((retryCount) =>
-            const Duration(milliseconds: 500) * math.pow(1.5, retryCount)),
+        _delay = delay ?? ((retryCount) => const Duration(milliseconds: 500) * math.pow(1.5, retryCount)),
         _onRetry = onRetry {
     RangeError.checkNotNegative(_retries, 'retries');
   }
@@ -77,33 +75,33 @@ class RetryClient extends BaseClient {
   /// in order. It will wait for `delays[0]` after the initial request,
   /// `delays[1]` after the first retry, and so on.
   RetryClient.withDelays(
-      Client inner,
-      Iterable<Duration> delays, {
-        bool Function(BaseResponse) when,
-        bool Function(Object, StackTrace) whenError,
-        void Function(BaseRequest, BaseResponse, int retryCount) onRetry,
-      }) : this._withDelays(
-    inner,
-    delays.toList(),
-    when: when,
-    whenError: whenError,
-    onRetry: onRetry,
-  );
+    Client inner,
+    Iterable<Duration> delays, {
+    bool Function(BaseResponse) when,
+    bool Function(Object, StackTrace) whenError,
+    void Function(BaseRequest, BaseResponse, int retryCount) onRetry,
+  }) : this._withDelays(
+          inner,
+          delays.toList(),
+          when: when,
+          whenError: whenError,
+          onRetry: onRetry,
+        );
 
   RetryClient._withDelays(
-      Client inner,
-      List<Duration> delays, {
-        bool Function(BaseResponse) when,
-        bool Function(Object, StackTrace) whenError,
-        void Function(BaseRequest, BaseResponse, int) onRetry,
-      }) : this(
-    inner,
-    retries: delays.length,
-    delay: (retryCount) => delays[retryCount],
-    when: when,
-    whenError: whenError,
-    onRetry: onRetry,
-  );
+    Client inner,
+    List<Duration> delays, {
+    bool Function(BaseResponse) when,
+    bool Function(Object, StackTrace) whenError,
+    void Function(BaseRequest, BaseResponse, int) onRetry,
+  }) : this(
+          inner,
+          retries: delays.length,
+          delay: (retryCount) => delays[retryCount],
+          when: when,
+          whenError: whenError,
+          onRetry: onRetry,
+        );
 
   @override
   Future<StreamedResponse> send(BaseRequest request) async {
@@ -134,17 +132,14 @@ class RetryClient extends BaseClient {
 
   /// Returns a copy of [original] with the given [body].
   StreamedRequest _copyRequest(BaseRequest original, Stream<List<int>> body) {
-    final request = StreamedRequest(original.method, original.url)
+    final request = StreamedRequest(method: original.method, url: original.url)
       ..contentLength = original.contentLength
       ..followRedirects = original.followRedirects
       ..headers.addAll(original.headers)
       ..maxRedirects = original.maxRedirects
       ..persistentConnection = original.persistentConnection;
 
-    body.listen(request.sink.add,
-        onError: request.sink.addError,
-        onDone: request.sink.close,
-        cancelOnError: true);
+    body.listen(request.sink.add, onError: request.sink.addError, onDone: request.sink.close, cancelOnError: true);
 
     return request;
   }

@@ -6,6 +6,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:fengwuxp_dart_openfeign/src/constant/http/http_method.dart';
+
 import 'base_request.dart';
 import 'client.dart';
 import 'exception.dart';
@@ -23,16 +25,14 @@ abstract class BaseClient implements Client {
   ///
   /// For more fine-grained control over the request, use [send] instead.
   @override
-  Future<Response> head(url, {Map<String, String> headers}) =>
-      _sendUnstreamed('HEAD', url, headers);
+  Future<Response> head(url, {Map<String, String> headers}) => _sendUnStreamed(HttpMethod.HEAD, url, headers);
 
   /// Sends an HTTP GET request with the given headers to the given URL, which
   /// can be a [Uri] or a [String].
   ///
   /// For more fine-grained control over the request, use [send] instead.
   @override
-  Future<Response> get(url, {Map<String, String> headers}) =>
-      _sendUnstreamed('GET', url, headers);
+  Future<Response> get(url, {Map<String, String> headers}) => _sendUnStreamed(HttpMethod.GET, url, headers);
 
   /// Sends an HTTP POST request with the given headers and body to the given
   /// URL, which can be a [Uri] or a [String].
@@ -53,9 +53,8 @@ abstract class BaseClient implements Client {
   ///
   /// For more fine-grained control over the request, use [send] instead.
   @override
-  Future<Response> post(url,
-          {Map<String, String> headers, body, Encoding encoding}) =>
-      _sendUnstreamed('POST', url, headers, body, encoding);
+  Future<Response> post(url, {Map<String, String> headers, body, Encoding encoding}) =>
+      _sendUnStreamed(HttpMethod.POST, url, headers, body, encoding);
 
   /// Sends an HTTP PUT request with the given headers and body to the given
   /// URL, which can be a [Uri] or a [String].
@@ -76,9 +75,8 @@ abstract class BaseClient implements Client {
   ///
   /// For more fine-grained control over the request, use [send] instead.
   @override
-  Future<Response> put(url,
-          {Map<String, String> headers, body, Encoding encoding}) =>
-      _sendUnstreamed('PUT', url, headers, body, encoding);
+  Future<Response> put(url, {Map<String, String> headers, body, Encoding encoding}) =>
+      _sendUnStreamed(HttpMethod.PUT, url, headers, body, encoding);
 
   /// Sends an HTTP PATCH request with the given headers and body to the given
   /// URL, which can be a [Uri] or a [String].
@@ -99,17 +97,15 @@ abstract class BaseClient implements Client {
   ///
   /// For more fine-grained control over the request, use [send] instead.
   @override
-  Future<Response> patch(url,
-          {Map<String, String> headers, body, Encoding encoding}) =>
-      _sendUnstreamed('PATCH', url, headers, body, encoding);
+  Future<Response> patch(url, {Map<String, String> headers, body, Encoding encoding}) =>
+      _sendUnStreamed(HttpMethod.PATCH, url, headers, body, encoding);
 
   /// Sends an HTTP DELETE request with the given headers to the given URL,
   /// which can be a [Uri] or a [String].
   ///
   /// For more fine-grained control over the request, use [send] instead.
   @override
-  Future<Response> delete(url, {Map<String, String> headers}) =>
-      _sendUnstreamed('DELETE', url, headers);
+  Future<Response> delete(url, {Map<String, String> headers}) => _sendUnStreamed(HttpMethod.DELETE, url, headers);
 
   /// Sends an HTTP GET request with the given headers to the given URL, which
   /// can be a [Uri] or a [String], and returns a Future that completes to the
@@ -154,10 +150,8 @@ abstract class BaseClient implements Client {
   Future<StreamedResponse> send(BaseRequest request);
 
   /// Sends a non-streaming [Request] and returns a non-streaming [Response].
-  Future<Response> _sendUnstreamed(
-      String method, url, Map<String, String> headers,
-      [body, Encoding encoding]) async {
-    var request = Request(method, _fromUriOrString(url));
+  Future<Response> _sendUnStreamed(String method, url, Map<String, String> headers, [body, Encoding encoding]) async {
+    var request = Request(method: method, url: _fromUriOrString(url));
 
     if (headers != null) request.headers.addAll(headers);
     if (encoding != null) request.encoding = encoding;
@@ -183,7 +177,7 @@ abstract class BaseClient implements Client {
     if (response.reasonPhrase != null) {
       message = '$message: ${response.reasonPhrase}';
     }
-    throw ClientException('$message.', _fromUriOrString(url));
+    throw ClientException(message: '$message.', request: null);
   }
 
   /// Closes the client and cleans up any resources associated with it.

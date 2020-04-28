@@ -1,15 +1,15 @@
 {
-  "id": 157538,
-  "date": "2017-07-21T10:30:34",
-  "date_gmt": "2017-07-21T17:30:34",
-  "type": "post",
-  "link": "https://example.com",
-  "title": {
-    "rendered": "Json 2 dart built_value converter"
-  },
-  "tags": [
-    1798,
-    6298
-  ]
+  "total": 1,
+  "records": [
+    {
+      "id": 1,
+      "articleId": 1,
+      "actionType": "1",
+      "sourceCode": "2",
+      "crateTime": 1587986553044000
+    }
+  ],
+  "querySize": 10,
+  "queryPage": 1,
+  "queryType": "QUERY_RESULT"
 }
-

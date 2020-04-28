@@ -6,6 +6,7 @@ import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
 
 import '../../built/serializers.dart';
+import '../info/article_action_info.dart';
 
 part 'page_info.g.dart';
 
@@ -29,10 +30,21 @@ abstract class PageInfo<T> implements Built<PageInfo<T>, PageInfoBuilder<T>>, Js
   @BuiltValueField(wireName: 'queryType')
   String get queryType;
 
+//  static Serializer<PageInfo<T>> getSerializer<T>() => _$pageInfoSerializer;
+
   static Serializer<PageInfo> get serializer => _$pageInfoSerializer;
 
-  static PageInfo formJson(String json) {
-    return serializers.deserializeWith(PageInfo.serializer, jsonDecode(json));
+  static PageInfo formJson(String json, [Serializer genericSerializer]) {
+    final Map map = jsonDecode(json);
+
+//    var records = (map["records"] as List);
+//    records.setRange(0, records.length, records.map((item) {
+//      return serializers.deserializeWith(genericSerializer, item);
+//    }));
+//    map.remove("records");
+
+    var pageInfo = serializers.deserializeWith(PageInfo.serializer, map);
+    return pageInfo;
   }
 
   @override

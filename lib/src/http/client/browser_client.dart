@@ -60,17 +60,12 @@ class BrowserClient extends BaseClient {
 
       reader.onLoad.first.then((_) {
         var body = reader.result as Uint8List;
-        completer.complete(StreamedResponse(
-            ByteStream.fromBytes(body), xhr.status,
-            contentLength: body.length,
-            request: request,
-            headers: xhr.responseHeaders,
-            reasonPhrase: xhr.statusText));
+        completer.complete(StreamedResponse(ByteStream.fromBytes(body), xhr.status,
+            contentLength: body.length, request: request, headers: xhr.responseHeaders, reasonPhrase: xhr.statusText));
       });
 
       reader.onError.first.then((error) {
-        completer.completeError(
-            ClientException(error.toString(), request.url), StackTrace.current);
+        completer.completeError(ClientException(message: error.toString(), request: request), StackTrace.current);
       });
 
       reader.readAsArrayBuffer(blob);
@@ -79,9 +74,7 @@ class BrowserClient extends BaseClient {
     unawaited(xhr.onError.first.then((_) {
       // Unfortunately, the underlying XMLHttpRequest API doesn't expose any
       // specific information about the error itself.
-      completer.completeError(
-          ClientException('XMLHttpRequest error.', request.url),
-          StackTrace.current);
+      completer.completeError(ClientException(message: 'XMLHttpRequest error.', request: request), StackTrace.current);
     }));
 
     xhr.send(bytes);

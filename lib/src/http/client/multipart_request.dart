@@ -6,6 +6,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:fengwuxp_dart_openfeign/src/constant/http/http_method.dart';
+
 import 'base_request.dart';
 import 'boundary_characters.dart';
 import 'byte_stream.dart';
@@ -46,7 +48,7 @@ class MultipartRequest extends BaseRequest {
   /// The list of files to upload for this request.
   final files = <MultipartFile>[];
 
-  MultipartRequest(String method, Uri url) : super(method, url);
+  MultipartRequest({String method, Uri url, int timeout}) : super(method ?? HttpMethod.POST, url, timeout ?? 0);
 
   /// The total length of the request body, in bytes.
   ///
@@ -124,8 +126,7 @@ class MultipartRequest extends BaseRequest {
   ///
   /// The return value is guaranteed to contain only ASCII characters.
   String _headerForField(String name, String value) {
-    var header =
-        'content-disposition: form-data; name="${_browserEncode(name)}"';
+    var header = 'content-disposition: form-data; name="${_browserEncode(name)}"';
     if (!isPlainAscii(value)) {
       header = '$header\r\n'
           'content-type: text/plain; charset=utf-8\r\n'
@@ -161,9 +162,7 @@ class MultipartRequest extends BaseRequest {
   String _boundaryString() {
     var prefix = 'dart-http-boundary-';
     var list = List<int>.generate(
-        _boundaryLength - prefix.length,
-        (index) =>
-            BOUNDARY_CHARACTERS[_random.nextInt(BOUNDARY_CHARACTERS.length)],
+        _boundaryLength - prefix.length, (index) => BOUNDARY_CHARACTERS[_random.nextInt(BOUNDARY_CHARACTERS.length)],
         growable: false);
     return '$prefix${String.fromCharCodes(list)}';
   }

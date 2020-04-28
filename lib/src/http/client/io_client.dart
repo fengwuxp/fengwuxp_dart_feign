@@ -37,21 +37,28 @@ class IOClient extends BaseClient {
         ioRequest.headers.set(name, value);
       });
 
-      var response = await stream.pipe(ioRequest) as HttpClientResponse;
-      print("=========${response.statusCode}========>");
+      final future = stream.pipe(ioRequest);
+      var response;
+      if (request.timeout != null) {
+        try {
+          await future.timeout(Duration(milliseconds: request.timeout)) as HttpClientResponse;
+        } on TimeoutException {
+          throw ClientTimeOutException(message: "reqeust timeout , [${request.timeout}]ms", request: request);
+        }
+      } else {
+        response = await future as HttpClientResponse;
+      }
+
       var headers = <String, String>{};
       response.headers.forEach((key, values) {
         headers[key] = values.join(',');
       });
 
       return IOStreamedResponse(
-          response.handleError(
-              (HttpException error) =>
-                  throw ClientException(error.message, error.uri),
+          response.handleError((HttpException error) => throw ClientException(message: error.message, request: request),
               test: (error) => error is HttpException),
           response.statusCode,
-          contentLength:
-              response.contentLength == -1 ? null : response.contentLength,
+          contentLength: response.contentLength == -1 ? null : response.contentLength,
           request: request,
           headers: headers,
           isRedirect: response.isRedirect,
@@ -59,7 +66,7 @@ class IOClient extends BaseClient {
           reasonPhrase: response.reasonPhrase,
           inner: response);
     } on HttpException catch (error) {
-      throw ClientException(error.message, error.uri);
+      throw ClientException(message: error.message, request: request);
     }
   }
 

@@ -8,6 +8,7 @@ import 'package:fengwuxp_dart_openfeign/src/http/http_input_message.dart';
 
 import '../http_output_message.dart';
 
+/// 基于built value 的http message converter
 class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter {
   BuiltJsonSerializers _builtJsonSerializers;
 
@@ -19,9 +20,9 @@ class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter
     return new BuiltValueHttpMessageConverter(builtJsonSerializers);
   }
 
-  Future<E> read<E>(HttpInputMessage inputMessage, {Serializer<E> serializer}) {
+  Future<E> read<E>(HttpInputMessage inputMessage, {Serializer<E> serializer, FullType specifiedType}) {
     return inputMessage.stream.bytesToString().then((data) {
-      return this._builtJsonSerializers.parseObject(data, serializer);
+      return this._builtJsonSerializers.parseObject(data, serializer: serializer, specifiedType: specifiedType);
     });
   }
 

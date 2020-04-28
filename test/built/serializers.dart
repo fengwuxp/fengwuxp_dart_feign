@@ -6,11 +6,13 @@ library serializers;
 
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/iso_8601_date_time_serializer.dart';
+import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/src/date_time_serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 
 import '../cms/info/article_action_info.dart';
+import '../cms/info/page_article_action_info.dart';
 import '../cms/req/find_article_actions_req.dart';
 import '../cms/resp/page_info.dart';
 import 'data_model.dart';
@@ -44,9 +46,23 @@ part 'serializers.g.dart';
   Welcome,
   PageInfo,
   ArticleActionInfo,
-  FindArticleActionsReq
+  FindArticleActionsReq,
+  PageArticleActionInfo
 ])
+//const FullType(PageInfo,[FullType(ArticleActionInfo)],(){
+//return PageInfo<ArticleActionInfo>;
 final Serializers serializers = (_$serializers.toBuilder()
+      ..addBuilderFactory(
+        const FullType(PageInfo, [FullType(ArticleActionInfo)]),
+        () => new PageInfoBuilder<ArticleActionInfo>(),
+      )
+      ..addBuilderFactory(
+        const FullType(PageInfo, [FullType(FindArticleActionsReq)]),
+        () => new PageInfoBuilder<FindArticleActionsReq>(),
+      )
+  ..addBuilderFactory(
+      const FullType(BuiltList, const [const FullType(FindArticleActionsReq)]),
+          () => new ListBuilder<FindArticleActionsReq>())
       ..addPlugin(StandardJsonPlugin())
       ..add(DateTimeSerializer()))
     .build();
