@@ -1,15 +1,17 @@
 {
-  "total": 1,
+  "total": 0,
+  "queryType": "QUERY_BOTH",
   "records": [
     {
       "id": 1,
       "articleId": 1,
-      "actionType": "1",
-      "sourceCode": "2",
-      "crateTime": 1587986553044000
+      "actionType": "COLLECTION",
+      "sourceCode": "sou",
+      "crateTime": "2020-04-28T10:40:44.165+0000",
+      "ip": "192.168.0.23"
     }
   ],
-  "querySize": 10,
   "queryPage": 1,
-  "queryType": "QUERY_RESULT"
+  "querySize": 10,
+  "empty": true
 }

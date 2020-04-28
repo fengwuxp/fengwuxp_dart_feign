@@ -129,7 +129,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
             -1,
             -1,
             null,
-            const <int>[12, 13, 14, 15, 16],
+            const <int>[12, 13, 14, 15, 16, 17],
             const prefix0.FeignClient(),
             const [])
       ],
@@ -317,7 +317,19 @@ final _data = <r.Reflectable, r.ReflectorData>{
             null,
             const [],
             null,
-            #specifiedType)
+            #specifiedType),
+        r.ParameterMirrorImpl(
+            r'timeout',
+            45062,
+            10,
+            const prefix0.FeignClient(),
+            -1,
+            -1,
+            -1,
+            null,
+            const [],
+            null,
+            #timeout)
       ],
       <Type>[prefix1.HelloFeignClient],
       1,

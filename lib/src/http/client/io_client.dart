@@ -7,7 +7,7 @@ import 'dart:io';
 
 import 'base_client.dart';
 import 'base_request.dart';
-import 'exception.dart';
+import 'client_exception.dart';
 import 'io_streamed_response.dart';
 
 /// Create an [IOClient].
@@ -39,7 +39,7 @@ class IOClient extends BaseClient {
 
       final future = stream.pipe(ioRequest);
       var response;
-      if (request.timeout != null) {
+      if (request.timeout > 0) {
         try {
           await future.timeout(Duration(milliseconds: request.timeout)) as HttpClientResponse;
         } on TimeoutException {

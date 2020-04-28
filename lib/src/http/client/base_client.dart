@@ -10,7 +10,7 @@ import 'package:fengwuxp_dart_openfeign/src/constant/http/http_method.dart';
 
 import 'base_request.dart';
 import 'client.dart';
-import 'exception.dart';
+import 'client_exception.dart';
 import 'request.dart';
 import 'response.dart';
 import 'streamed_response.dart';

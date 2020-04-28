@@ -9,7 +9,7 @@ import 'package:fengwuxp_dart_openfeign/src/signature/api_signature_strategy.dar
 
 import '../cache_capable_support.dart';
 
-abstract class FeignConfiguration extends CacheCapableSupport {
+abstract class FeignConfiguration /*extends CacheCapableSupport*/ {
 
 
   FeignClientExecutorFactory get feignClientExecutorFactory;

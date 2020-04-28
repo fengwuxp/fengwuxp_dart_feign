@@ -1,6 +1,6 @@
-
-
+import 'package:fengwuxp_dart_openfeign/src/http/client/client_exception.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/clinet_http_response.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 
 import '../feign_request_options.dart';
 
@@ -13,10 +13,10 @@ abstract class FeignClientExecutorInterceptor<T extends FeignRequestBaseOptions>
   /// in request after invoke
   /// [options]
   /// [response]
-  Future postHandle<E>(T options, E response);
+  Future postHandle<E>(T options, ResponseEntity<E> response);
 
   /// in request failure invoke
   /// [options]
-  /// [response]
-  Future postError<E>(T options, ClientHttpResponse response);
+  /// [exception]
+  Future postError<E>(T options, ClientException exception);
 }

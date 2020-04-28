@@ -12,6 +12,7 @@ import 'package:fengwuxp_dart_openfeign/src/resolve/request_header_resolver.dart
 import 'package:fengwuxp_dart_openfeign/src/resolve/request_params_resolver.dart';
 import 'package:fengwuxp_dart_openfeign/src/resolve/request_url_resolve.dart';
 import 'package:fengwuxp_dart_openfeign/src/signature/api_signature_strategy.dart';
+import 'package:fengwuxp_dart_openfeign/src/ui/unified_failure_toast_executor_interceptor.dart';
 
 import '../built/serializers.dart';
 
@@ -40,8 +41,10 @@ class MockFeignConfiguration implements FeignConfiguration {
     this.requestParamsResolver = DefaultRequestParamsResolver();
     var messageConverters = [new BuiltValueHttpMessageConverter(new BuiltJsonSerializers(serializers))];
     this.messageConverters = messageConverters;
-    this.feignClientExecutorInterceptors = [];
+    this.feignClientExecutorInterceptors = [
+      new UnifiedFailureToastExecutorInterceptor()
+    ];
     this.restTemplate = new RestTemplate(
-        messageConverters: messageConverters, interceptors: [RoutingClientHttpRequestInterceptor('https://www.baidu.com')]);
+        messageConverters: messageConverters, interceptors: [RoutingClientHttpRequestInterceptor('http://localhost:8090/api/')]);
   }
 }

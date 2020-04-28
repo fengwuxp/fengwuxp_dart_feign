@@ -15,7 +15,7 @@ export 'client/base_request.dart';
 export 'client/base_response.dart';
 export 'client/byte_stream.dart';
 export 'client/client.dart';
-export 'client/exception.dart';
+export 'client/client_exception.dart';
 export 'client/multipart_file.dart';
 export 'client/multipart_request.dart';
 export 'client/request.dart';

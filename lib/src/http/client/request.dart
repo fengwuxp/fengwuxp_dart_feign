@@ -49,8 +49,7 @@ class Request extends BaseRequest {
   /// If the request has a `Content-Type` header, setting this will set the
   /// charset parameter on that header.
   Encoding get encoding {
-    if (_contentType == null ||
-        !_contentType.parameters.containsKey('charset')) {
+    if (_contentType == null || !_contentType.parameters.containsKey('charset')) {
       return _defaultEncoding;
     }
     return requiredEncodingForCharset(_contentType.parameters['charset']);
@@ -116,8 +115,7 @@ class Request extends BaseRequest {
   /// This map should only be set, not modified in place.
   Map<String, String> get bodyFields {
     var contentType = _contentType;
-    if (contentType == null ||
-        contentType.mimeType != 'application/x-www-form-urlencoded') {
+    if (contentType == null || contentType.mimeType != 'application/x-www-form-urlencoded') {
       throw StateError('Cannot access the body fields of a Request without '
           'content-type "application/x-www-form-urlencoded".');
     }
@@ -140,7 +138,7 @@ class Request extends BaseRequest {
   Request({String method, Uri url, int timeout})
       : _defaultEncoding = utf8,
         _bodyBytes = Uint8List(0),
-        super(method, url,timeout??0);
+        super(method, url, timeout ?? -1);
 
   /// Freezes all mutable fields and returns a single-subscription [ByteStream]
   /// containing the request body.

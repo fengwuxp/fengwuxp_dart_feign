@@ -24,8 +24,9 @@ class _$FindArticleActionsReqSerializer
       Serializers serializers, FindArticleActionsReq object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'id',
-      serializers.serialize(object.id, specifiedType: const FullType(int)),
+      'articleId',
+      serializers.serialize(object.articleId,
+          specifiedType: const FullType(int)),
       'sourceCode',
       serializers.serialize(object.sourceCode,
           specifiedType: const FullType(String)),
@@ -46,8 +47,8 @@ class _$FindArticleActionsReqSerializer
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'id':
-          result.id = serializers.deserialize(value,
+        case 'articleId':
+          result.articleId = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
         case 'sourceCode':
@@ -63,7 +64,7 @@ class _$FindArticleActionsReqSerializer
 
 class _$FindArticleActionsReq extends FindArticleActionsReq {
   @override
-  final int id;
+  final int articleId;
   @override
   final String sourceCode;
 
@@ -71,9 +72,9 @@ class _$FindArticleActionsReq extends FindArticleActionsReq {
           [void Function(FindArticleActionsReqBuilder) updates]) =>
       (new FindArticleActionsReqBuilder()..update(updates)).build();
 
-  _$FindArticleActionsReq._({this.id, this.sourceCode}) : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('FindArticleActionsReq', 'id');
+  _$FindArticleActionsReq._({this.articleId, this.sourceCode}) : super._() {
+    if (articleId == null) {
+      throw new BuiltValueNullFieldError('FindArticleActionsReq', 'articleId');
     }
     if (sourceCode == null) {
       throw new BuiltValueNullFieldError('FindArticleActionsReq', 'sourceCode');
@@ -93,19 +94,19 @@ class _$FindArticleActionsReq extends FindArticleActionsReq {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is FindArticleActionsReq &&
-        id == other.id &&
+        articleId == other.articleId &&
         sourceCode == other.sourceCode;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, id.hashCode), sourceCode.hashCode));
+    return $jf($jc($jc(0, articleId.hashCode), sourceCode.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('FindArticleActionsReq')
-          ..add('id', id)
+          ..add('articleId', articleId)
           ..add('sourceCode', sourceCode))
         .toString();
   }
@@ -115,9 +116,9 @@ class FindArticleActionsReqBuilder
     implements Builder<FindArticleActionsReq, FindArticleActionsReqBuilder> {
   _$FindArticleActionsReq _$v;
 
-  int _id;
-  int get id => _$this._id;
-  set id(int id) => _$this._id = id;
+  int _articleId;
+  int get articleId => _$this._articleId;
+  set articleId(int articleId) => _$this._articleId = articleId;
 
   String _sourceCode;
   String get sourceCode => _$this._sourceCode;
@@ -127,7 +128,7 @@ class FindArticleActionsReqBuilder
 
   FindArticleActionsReqBuilder get _$this {
     if (_$v != null) {
-      _id = _$v.id;
+      _articleId = _$v.articleId;
       _sourceCode = _$v.sourceCode;
       _$v = null;
     }
@@ -149,8 +150,9 @@ class FindArticleActionsReqBuilder
 
   @override
   _$FindArticleActionsReq build() {
-    final _$result =
-        _$v ?? new _$FindArticleActionsReq._(id: id, sourceCode: sourceCode);
+    final _$result = _$v ??
+        new _$FindArticleActionsReq._(
+            articleId: articleId, sourceCode: sourceCode);
     replace(_$result);
     return _$result;
   }

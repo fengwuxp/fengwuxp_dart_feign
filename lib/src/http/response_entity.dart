@@ -1,5 +1,3 @@
-import 'dart:io';
-
 class ResponseEntity<T> {
   num _statusCode;
 
@@ -7,23 +5,25 @@ class ResponseEntity<T> {
 
   String _reasonPhrase;
 
-  T body;
+  T _body;
 
-  ResponseEntity(this._statusCode, this._headers, T body, this._reasonPhrase); // http status code
+  ResponseEntity._(this._statusCode, this._headers, this._body, this._reasonPhrase); // http status code
 
-  factory(
+  factory ResponseEntity(
     num statusCode,
     Map<String, String> headers,
     T body,
     String statusText,
   ) {
-    return new ResponseEntity(statusCode, headers, body, statusText);
+    return ResponseEntity._(statusCode, headers, body, statusText);
   }
 
   num get statusCode => _statusCode;
 
   ///  http status text
   String get reasonPhrase => _reasonPhrase;
+
+  T get body => _body;
 
   //  request is success
   bool get ok => this.statusCode >= 200 && this.statusCode < 300;

@@ -4,6 +4,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/configuration/feign_configuration_registry.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../built/serializers.dart';
@@ -20,10 +21,23 @@ void main() {
 
   test("test article action feign client", () async {
     registryFeignConfiguration(MockFeignConfiguration());
-    var result = await articleActionFeignClient.query(FindArticleActionsReq((b) => b
-      ..id = 1
-      ..sourceCode = "2"));
-    print("$result");
+    await articleActionFeignClient
+        .query(FindArticleActionsReq((b) => b
+          ..articleId = 1
+          ..sourceCode = "2"))
+        .then((data) {
+      print("$data");
+    }).catchError((error) {
+      if (error is ResponseEntity) {
+        print("===>${error.body["message"]}");
+      } else {
+        print("===>${error}");
+      }
+    });
+
+//    Future.error(1).catchError((data){
+//      print("==$data==>");
+//    });
   });
 
   test("test generic type serizable ", () {
@@ -73,13 +87,11 @@ void main() {
 }
     
     ''';
-    var result4 = builtJsonSerializers.parseObject(jsonText,
-        serializer: PageInfo.serializer, specifiedType: specifiedType);
+    var result4 =
+        builtJsonSerializers.parseObject(jsonText, serializer: PageInfo.serializer, specifiedType: specifiedType);
     print("==result4==>$result4");
-    var result5 = builtJsonSerializers.parseObject(jsonText,
-        serializer: PageArticleActionInfo.serializer);
+    var result5 = builtJsonSerializers.parseObject(jsonText, serializer: PageArticleActionInfo.serializer);
     print("==去泛型 result5==>$result5");
-
 
     var jsonText2 = '''
     {
@@ -97,8 +109,7 @@ void main() {
     
     ''';
     var result6 = builtJsonSerializers.parseObject(jsonText2,
-        serializer: PageInfo.serializer,
-        specifiedType: FullType(PageInfo, [FullType(FindArticleActionsReq)]));
+        serializer: PageInfo.serializer, specifiedType: FullType(PageInfo, [FullType(FindArticleActionsReq)]));
     print("==result6==>$result6");
   });
 }

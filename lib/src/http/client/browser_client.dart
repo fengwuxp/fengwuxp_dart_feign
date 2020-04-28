@@ -11,7 +11,7 @@ import 'package:pedantic/pedantic.dart' show unawaited;
 import 'base_client.dart';
 import 'base_request.dart';
 import 'byte_stream.dart';
-import 'exception.dart';
+import 'client_exception.dart';
 import 'streamed_response.dart';
 
 /// Create a [BrowserClient].

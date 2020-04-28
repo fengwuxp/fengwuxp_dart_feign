@@ -12,7 +12,5 @@ import 'package:fengwuxp_dart_openfeign/src/http/clinet_http_response.dart';
 /// [RestTemplate]
 abstract class ResponseExtractor<T> {
   /// Extract data from the given {@code [ClientHttpResponse]} and return it.
-  Future<T> extractData(ClientHttpResponse response,{Serializer serializer});
+  Future<T> extractData(ClientHttpResponse response, {Serializer serializer, FullType specifiedType});
 }
-
-

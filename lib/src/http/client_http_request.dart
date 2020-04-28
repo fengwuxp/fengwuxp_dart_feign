@@ -18,7 +18,7 @@ abstract class ClientHttpRequest implements HttpMessage {
   Future<ClientHttpResponse> send();
 
   ///  Timeout in milliseconds for request send data and receive data
-  /// default [0]  meanings no timeout limit.
+  /// default -1， timeout<=0  meanings no timeout limit.
   int get timeout;
 
   // replace uri

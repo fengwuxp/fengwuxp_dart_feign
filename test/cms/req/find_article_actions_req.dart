@@ -19,8 +19,8 @@ abstract class FindArticleActionsReq implements Built<FindArticleActionsReq, Fin
 
   factory FindArticleActionsReq([updates(FindArticleActionsReqBuilder b)]) = _$FindArticleActionsReq;
 
-  @BuiltValueField(wireName: 'id')
-  int get id;
+  @BuiltValueField(wireName: 'articleId')
+  int get articleId;
 
   @BuiltValueField(wireName: 'sourceCode')
   String get sourceCode;

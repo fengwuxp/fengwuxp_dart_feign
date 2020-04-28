@@ -29,7 +29,7 @@ class RestClientHttpRequest implements ClientHttpRequest {
   }) {
     this._url = url;
     this._method = method;
-    this._timeout = timeout ?? 0;
+    this._timeout = timeout ?? -1;
     this._messageConverters = messageConverters == null ? [] : messageConverters;
     this._requestBody = requestBody;
     this._headers = headers;

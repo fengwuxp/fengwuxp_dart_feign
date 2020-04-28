@@ -5,14 +5,11 @@ import 'package:fengwuxp_dart_openfeign/src/http/client/byte_stream.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/clinet_http_response.dart';
 
 class MessageBodyClientHttpResponseWrapper implements ClientHttpResponse {
-
   final ClientHttpResponse _response;
 
   const MessageBodyClientHttpResponseWrapper(this._response);
 
-  factory(){
-
-  }
+  factory() {}
 
   bool hasMessageBody() {
     var statusCode = this.statusCode;
@@ -23,20 +20,15 @@ class MessageBodyClientHttpResponseWrapper implements ClientHttpResponse {
       return false;
     }
 
-    if (int.parse(this.headers[HttpHeaders.contentLengthHeader]) == 0) {
+    var contentLength = this.headers[HttpHeaders.contentLengthHeader];
+    if (contentLength !=null && int.parse(contentLength) == 0) {
       return false;
     }
     return true;
   }
 
-  Future<bool> hasEmptyMessageBody() {
-    var body = this.stream;
-    if (body == null) {
-      return Future.value(true);
-    }
-    return body.length.then((len) {
-      return len == 0;
-    });
+  bool hasEmptyMessageBody() {
+    return this.stream == null;
   }
 
   @override

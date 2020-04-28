@@ -20,11 +20,12 @@ abstract class FeignProxyClient {
   /// 委托执行请求
   /// param [T] use convert type
   Future<T> delegateInvoke<T>(String methodName, List<Object> positionalArguments,
-      {FeignRequestOptions feignOptions, Serializer<T> serializer, FullType specifiedType}) async {
+      {FeignRequestOptions feignOptions, Serializer<T> serializer, FullType specifiedType,int timeout}) async {
     return _delegateInvoke(methodName, positionalArguments, {
       Symbol(FEIGN_OPTIONS_PARAMETER_NAME): feignOptions,
       Symbol(FEIGN_SERIALIZER_PARAMETER_NAME): serializer,
       Symbol(FEIGN_SERIALIZER_SPECIFIED_PARAMETER_NAME): specifiedType,
+      Symbol(FEIGN_TIMEOUT_PARAMETER_NAME): timeout,
     }).then((result) {
       return Future<T>.value(result);
     });

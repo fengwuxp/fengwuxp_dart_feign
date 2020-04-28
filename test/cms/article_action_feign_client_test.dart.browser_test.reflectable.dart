@@ -75,8 +75,17 @@ final _data = <r.Reflectable, r.ReflectorData>{
             const <int>[], const prefix0.FeignClient(), const []),
         r.MethodMirrorImpl(r'runtimeType', 131075, null, -1, -1, -1, null,
             const <int>[], const prefix0.FeignClient(), const []),
-        r.MethodMirrorImpl(r'delegateInvoke', 4325378, null, -1, -1, -1, null,
-            const <int>[4, 5, 6, 7, 8], const prefix0.FeignClient(), const [])
+        r.MethodMirrorImpl(
+            r'delegateInvoke',
+            4325378,
+            null,
+            -1,
+            -1,
+            -1,
+            null,
+            const <int>[4, 5, 6, 7, 8, 9],
+            const prefix0.FeignClient(),
+            const [])
       ],
       <m.ParameterMirror>[
         r.ParameterMirrorImpl(r'req', 32774, 0, const prefix0.FeignClient(), -1,
@@ -166,7 +175,9 @@ final _data = <r.Reflectable, r.ReflectorData>{
             null,
             const [],
             null,
-            #specifiedType)
+            #specifiedType),
+        r.ParameterMirrorImpl(r'timeout', 45062, 7, const prefix0.FeignClient(),
+            -1, -1, -1, null, const [], null, #timeout)
       ],
       <Type>[prefix1.ArticleActionFeignClient],
       1,
