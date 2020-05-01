@@ -42,7 +42,7 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
         }
       } else {
         var meta = metadata[0];
-        if (isQueryParam(meta)) {
+        if (isRequestParam(meta)) {
           _margeData(result.queryParams, simpleName, metadata, argument);
         } else if (isRequestHeader(meta)) {
           result.headers[simpleName] = argument;
@@ -51,10 +51,10 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
         } else if (isCookieValue(meta)) {
         } else if (isPathVariable(meta)) {
           result.pathVariables.add(argument);
-        } else if(isRequestBody(metadata)){
+        } else if (isRequestBody(metadata)) {
           // request body
           _margeData(result.body, simpleName, metadata, argument);
-        }else{
+        } else {
           // TODO
           _margeData(result.body, simpleName, metadata, argument);
         }

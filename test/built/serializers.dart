@@ -54,8 +54,7 @@ part 'serializers.g.dart';
 final Serializers serializers = (_$serializers.toBuilder()
       ..addBuilderFactory(
         const FullType(PageInfo, [FullType(ArticleActionInfo)]),
-        () => PageInfoBuilder<ArticleActionInfo>(),
-      )
+        () => PageInfoBuilder<ArticleActionInfo>())
       ..addBuilderFactory(
         const FullType(PageInfo, [FullType(FindArticleActionsReq)]),
         () => PageInfoBuilder<FindArticleActionsReq>(),

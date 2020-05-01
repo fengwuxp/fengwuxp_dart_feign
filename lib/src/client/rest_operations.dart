@@ -1,4 +1,4 @@
-import 'dart:ffi';
+
 
 import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/response_extractor.dart';
@@ -93,7 +93,7 @@ abstract class RestOperations {
   /// <p>URI Template variables are expanded using the given URI variables, if any.
   /// <p>The {@code request} parameter can be a {@link HttpRequest} in order to
   /// add additional HTTP headers to the request.
-  Future<Void> put(String url, @required dynamic request,
+  Future<void> put(String url, @required dynamic request,
       {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout});
 
   /// Update a resource by PATCHing the given object to the URI template,
@@ -116,7 +116,7 @@ abstract class RestOperations {
   /// <p>URI Template variables are expanded using the given URI variables, if any.
   /// [url] the URL
   /// [pathVariables]  the variables to expand the template
-  Future<Void> delete(String url,
+  Future<void> delete(String url,
       {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout});
 
   /// Return the value of the Allow header for the given URI.

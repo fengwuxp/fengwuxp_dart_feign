@@ -1,0 +1,10 @@
+targets:
+  $default:
+    builders:
+      reflectable:
+        generate_for:
+          - src/api/**_client.dart
+          - src/api/**_service.dart
+        options:
+          formatted: true
+

@@ -16,6 +16,7 @@ abstract class PageArticleActionInfo implements Built<PageArticleActionInfo, Pag
   factory PageArticleActionInfo([Function(PageArticleActionInfoBuilder) updates]) = _$PageArticleActionInfo;
 
   @BuiltValueField(wireName: 'total')
+  @nullable
   int get total;
 
   @BuiltValueField(wireName: 'records')

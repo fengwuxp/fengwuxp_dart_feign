@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:built_value/serializer.dart';
@@ -82,7 +81,7 @@ class RestTemplate implements RestOperations {
   }
 
   @override
-  Future<Void> put(@required String url, dynamic request,
+  Future<void> put(String url, dynamic request,
       {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout}) {
     return this.execute(url, HttpMethod.PUT, null,
         queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout);
@@ -96,7 +95,7 @@ class RestTemplate implements RestOperations {
   }
 
   @override
-  Future<Void> delete(String url,
+  Future<void> delete(String url,
       {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout}) {
     return this.execute(url, HttpMethod.DELETE, null,
         queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout);

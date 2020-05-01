@@ -1,10 +1,10 @@
 
 /// 将方法参数/请求对象的属性转换为查询字符串参数
-class QueryParam{
+class RequestParam{
 
 
   ///查询字符串参数名称 默认为标记字段的名称
   final String name;
 
-  const QueryParam([this.name]);
+  const RequestParam([this.name]);
 }

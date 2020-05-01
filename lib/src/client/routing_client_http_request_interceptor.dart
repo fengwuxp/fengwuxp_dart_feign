@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:fengwuxp_dart_openfeign/src/client/cient_http_request_interceptor.dart';
 import 'package:fengwuxp_dart_openfeign/src/context/rquest_url_mapping_holder.dart';
 
@@ -24,7 +22,7 @@ class RoutingClientHttpRequestInterceptor implements ClientHttpRequestIntercepto
     return new RoutingClientHttpRequestInterceptor(routeMapping);
   }
 
-  Future<Void> interceptor(ClientHttpRequest request) {
+  Future<void> interceptor(ClientHttpRequest request) {
     request.uri(routing(request.url, this._routeMapping));
   }
 }

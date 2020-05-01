@@ -1,8 +1,9 @@
 import 'dart:async';
 
+import 'package:built_collection/built_collection.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/feign_client.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/path_variable.dart';
-import 'package:fengwuxp_dart_openfeign/src/annotations/query_param.dart';
+import 'package:fengwuxp_dart_openfeign/src/annotations/request_param.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/request_header.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/request_mapping.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/signature.dart';
@@ -18,14 +19,22 @@ class HelloFeignClient extends FeignProxyClient {
   /// 返回具体类型
   /// 为了能够返回具体类型 骗过 dart运行时泛型匹配使用如下方式调用
   @GetMapping(value: "/")
-  Future<Hello> getHello(@RequestHeader() String name, @QueryParam() num id, [UIOptions feignOptions]) {
-    return this.delegateInvoke<Hello>("getHello", [name, id], feignOptions: feignOptions, serializer: BuiltValueSerializable(serializer: Hello.serializer));
+  Future<Hello> getHello(@RequestHeader() String name, @RequestParam() num id, [UIOptions feignOptions]) {
+    return this.delegateInvoke<Hello>("getHello", [name, id],
+        feignOptions: feignOptions, serializer: BuiltValueSerializable(serializer: Hello.serializer));
+  }
+
+  /// 返回具体类型
+  /// 为了能够返回具体类型 骗过 dart运行时泛型匹配使用如下方式调用
+  @GetMapping(value: "/test")
+  Future<String> getTest(@RequestHeader() String name, @RequestParam() BuiltList<num> id, [UIOptions feignOptions]) {
+    return this.delegateInvoke<String>("getTest", [name, id], feignOptions: feignOptions);
   }
 
   /// 不返回具体类型  dart运行时泛型匹配的限制
   /// noSuchMethod 永远返回 Future<dynamic>
   @GetMapping(value: "/get_hello")
-  Future getHelloForObject(@RequestHeader() String name, @QueryParam() num id, [UIOptions feignOptions]);
+  Future getHelloForObject(@RequestHeader() String name, @RequestParam() num id, [UIOptions feignOptions]);
 
   @GetMapping(value: "/get_hello")
   @Signature(["id"])

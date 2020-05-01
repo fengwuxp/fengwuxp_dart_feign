@@ -181,9 +181,16 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "966ba6d638288c627ad9fce5194b51393d6e878c"
+      resolved-ref: df8cc0f95fefd6ca91797be9ab0e317183312ac3
       url: "git://github.com/fengwuxp/fengwuxp_dart_basic.git"
     source: git
+    version: "0.0.1"
+  fengwuxp_dart_openfeign:
+    dependency: "direct main"
+    description:
+      path: ".."
+      relative: true
+    source: path
     version: "0.0.1"
   fixnum:
     dependency: transitive
@@ -229,7 +236,7 @@ packages:
       name: http
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.12.0+4"
+    version: "0.12.1"
   http_multi_server:
     dependency: transitive
     description:
@@ -572,6 +579,6 @@ packages:
       name: yaml
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.2.0"
+    version: "2.2.1"
 sdks:
   dart: ">=2.7.0 <3.0.0"

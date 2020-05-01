@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
-import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/configuration/feign_configuration_registry.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -17,10 +14,13 @@ import 'info/article_action_info.dart';
 import 'info/page_article_action_info.dart';
 import 'req/find_article_actions_req.dart';
 import 'resp/page_info.dart';
+import 'package:fengwuxp_dart_basic/index.dart';
 
 void main() {
   initializeReflectable();
-  var builtJsonSerializers = new BuiltJsonSerializers(serializers);
+  var builtJsonSerializers = BuiltJsonSerializers(serializers);
+
+  /// 日志打印
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((LogRecord rec) {
     print('[${rec.loggerName}]:[${rec.level}]] ${rec.level.name}: ${rec.time}: ${rec.message}');
@@ -28,6 +28,7 @@ void main() {
       print('${rec.error}: ${rec.stackTrace}');
     }
   });
+
   test("test article action feign client", () async {
     registryFeignConfiguration(MockFeignConfiguration());
     await articleActionFeignClient

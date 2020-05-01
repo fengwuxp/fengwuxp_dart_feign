@@ -1,3 +1,4 @@
+import 'package:built_collection/built_collection.dart';
 @TestOn('vm')
 import 'package:fengwuxp_dart_openfeign/src/configuration/feign_configuration_registry.dart';
 import 'package:fengwuxp_dart_openfeign/src/feign_request_options.dart';
@@ -32,5 +33,7 @@ void main() {
     helloFeignClient.queryHello(hello).then((data) {
       print("===reslt 2===>  $data");
     });
+
+//    helloFeignClient.getTest("name", BuiltList([1]));
   });
 }

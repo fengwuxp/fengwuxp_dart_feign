@@ -1,5 +1,5 @@
-name: fengwuxp_dart_openfeign
-description: openfeign dart .
+name: fengwuxp_dart_openfeign_example
+description: dart openfiegn exmaple
 version: 0.0.1
 author: fengwuxp
 homepage: https://github.com/fengwuxp/dart_openfeign
@@ -19,6 +19,8 @@ dependencies:
   logging: ^0.11.4
   fengwuxp_dart_basic:
     git: git://github.com/fengwuxp/fengwuxp_dart_basic.git
+  fengwuxp_dart_openfeign:
+    path: ../
 
 dev_dependencies:
   flutter_test:

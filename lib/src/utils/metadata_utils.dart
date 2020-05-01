@@ -1,7 +1,7 @@
 import 'package:built_value/built_value.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/cookie_value.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/path_variable.dart';
-import 'package:fengwuxp_dart_openfeign/src/annotations/query_param.dart';
+import 'package:fengwuxp_dart_openfeign/src/annotations/request_param.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/request_body.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/request_header.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/request_mapping.dart';
@@ -30,9 +30,9 @@ isRequestBody(metadata){
   return metadata.runtimeType == RequestBody;
 }
 
-// 是否为查询参数
-isQueryParam(metadata) {
-  return metadata.runtimeType == QueryParam;
+// 是否为RequestParam
+isRequestParam(metadata) {
+  return metadata.runtimeType == RequestParam;
 }
 
 // 是否为请求头
