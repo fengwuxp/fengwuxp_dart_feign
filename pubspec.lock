@@ -142,7 +142,7 @@ packages:
     source: hosted
     version: "1.14.11"
   connectivity:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: connectivity
       url: "https://pub.flutter-io.cn"
@@ -205,13 +205,6 @@ packages:
       resolved-ref: df8cc0f95fefd6ca91797be9ab0e317183312ac3
       url: "git://github.com/fengwuxp/fengwuxp_dart_basic.git"
     source: git
-    version: "0.0.1"
-  fengwuxp_dart_openfeign:
-    dependency: "direct main"
-    description:
-      path: ".."
-      relative: true
-    source: path
     version: "0.0.1"
   fixnum:
     dependency: transitive

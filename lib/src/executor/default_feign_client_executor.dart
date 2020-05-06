@@ -7,6 +7,7 @@ import 'package:fengwuxp_dart_openfeign/src/client/rest_response_extractor.dart'
 import 'package:fengwuxp_dart_openfeign/src/configuration/feign_configuration.dart';
 import 'package:fengwuxp_dart_openfeign/src/constant/feign_constant_var.dart';
 import 'package:fengwuxp_dart_openfeign/src/constant/http/http_method.dart';
+import 'package:fengwuxp_dart_openfeign/src/context/request_context_holder.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/client/client_exception.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 import 'package:fengwuxp_dart_openfeign/src/interceptor/mapped_feign_client_executor_interceptor.dart';
@@ -42,7 +43,6 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
     final MethodMirror methodMirror = map[methodName];
     final classMetadata = methodMirror.metadata;
     final requestMapping = findRequestMapping(classMetadata) as RequestMapping;
-
     final parameters = methodMirror.parameters;
 
     /// 解析参数
@@ -84,9 +84,9 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
           ._responseExtractor(requestMapping.method, serializer.serializer, specifiedType: serializer.specifiedType);
     }
 
-    /// TODO 文件上传
-
-    /// TODO 设置请求上下文ID
+    ///  设置请求上下文ID
+    final requestId = appendRequestContextId(feignRequest);
+    setRequestContext(requestId, methodMirror);
 
     /// 执行拦截器
     feignRequest = await this._preHandle(feignRequest, uiOptions, requestUrl, requestMapping);
