@@ -5,7 +5,6 @@ import 'mapped_interceptor.dart';
 
 class MappedFeignClientExecutorInterceptor<T extends FeignBaseRequest> extends MappedInterceptor
     implements FeignClientExecutorInterceptor<T> {
-
   FeignClientExecutorInterceptor<T> _feignClientExecutorInterceptor;
 
   MappedFeignClientExecutorInterceptor(FeignClientExecutorInterceptor<T> feignClientExecutorInterceptor,
@@ -13,8 +12,8 @@ class MappedFeignClientExecutorInterceptor<T extends FeignBaseRequest> extends M
       List<String> excludePatterns,
       List<String> includeMethods,
       List<String> excludeMethods,
-      List<Map<String, String>> includeHeaders,
-      List<Map<String, String>> excludeHeaders})
+      List<List<String>> includeHeaders,
+      List<List<String>> excludeHeaders})
       : super(
             includePatterns: includePatterns,
             excludePatterns: excludePatterns,

@@ -93,14 +93,14 @@ packages:
     source: hosted
     version: "1.0.0"
   built_collection:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: built_collection
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.3.2"
   built_value:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: built_value
       url: "https://pub.flutter-io.cn"
@@ -142,7 +142,7 @@ packages:
     source: hosted
     version: "1.14.11"
   connectivity:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: connectivity
       url: "https://pub.flutter-io.cn"
@@ -202,9 +202,16 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: df8cc0f95fefd6ca91797be9ab0e317183312ac3
+      resolved-ref: "1c8681cff304191903b6481b06b7caa886e395a6"
       url: "git://github.com/fengwuxp/fengwuxp_dart_basic.git"
     source: git
+    version: "0.0.1"
+  fengwuxp_dart_openfeign:
+    dependency: "direct main"
+    description:
+      path: ".."
+      relative: true
+    source: path
     version: "0.0.1"
   fixnum:
     dependency: transitive
@@ -224,7 +231,7 @@ packages:
     source: sdk
     version: "0.0.0"
   glob:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: glob
       url: "https://pub.flutter-io.cn"
@@ -294,7 +301,7 @@ packages:
     source: hosted
     version: "3.0.1"
   logging:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: logging
       url: "https://pub.flutter-io.cn"
@@ -308,7 +315,7 @@ packages:
     source: hosted
     version: "0.12.6"
   meta:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: meta
       url: "https://pub.flutter-io.cn"

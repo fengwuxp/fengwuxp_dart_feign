@@ -10,6 +10,8 @@ typedef void UnifiedFailureToast(ResponseEntity response);
 
 //  unified transform failure toast
 class UnifiedFailureToastExecutorInterceptor<T extends FeignBaseRequest> implements FeignClientExecutorInterceptor<T> {
+
+
   Future<T> preHandle(T request, UIOptions uiOptions) async {
     return request;
   }

@@ -1,4 +1,4 @@
-import 'package:fengwuxp_dart_openfeign/src/client/cient_http_request_interceptor.dart';
+import 'package:fengwuxp_dart_openfeign/src/client/client_http_request_interceptor.dart';
 import 'package:fengwuxp_dart_openfeign/src/context/rquest_url_mapping_holder.dart';
 
 import '../http/client_http_request.dart';

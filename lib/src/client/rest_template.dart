@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
-import 'package:fengwuxp_dart_openfeign/src/client/cient_http_request_interceptor.dart';
+import 'package:fengwuxp_dart_openfeign/src/client/client_http_request_interceptor.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/rest_client_http_request.dart';
 import 'package:fengwuxp_dart_openfeign/src/constant/http/http_media_type.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/client_http_request.dart';

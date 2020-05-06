@@ -1,3 +1,4 @@
+import 'package:fengwuxp_dart_openfeign/src/client/authentication_strategy.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/rest_operations.dart';
 import 'package:fengwuxp_dart_openfeign/src/executor/feign_client_executor_factory.dart';
 import 'package:fengwuxp_dart_openfeign/src/executor/feign_client_executor_interceptor.dart';
@@ -10,8 +11,6 @@ import 'package:fengwuxp_dart_openfeign/src/signature/api_signature_strategy.dar
 import '../cache_capable_support.dart';
 
 abstract class FeignConfiguration /*extends CacheCapableSupport*/ {
-
-
   FeignClientExecutorFactory get feignClientExecutorFactory;
 
   RestOperations get restTemplate;
@@ -29,4 +28,5 @@ abstract class FeignConfiguration /*extends CacheCapableSupport*/ {
 
   List<FeignClientExecutorInterceptor> get feignClientExecutorInterceptors;
 
+  AuthenticationBroadcaster get authenticationBroadcaster;
 }

@@ -1,4 +1,3 @@
-
 import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/constant/http/http_method.dart';
 
@@ -14,8 +13,8 @@ abstract class MappedInterceptor {
   ///    name: string;
   ///    value: string
   ///}
-  List<Map<String, String>> _includeHeaders;
-  List<Map<String, String>> _excludeHeaders;
+  List<_HttpHeader> _includeHeaders;
+  List<_HttpHeader> _excludeHeaders;
 
   PathMatcher _pathMatcher = SimplePathMatcher();
 
@@ -24,14 +23,14 @@ abstract class MappedInterceptor {
       List<String> excludePatterns,
       List<String> includeMethods,
       List<String> excludeMethods,
-      List<Map<String, String>> includeHeaders,
-      List<Map<String, String>> excludeHeaders}) {
+      List<List<String>> includeHeaders,
+      List<List<String>> excludeHeaders}) {
     this._includePatterns = includePatterns ?? [];
     this._excludePatterns = excludePatterns ?? [];
     this._includeMethods = includeMethods ?? [];
     this._excludeMethods = excludeMethods ?? [];
-    this._includeHeaders = includeHeaders ?? [];
-    this._excludeHeaders = excludeHeaders ?? [];
+    this._includeHeaders = this._converterHeaders(includeHeaders) ?? [];
+    this._excludeHeaders = this._converterHeaders(excludeHeaders) ?? [];
   }
 
 // Determine a match for the given lookup path.
@@ -62,7 +61,7 @@ abstract class MappedInterceptor {
     }
     var excludePatterns = this._excludePatterns;
     var includePatterns = this._includePatterns;
-    return this._doMatch(lookupPath.split("?")[0], includePatterns, excludePatterns, (pattern, path) {
+    return this._doMatch<String>(lookupPath.split("?")[0], includePatterns, excludePatterns, (pattern, path) {
       return pathMatcherToUse.match(pattern, path);
     });
   }
@@ -70,7 +69,7 @@ abstract class MappedInterceptor {
   /// Determine a match for the given http method
   /// [httpMethod] [HttpMethod]
   bool matchesMethod(String httpMethod) {
-    return this._doMatch(httpMethod, this._includeMethods, this._excludeMethods, (pattern, matchSource) {
+    return this._doMatch<String>(httpMethod, this._includeMethods, this._excludeMethods, (pattern, matchSource) {
       return pattern == matchSource;
     });
   }
@@ -81,9 +80,9 @@ abstract class MappedInterceptor {
     if (headers == null) {
       return true;
     }
-    this._doMatch(headers, this._includeHeaders, this._excludeHeaders, (pattern, matchSource) {
-      var name = pattern["name"];
-      var value = pattern["value"];
+    this._doMatch<_HttpHeader>(headers, this._includeHeaders, this._excludeHeaders, (pattern, matchSource) {
+      var name = pattern.name;
+      var value = pattern.value;
       var needMatchValue = value != null;
       var headerValue = matchSource[name];
 
@@ -94,7 +93,7 @@ abstract class MappedInterceptor {
     });
   }
 
-  bool _doMatch(matchSource, List includes, List excludes, bool predicate(pattern, matchSource)) {
+  bool _doMatch<T>(matchSource, List includes, List excludes, bool predicate(T pattern, matchSource)) {
     if (excludes != null) {
       var isMatch = excludes.any((pattern) => predicate(pattern, matchSource));
       if (isMatch) {
@@ -111,4 +110,19 @@ abstract class MappedInterceptor {
 
     return false;
   }
+
+  List<_HttpHeader> _converterHeaders(List<List<String>> headers) {
+    if (headers == null) {
+      return null;
+    }
+    return headers.map((items) {
+      return _HttpHeader(items.first, items[1] ?? null);
+    });
+  }
+}
+
+class _HttpHeader {
+  final String name;
+  final String value;
+  _HttpHeader(this.name, this.value);
 }
