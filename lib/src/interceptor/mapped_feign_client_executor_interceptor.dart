@@ -1,13 +1,13 @@
 import 'package:fengwuxp_dart_openfeign/src/executor/feign_client_executor_interceptor.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/client/base_request.dart';
 
 import '../feign_request_options.dart';
 import 'mapped_interceptor.dart';
 
-class MappedFeignClientExecutorInterceptor<T extends FeignBaseRequest> extends MappedInterceptor
-    implements FeignClientExecutorInterceptor<T> {
-  FeignClientExecutorInterceptor<T> _feignClientExecutorInterceptor;
+class MappedFeignClientExecutorInterceptor extends MappedInterceptor implements FeignClientExecutorInterceptor {
+  FeignClientExecutorInterceptor _feignClientExecutorInterceptor;
 
-  MappedFeignClientExecutorInterceptor(FeignClientExecutorInterceptor<T> feignClientExecutorInterceptor,
+  MappedFeignClientExecutorInterceptor(FeignClientExecutorInterceptor feignClientExecutorInterceptor,
       {List<String> includePatterns,
       List<String> excludePatterns,
       List<String> includeMethods,
@@ -24,15 +24,15 @@ class MappedFeignClientExecutorInterceptor<T extends FeignBaseRequest> extends M
     this._feignClientExecutorInterceptor = feignClientExecutorInterceptor;
   }
 
-  preHandle(T request, UIOptions uiOptions) {
+  preHandle(FeignBaseRequest request, UIOptions uiOptions) {
     return this._feignClientExecutorInterceptor.preHandle(request, uiOptions);
   }
 
-  postHandle<E>(T request, UIOptions uiOptions, response) {
-    return this._feignClientExecutorInterceptor.postHandle<E>(request, uiOptions, response);
+  postHandle<E>(FeignBaseRequest request, UIOptions uiOptions, response,{BuiltValueSerializable serializer}) {
+    return this._feignClientExecutorInterceptor.postHandle<E>(request, uiOptions, response,serializer: serializer);
   }
 
-  postError<E>(T request, UIOptions uiOptions, response) {
-    return this._feignClientExecutorInterceptor.postError<E>(request, uiOptions, response);
+  postError<E>(FeignBaseRequest request, UIOptions uiOptions, response,{BuiltValueSerializable serializer}) {
+    return this._feignClientExecutorInterceptor.postError<E>(request, uiOptions, response,serializer: serializer);
   }
 }

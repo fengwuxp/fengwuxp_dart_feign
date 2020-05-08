@@ -131,7 +131,10 @@ abstract class RestOperations {
   /// [pathVariables]  the variables to expand the template
   /// [queryParams]  the variables to expand the template
   /// [timeout]      request timeout
-  Future<T> execute<T>(String url, String method, ResponseExtractor<T> responseExtractor,
+  Future<T> execute<T>(
+      String url,
+      String method,
+      ResponseExtractor<T> responseExtractor,
       {dynamic request,
       Map<String, dynamic> queryParams,
       List<Object> pathVariables,

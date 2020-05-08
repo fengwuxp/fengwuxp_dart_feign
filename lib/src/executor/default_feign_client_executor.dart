@@ -77,11 +77,11 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
       apiSignatureStrategy.sign(signature.fields, feignRequest);
     }
     var responseExtractor = uiOptions.responseExtractor;
+    var serializer = namedArguments[Symbol(FEIGN_SERIALIZER_PARAMETER_NAME)] as BuiltValueSerializable;
     if (responseExtractor == null) {
       // get response extractor
-      var serializer = namedArguments[Symbol(FEIGN_SERIALIZER_PARAMETER_NAME)] as BuiltValueSerializable;
       responseExtractor = this
-          ._responseExtractor(requestMapping.method, serializer.serializer, specifiedType: serializer.specifiedType);
+          ._responseExtractor(requestMapping.method, serializer?.serializer, specifiedType: serializer?.specifiedType);
     }
 
     ///  设置请求上下文ID
@@ -100,11 +100,13 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
           queryParams: feignRequest.queryParams,
           pathVariables: feignRequest.pathVariables,
           timeout: uiOptions.timeout);
-    } catch (exception) {
-      var result = await this._postHandleError(feignRequest, uiOptions, requestUrl, requestMapping, exception);
+    } catch (error) {
+      // 请求失败或异常
+      var result = await this._postHandleError(feignRequest, uiOptions, requestUrl, requestMapping, error, serializer);
       return Future.error(result);
     }
-    return this._postHandle(feignRequest, uiOptions, requestUrl, requestMapping, response);
+
+    return this._postHandle(feignRequest, uiOptions, requestUrl, requestMapping, response, serializer);
   }
 
   /// 前置拦截器
@@ -117,24 +119,24 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
   }
 
   /// 拦截器后置处理
-  Future<dynamic> _postHandle(
-      FeignRequest request, UIOptions uiOptions, String url, RequestMapping requestMapping, response) async {
+  Future<dynamic> _postHandle(FeignRequest request, UIOptions uiOptions, String url, RequestMapping requestMapping,
+      response, BuiltValueSerializable serializer) async {
     return this._executeInterceptor<FeignBaseRequest, dynamic>(request, uiOptions, url, requestMapping, response,
         (FeignClientExecutorInterceptor<FeignBaseRequest> interceptor) {
-      return interceptor.postHandle(request, uiOptions, response);
+      return interceptor.postHandle(request, uiOptions, response, serializer: serializer);
     });
   }
 
   /// 拦截器后置错误处理
   Future _postHandleError(FeignBaseRequest request, UIOptions uiOptions, String url, RequestMapping requestMapping,
-      ClientException exception) async {
+      ClientException exception, BuiltValueSerializable serializer) async {
     return this
         ._executeInterceptor<FeignBaseRequest, ClientException>(request, uiOptions, url, requestMapping, exception, (
             [FeignClientExecutorInterceptor<FeignBaseRequest> interceptor]) {
       if (interceptor == null) {
         return Future.error(exception);
       }
-      return interceptor.postError(request, uiOptions, exception);
+      return interceptor.postError(request, uiOptions, exception, serializer: serializer);
     });
   }
 
@@ -169,20 +171,17 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
     return feignClientExecutorInterceptor;
   }
 
-  // build ResponseExtractor
+  // build [ResponseExtractor]
   ResponseExtractor _responseExtractor<T>(String httpMethod, Serializer<T> serializer, {FullType specifiedType}) {
-    if (specifiedType == null) {
-      specifiedType = FullType(ResponseEntity);
-    }
     if (httpMethod == HttpMethod.OPTIONS) {
       return OptionsForAllowResponseExtractor();
     }
     if (httpMethod == HttpMethod.HEAD) {
       return HeadResponseExtractor();
     }
-    if (serializer == null) {
-      return null;
-    }
+//    if (serializer == null) {
+//      return null;
+//    }
     if (specifiedType != null && specifiedType.root == ResponseEntity) {
       return ResponseEntityResponseExtractor(feignConfiguration.messageConverters, serializer);
     } else {

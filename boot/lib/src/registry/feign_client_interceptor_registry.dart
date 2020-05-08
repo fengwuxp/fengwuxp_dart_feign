@@ -1,3 +1,5 @@
+import 'package:fengwuxp_dart_openfeign/index.dart';
+
 import 'feign_client_executor_interceptor_registration.dart';
 import 'interceptor_registry.dart';
 
@@ -10,8 +12,7 @@ class FeignClientInterceptorRegistry implements InterceptorRegistry {
     return feignClientExecutorInterceptorRegistration;
   }
 
-  List<MappedClientHttpRequestInterceptor> getInterceptors<MappedClientHttpRequestInterceptor>() {
-    return registrationToInterceptors<MappedClientHttpRequestInterceptor>(
-        this.feignClientExecutorInterceptorRegistrations);
+  List<FeignClientExecutorInterceptor> getInterceptors<FeignClientExecutorInterceptor>() {
+    return registrationToInterceptors<FeignClientExecutorInterceptor>(this.feignClientExecutorInterceptorRegistrations);
   }
 }

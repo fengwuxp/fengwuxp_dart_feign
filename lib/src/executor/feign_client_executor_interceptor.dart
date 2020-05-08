@@ -11,14 +11,15 @@ abstract class FeignClientExecutorInterceptor<T extends FeignBaseRequest> {
   Future<T> preHandle(T request, UIOptions uiOptions);
 
   /// in request after invoke
+  /// only in http statusCode is [200 ,300) invoke
   /// [request]
   /// [response]
-  Future postHandle<E>(T request, UIOptions uiOptions, ResponseEntity<E> response);
+  Future postHandle<E>(T request, UIOptions uiOptions, E response, {BuiltValueSerializable serializer});
 
-  /// in request failure invoke
+  /// in request exception or failure invoke
   /// [request]
-  /// [exception]
-  Future postError<E>(T request, UIOptions uiOptions, ClientException exception);
+  /// [error] [ClientException] or other data
+  Future postError<E>(T request, UIOptions uiOptions, error, {BuiltValueSerializable serializer});
 }
 
 /// execute interceptor

@@ -14,6 +14,7 @@ import '../built/hello/hello.dart';
 import '../built/req/query_hello_req.dart';
 
 /// feign client
+//@Feign
 @FeignClient(name: "hello_client", value: "/")
 class HelloFeignClient extends FeignProxyClient {
   /// 返回具体类型

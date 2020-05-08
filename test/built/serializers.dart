@@ -13,6 +13,7 @@ import '../cms/enums/article_action_type.dart';
 import '../cms/info/article_action_info.dart';
 import '../cms/info/page_article_action_info.dart';
 import '../cms/req/find_article_actions_req.dart';
+import '../cms/resp/api_resp.dart';
 import '../cms/resp/page_info.dart';
 import 'data_model.dart';
 import 'hello/hello.dart';
@@ -47,7 +48,8 @@ part 'serializers.g.dart';
   ArticleActionInfo,
   FindArticleActionsReq,
   PageArticleActionInfo,
-  ArticleActionType
+  ArticleActionType,
+  ApiResp
 ])
 //const FullType(PageInfo,[FullType(ArticleActionInfo)],(){
 //return PageInfo<ArticleActionInfo>;

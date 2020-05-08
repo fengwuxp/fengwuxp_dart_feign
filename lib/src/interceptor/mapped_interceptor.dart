@@ -80,7 +80,7 @@ abstract class MappedInterceptor {
     if (headers == null) {
       return true;
     }
-    this._doMatch<_HttpHeader>(headers, this._includeHeaders, this._excludeHeaders, (pattern, matchSource) {
+    return this._doMatch<_HttpHeader>(headers, this._includeHeaders, this._excludeHeaders, (pattern, matchSource) {
       var name = pattern.name;
       var value = pattern.value;
       var needMatchValue = value != null;
@@ -115,14 +115,15 @@ abstract class MappedInterceptor {
     if (headers == null) {
       return null;
     }
-    return headers.map((items) {
+    return List.of(headers.map((items) {
       return _HttpHeader(items.first, items[1] ?? null);
-    });
+    }));
   }
 }
 
 class _HttpHeader {
   final String name;
   final String value;
+
   _HttpHeader(this.name, this.value);
 }

@@ -27,8 +27,11 @@ class NetworkClientHttpRequestInterceptor implements ClientHttpRequestIntercepto
 
   NetworkStatus _currentStatus = null;
 
-  NetworkClientHttpRequestInterceptor(NetworkStatusListener networkStatusListener, NoneNetworkFailBack networkFailBack,
-      int tryWaitNetworkCount, int spinWaitMaxTimes)
+  NetworkClientHttpRequestInterceptor(
+      {NetworkStatusListener networkStatusListener,
+      NoneNetworkFailBack networkFailBack,
+      int tryWaitNetworkCount,
+      int spinWaitMaxTimes})
       : this.networkStatusListener = networkStatusListener ?? DefaultNetworkStatusListener(),
         this.networkFailBack = networkFailBack,
         this.tryWaitNetworkCount = tryWaitNetworkCount ?? 3,
@@ -87,7 +90,7 @@ class NetworkClientHttpRequestInterceptor implements ClientHttpRequestIntercepto
   void _initNetwork() {
     this.networkStatusListener.getNetworkStatus().then((networkStatus) {
       this._currentStatus = networkStatus;
-    }).catchError(() {
+    }).catchError((e) {
       this._currentStatus = NetworkStatus(false, ConnectivityResult.none);
     });
   }

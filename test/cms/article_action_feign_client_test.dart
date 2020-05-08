@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
+import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/configuration/feign_configuration_registry.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,8 +14,8 @@ import 'enums/article_action_type.dart';
 import 'info/article_action_info.dart';
 import 'info/page_article_action_info.dart';
 import 'req/find_article_actions_req.dart';
+import 'resp/api_resp.dart';
 import 'resp/page_info.dart';
-import 'package:fengwuxp_dart_basic/index.dart';
 
 void main() {
   initializeReflectable();
@@ -29,7 +30,7 @@ void main() {
     }
   });
 
-  test("test article action feign client", () async {
+  test("test article action feign client,not generic", () async {
     registryFeignConfiguration(MockFeignConfiguration());
     await articleActionFeignClient
         .query(FindArticleActionsReq((b) => b
@@ -38,11 +39,32 @@ void main() {
         .then((data) {
       print("$data");
     }).catchError((error) {
-      if (error is ResponseEntity) {
-        print("===>${error.body["message"]}");
-      } else {
-        print("===>${error}");
-      }
+      print("===>${error.body["message"]}");
+    }, test: (error) {
+      return error is ResponseEntity;
+    }).catchError((error) {
+      print("==请求错误=>${error}");
+    }, test: (error) {
+      return error is ApiResp;
+    });
+  });
+
+  test("test article action feign client,generic", () async {
+    registryFeignConfiguration(MockFeignConfiguration());
+    await articleActionFeignClient
+        .query2(FindArticleActionsReq((b) => b
+          ..articleId = 1
+          ..sourceCode = "2"))
+        .then((data) {
+      print("$data");
+    }).catchError((error) {
+      print("===>${error.body["message"]}");
+    }, test: (error) {
+      return error is ResponseEntity;
+    }).catchError((error) {
+      print("==请求错误=>${error}");
+    }, test: (error) {
+      return error is ApiResp;
     });
   });
 
@@ -53,7 +75,7 @@ void main() {
     print("==微秒 dateTime_2==> ${dateTime_2}");
   });
 
-  test("test generic type serizable ", () {
+  test("test generic type serializable ", () {
     var articleActions = PageInfo<ArticleActionInfo>((b) {
       var builder = b
         ..total = 1
@@ -126,7 +148,7 @@ void main() {
     print("==result6==>$result6");
   });
 
-  test("tset list json parse object", () {
+  test("test list json parse object", () {
     var jsonText1 = '''
            [
                { 

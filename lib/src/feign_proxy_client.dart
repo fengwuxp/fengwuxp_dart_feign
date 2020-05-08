@@ -10,6 +10,7 @@ import 'feign_request_options.dart';
 
 /// [FeignProxyClient]
 abstract class FeignProxyClient {
+
   @override
   Future noSuchMethod(Invocation invocation) {
     //获取当前调用方法的名称
@@ -19,8 +20,9 @@ abstract class FeignProxyClient {
 
   /// 委托执行请求
   /// param [T] use convert type
+  /// [methodName] 方法名称
   Future<T> delegateInvoke<T>(String methodName, List<Object> positionalArguments,
-      {UIOptions feignOptions, BuiltValueSerializable<T> serializer}) async {
+      {UIOptions feignOptions, BuiltValueSerializable serializer}) async {
     return _delegateInvoke(methodName, positionalArguments, {
       Symbol(FEIGN_OPTIONS_PARAMETER_NAME): feignOptions,
       Symbol(FEIGN_SERIALIZER_PARAMETER_NAME): serializer,
@@ -29,11 +31,12 @@ abstract class FeignProxyClient {
     });
   }
 
+  // 内部的执行请求
   Future<T> _delegateInvoke<T>(
       String methodName, List<Object> positionalArguments, Map<Symbol, dynamic> namedArguments) {
     /// 反射得到元数据
     final Type targetType = this.runtimeType;
-    ClassMirror classMirror = FEIGN_REFLECT_ABLE.reflectType(targetType);
+    ClassMirror classMirror = Feign.reflectType(targetType);
 
     /// 获取配置
     final feignConfiguration = getFeignConfiguration(targetType);

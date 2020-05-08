@@ -4,6 +4,7 @@ import 'client_http_interceptor_registration.dart';
 import 'interceptor_registry.dart';
 
 class ClientHttpInterceptorRegistry implements InterceptorRegistry {
+
   final List<ClientHttpInterceptorRegistration> clientHttpInterceptorRegistrations = [];
 
 
@@ -13,7 +14,7 @@ class ClientHttpInterceptorRegistry implements InterceptorRegistry {
     return clientHttpInterceptorRegistration;
   }
 
-  List<MappedClientHttpRequestInterceptor> getInterceptors<MappedClientHttpRequestInterceptor>() {
-    return registrationToInterceptors<MappedClientHttpRequestInterceptor>(this.clientHttpInterceptorRegistrations);
+  List<ClientHttpRequestInterceptor> getInterceptors<ClientHttpRequestInterceptor>() {
+    return registrationToInterceptors<ClientHttpRequestInterceptor>(this.clientHttpInterceptorRegistrations);
   }
 }

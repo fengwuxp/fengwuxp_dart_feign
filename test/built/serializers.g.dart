@@ -7,6 +7,7 @@ part of serializers;
 // **************************************************************************
 
 Serializers _$serializers = (new Serializers().toBuilder()
+      ..add(ApiResp.serializer)
       ..add(ArticleActionInfo.serializer)
       ..add(ArticleActionType.serializer)
       ..add(Chat.serializer)

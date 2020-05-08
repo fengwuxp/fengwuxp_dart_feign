@@ -1,4 +1,5 @@
 import 'package:fengwuxp_dart_basic/index.dart';
+import 'package:fengwuxp_dart_openfeign/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/rest_operations.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/rest_template.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/routing_client_http_request_interceptor.dart';
@@ -8,6 +9,7 @@ import 'package:fengwuxp_dart_openfeign/src/executor/feign_client_executor_facto
 import 'package:fengwuxp_dart_openfeign/src/executor/feign_client_executor_interceptor.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/converter/built_value_http_message_converter.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/converter/http_message_converter.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 import 'package:fengwuxp_dart_openfeign/src/resolve/request_header_resolver.dart';
 import 'package:fengwuxp_dart_openfeign/src/resolve/request_params_resolver.dart';
 import 'package:fengwuxp_dart_openfeign/src/resolve/request_url_resolve.dart';
@@ -15,6 +17,7 @@ import 'package:fengwuxp_dart_openfeign/src/signature/api_signature_strategy.dar
 import 'package:fengwuxp_dart_openfeign/src/ui/unified_failure_toast_executor_interceptor.dart';
 
 import '../built/serializers.dart';
+import '../cms/resp/api_resp.dart';
 
 class MockFeignConfiguration implements FeignConfiguration {
   FeignClientExecutorFactory feignClientExecutorFactory;
@@ -34,6 +37,10 @@ class MockFeignConfiguration implements FeignConfiguration {
 
   ApiSignatureStrategy apiSignatureStrategy;
 
+  List<ClientHttpRequestInterceptor> clientHttpRequestInterceptors;
+
+  AuthenticationBroadcaster authenticationBroadcaster;
+
   MockFeignConfiguration() {
     this.feignClientExecutorFactory = DefaultFeignClientExecutorFactory();
     this.requestURLResolver = RestfulRequestURLResolver();
@@ -42,9 +49,19 @@ class MockFeignConfiguration implements FeignConfiguration {
     var messageConverters = [new BuiltValueHttpMessageConverter(new BuiltJsonSerializers(serializers))];
     this.messageConverters = messageConverters;
     this.feignClientExecutorInterceptors = [
-      new UnifiedFailureToastExecutorInterceptor()
+      new UnifiedFailureToastExecutorInterceptor((data, BuiltValueSerializable serializer) {
+        var body = data;
+        if (data is ResponseEntity) {
+          body = data.body;
+        }
+        if (body == null) {
+          return null;
+        }
+        return ApiResp.formJsonBySerializer(body);
+      })
     ];
     this.restTemplate = new RestTemplate(
-        messageConverters: messageConverters, interceptors: [RoutingClientHttpRequestInterceptor('http://localhost:8090/api/')]);
+        messageConverters: messageConverters,
+        interceptors: [RoutingClientHttpRequestInterceptor('http://localhost:8090/api/')]);
   }
 }

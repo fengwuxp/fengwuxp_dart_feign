@@ -1,4 +1,4 @@
-import 'package:fengwuxp_dart_openfeign/src/context/rquest_url_mapping_holder.dart';
+import 'package:fengwuxp_dart_openfeign/src/context/request_url_mapping_holder.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

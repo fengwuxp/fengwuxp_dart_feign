@@ -5,8 +5,12 @@ import 'package:fengwuxp_dart_openfeign/src/http/client_http_request.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/clinet_http_response.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/converter/http_message_converter.dart';
 import 'package:fengwuxp_dart_openfeign/src/utils/metadata_utils.dart';
+import 'package:logging/logging.dart';
 
 class RestClientHttpRequest implements ClientHttpRequest {
+  static const String _TAG = "RestClientHttpRequest";
+  static var _log = Logger(_TAG);
+
   Uri _url;
 
   String _method;
@@ -41,6 +45,7 @@ class RestClientHttpRequest implements ClientHttpRequest {
     if (headers != null) {
       request.headers.addAll(headers);
     }
+    _log.finer("请求方法：${request.method} 请求url:${request.url} 请求体：${request.body} 请求头：${request.headers}");
     if (supportRequestBody(request.method)) {
       final contentType = ContentType.parse(request.headers[HttpHeaders.contentTypeHeader]);
       for (HttpMessageConverter messageConverter in this._messageConverters) {
@@ -49,6 +54,7 @@ class RestClientHttpRequest implements ClientHttpRequest {
         }
       }
     }
+
     request.body.close();
     return request.send();
   }

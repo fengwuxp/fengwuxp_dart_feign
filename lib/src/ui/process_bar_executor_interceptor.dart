@@ -8,7 +8,6 @@ import 'package:fengwuxp_dart_openfeign/src/ui/request_progress_bar.dart';
 
 /// 请求进度条拦截器
 class ProcessBarExecutorInterceptor<T extends FeignBaseRequest> implements FeignClientExecutorInterceptor<T> {
-
   final RequestProgressBar progressBar;
 
   // 防止抖动，在接口很快响应的时候，不显示进度条
@@ -23,8 +22,8 @@ class ProcessBarExecutorInterceptor<T extends FeignBaseRequest> implements Feign
   // timer
   Timer _timer;
 
-  ProcessBarExecutorInterceptor(
-      {RequestProgressBar progressBar, ProgressBarOptions progressBarOptions = const ProgressBarOptions()})
+  ProcessBarExecutorInterceptor(RequestProgressBar progressBar,
+      {ProgressBarOptions progressBarOptions = const ProgressBarOptions()})
       : this.progressBar = progressBar,
         // 延迟显示的时间最少要大于等于100毫秒才会启用防止抖动的模式
         this.preventJitter = progressBarOptions.delay >= 100,
@@ -54,7 +53,8 @@ class ProcessBarExecutorInterceptor<T extends FeignBaseRequest> implements Feign
     return request;
   }
 
-  Future postHandle<E>(T request, UIOptions uiOptions, ResponseEntity<E> response) async {
+  Future postHandle<E>(T request, UIOptions uiOptions,E response,
+      {BuiltValueSerializable serializer}) async {
     if (!this._needShowProcessBar(uiOptions)) {
       //不使用进度条
       return response;
@@ -63,14 +63,14 @@ class ProcessBarExecutorInterceptor<T extends FeignBaseRequest> implements Feign
     return response;
   }
 
-  Future postError<E>(T options, UIOptions uiOptions, ClientException exception) {
+  Future postError<E>(T options, UIOptions uiOptions, error,{BuiltValueSerializable serializer}) {
     if (!this._needShowProcessBar(uiOptions)) {
       // 不使用进度条
-      return Future.error(exception);
+      return Future.error(error);
     }
     _tryCloseProcessBar();
     //不使用进度条
-    return Future.error(exception);
+    return Future.error(error);
   }
 
   bool _needShowProcessBar(UIOptions uiOptions) {

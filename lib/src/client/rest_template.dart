@@ -10,6 +10,7 @@ import 'package:fengwuxp_dart_openfeign/src/client/default_url_template_handler.
 import 'package:fengwuxp_dart_openfeign/src/client/rest_response_extractor.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/uri_template_handler.dart';
 import 'package:fengwuxp_dart_openfeign/src/constant/http/http_method.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/clinet_http_response.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/converter/http_message_converter.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 import 'package:meta/meta.dart';
@@ -125,7 +126,7 @@ class RestTemplate implements RestOperations {
     var clientHttpRequest = RestClientHttpRequest(uri, method, messageConverters,
         requestBody: request, headers: requestHttpHeaders, timeout: timeout);
     // 处理请求体
-    var clientHttpResponse;
+    ClientHttpResponse clientHttpResponse;
     try {
       await this._preHandleInterceptor(clientHttpRequest);
       clientHttpResponse = await clientHttpRequest.send();
@@ -133,7 +134,20 @@ class RestTemplate implements RestOperations {
       // 请求异常处理
       throw e;
     }
-    return responseExtractor != null ? responseExtractor.extractData(clientHttpResponse) : null;
+
+    if (responseExtractor != null) {
+      try {
+        var result = await responseExtractor.extractData(clientHttpResponse);
+        if (clientHttpResponse.ok) {
+          return result;
+        } else {
+          return Future.error(result);
+        }
+      } catch (e) {
+        throw e;
+      }
+    }
+    return Future.value(clientHttpResponse as T);
   }
 
   void _preHandleInterceptor(ClientHttpRequest clientHttpRequest) async {

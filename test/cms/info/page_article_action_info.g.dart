@@ -24,8 +24,6 @@ class _$PageArticleActionInfoSerializer
       Serializers serializers, PageArticleActionInfo object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'total',
-      serializers.serialize(object.total, specifiedType: const FullType(int)),
       'records',
       serializers.serialize(object.records,
           specifiedType: const FullType(
@@ -40,7 +38,12 @@ class _$PageArticleActionInfoSerializer
       serializers.serialize(object.queryType,
           specifiedType: const FullType(String)),
     ];
-
+    if (object.total != null) {
+      result
+        ..add('total')
+        ..add(serializers.serialize(object.total,
+            specifiedType: const FullType(int)));
+    }
     return result;
   }
 
@@ -108,9 +111,6 @@ class _$PageArticleActionInfo extends PageArticleActionInfo {
       this.queryPage,
       this.queryType})
       : super._() {
-    if (total == null) {
-      throw new BuiltValueNullFieldError('PageArticleActionInfo', 'total');
-    }
     if (records == null) {
       throw new BuiltValueNullFieldError('PageArticleActionInfo', 'records');
     }
