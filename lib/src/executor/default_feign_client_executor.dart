@@ -129,14 +129,14 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
 
   /// 拦截器后置错误处理
   Future _postHandleError(FeignBaseRequest request, UIOptions uiOptions, String url, RequestMapping requestMapping,
-      ClientException exception, BuiltValueSerializable serializer) async {
+       error, BuiltValueSerializable serializer) async {
     return this
-        ._executeInterceptor<FeignBaseRequest, ClientException>(request, uiOptions, url, requestMapping, exception, (
+        ._executeInterceptor<FeignBaseRequest, Object>(request, uiOptions, url, requestMapping, error, (
             [FeignClientExecutorInterceptor<FeignBaseRequest> interceptor]) {
       if (interceptor == null) {
-        return Future.error(exception);
+        return Future.error(error);
       }
-      return interceptor.postError(request, uiOptions, exception, serializer: serializer);
+      return interceptor.postError(request, uiOptions, error, serializer: serializer);
     });
   }
 

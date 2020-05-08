@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:fengwuxp_dart_basic/index.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/client/multipart_file.dart';
 import 'package:fengwuxp_dart_openfeign/src/utils/metadata_utils.dart';
 import 'package:reflectable/reflectable.dart';
 
@@ -42,12 +45,18 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
         }
       } else {
         var meta = metadata[0];
+        var isFile = argument is File;
         if (isRequestParam(meta)) {
           _margeData(result.queryParams, simpleName, metadata, argument);
         } else if (isRequestHeader(meta)) {
           result.headers[simpleName] = argument;
-        } else if (isRequestPart(meta)) {
-          result.files[simpleName] = argument;
+        } else if (isRequestPart(meta) || isFile) {
+          if (argument is String) {
+            // 文件路径
+            result.files[simpleName] = MultipartFile.fromPath(simpleName, argument);
+          } else if (isFile) {
+            result.files[simpleName] = MultipartFile.fromBytes(simpleName, argument.readAsBytesSync());
+          }
         } else if (isCookieValue(meta)) {
         } else if (isPathVariable(meta)) {
           result.pathVariables.add(argument);

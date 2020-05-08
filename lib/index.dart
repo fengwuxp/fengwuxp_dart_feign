@@ -46,6 +46,7 @@ export 'src/http/response_entity.dart';
 export 'src/http/converter/http_message_converter.dart';
 export 'src/http/converter/abstract_http_message_converter.dart';
 export 'src/http/converter/built_value_http_message_converter.dart';
+export 'src/http/converter/form_data_http_message_converter.dart';
 
 export 'src/interceptor/mapped_client_http_request_interceptor.dart';
 export 'src/interceptor/mapped_feign_client_executor_interceptor.dart';

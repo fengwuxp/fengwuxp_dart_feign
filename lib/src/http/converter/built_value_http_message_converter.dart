@@ -12,6 +12,7 @@ import 'package:logging/logging.dart';
 import '../http_output_message.dart';
 
 /// 基于built value 的http message converter
+/// 用于写入和读取 Content-Type 为[ContentType.json]的数据
 class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter {
   static const String _TAG = "BuiltValueHttpMessageConverter";
   static var _log = Logger(_TAG);
@@ -46,9 +47,6 @@ class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter
   Future write(data, ContentType mediaType, HttpOutputMessage outputMessage) {
     final text = this._builtJsonSerializers.toJson(data);
     _log.finer("write data ==> $text");
-    final codeUnits = text.codeUnits;
-    outputMessage.body.add(codeUnits);
-    outputMessage.addContentLength(codeUnits.length);
-    return Future.value();
+    super.writeBody(text, ContentType.json, outputMessage);
   }
 }

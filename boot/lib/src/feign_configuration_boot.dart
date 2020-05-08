@@ -39,7 +39,8 @@ class FeignConfigurationBoot implements FeignConfiguration {
     this._initInterceptor(registry);
     this._initMessageConverts(registry);
     this._restTemplate = restOperations ??
-        new RestTemplate(defaultProduce: defaultProduce,
+        new RestTemplate(
+            defaultProduce: defaultProduce,
             interceptors: this._clientHttpRequestInterceptors,
             messageConverters: this._httpMessageConverters);
     this._requestURLResolver = requestURLResolver ?? RestfulRequestURLResolver();
@@ -66,7 +67,10 @@ class FeignConfigurationBoot implements FeignConfiguration {
   }
 
   void _initMessageConverts(FeignConfigurationRegistry registry) {
-    final List<HttpMessageConverter> list = [new BuiltValueHttpMessageConverter(registry.builtJsonSerializers)];
+    final List<HttpMessageConverter> list = [
+      FormDataHttpMessageConverter(),
+      BuiltValueHttpMessageConverter(registry.builtJsonSerializers),
+    ];
     registry.registryMessageConverters(list);
     this._httpMessageConverters = list;
   }

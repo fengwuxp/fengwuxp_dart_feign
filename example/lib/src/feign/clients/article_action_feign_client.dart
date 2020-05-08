@@ -19,11 +19,18 @@ import '../req/delete_article_action_req.dart';
 import '../model/api_base_query_req.dart';
 
 /// 接口：POST
+void main() {
+  initializeReflectable();
+}
 
 @FeignClient(
   value: '/article_action',
 )
 class ArticleActionFeignClient extends FeignProxyClient {
+  ArticleActionFeignClient() : super() {
+    main();
+  }
+
   /// 1:接口方法：GET
   /// 2:ArticleAction
   /// 3:返回值在java中的类型为：ApiResp
@@ -108,10 +115,6 @@ class ArticleActionFeignClient extends FeignProxyClient {
       feignOptions: feignOptions,
     );
   }
-}
-
-void main() {
-  initializeReflectable();
 }
 
 final articleActionFeignClient = ArticleActionFeignClient();
