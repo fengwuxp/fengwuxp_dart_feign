@@ -24,13 +24,13 @@ class _$ArticleActionInfoSerializer
       result
         ..add('id')
         ..add(serializers.serialize(object.id,
-            specifiedType: const FullType(num)));
+            specifiedType: const FullType(int)));
     }
     if (object.articleId != null) {
       result
         ..add('articleId')
         ..add(serializers.serialize(object.articleId,
-            specifiedType: const FullType(num)));
+            specifiedType: const FullType(int)));
     }
     if (object.actionType != null) {
       result
@@ -73,11 +73,11 @@ class _$ArticleActionInfoSerializer
       switch (key) {
         case 'id':
           result.id = serializers.deserialize(value,
-              specifiedType: const FullType(num)) as num;
+              specifiedType: const FullType(int)) as int;
           break;
         case 'articleId':
           result.articleId = serializers.deserialize(value,
-              specifiedType: const FullType(num)) as num;
+              specifiedType: const FullType(int)) as int;
           break;
         case 'actionType':
           result.actionType = serializers.deserialize(value,
@@ -105,9 +105,9 @@ class _$ArticleActionInfoSerializer
 
 class _$ArticleActionInfo extends ArticleActionInfo {
   @override
-  final num id;
+  final int id;
   @override
-  final num articleId;
+  final int articleId;
   @override
   final ArticleActionType actionType;
   @override
@@ -179,13 +179,13 @@ class ArticleActionInfoBuilder
     implements Builder<ArticleActionInfo, ArticleActionInfoBuilder> {
   _$ArticleActionInfo _$v;
 
-  num _id;
-  num get id => _$this._id;
-  set id(num id) => _$this._id = id;
+  int _id;
+  int get id => _$this._id;
+  set id(int id) => _$this._id = id;
 
-  num _articleId;
-  num get articleId => _$this._articleId;
-  set articleId(num articleId) => _$this._articleId = articleId;
+  int _articleId;
+  int get articleId => _$this._articleId;
+  set articleId(int articleId) => _$this._articleId = articleId;
 
   ArticleActionType _actionType;
   ArticleActionType get actionType => _$this._actionType;

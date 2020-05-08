@@ -28,14 +28,14 @@ class _$DeleteArticleActionReqSerializer
       result
         ..add('id')
         ..add(serializers.serialize(object.id,
-            specifiedType: const FullType(num)));
+            specifiedType: const FullType(int)));
     }
     if (object.ids != null) {
       result
         ..add('ids')
         ..add(serializers.serialize(object.ids,
             specifiedType:
-                const FullType(BuiltList, const [const FullType(num)])));
+                const FullType(BuiltList, const [const FullType(int)])));
     }
     return result;
   }
@@ -54,12 +54,12 @@ class _$DeleteArticleActionReqSerializer
       switch (key) {
         case 'id':
           result.id = serializers.deserialize(value,
-              specifiedType: const FullType(num)) as num;
+              specifiedType: const FullType(int)) as int;
           break;
         case 'ids':
           result.ids.replace(serializers.deserialize(value,
                   specifiedType:
-                      const FullType(BuiltList, const [const FullType(num)]))
+                      const FullType(BuiltList, const [const FullType(int)]))
               as BuiltList<Object>);
           break;
       }
@@ -71,9 +71,9 @@ class _$DeleteArticleActionReqSerializer
 
 class _$DeleteArticleActionReq extends DeleteArticleActionReq {
   @override
-  final num id;
+  final int id;
   @override
-  final BuiltList<num> ids;
+  final BuiltList<int> ids;
 
   factory _$DeleteArticleActionReq(
           [void Function(DeleteArticleActionReqBuilder) updates]) =>
@@ -116,13 +116,13 @@ class DeleteArticleActionReqBuilder
     implements Builder<DeleteArticleActionReq, DeleteArticleActionReqBuilder> {
   _$DeleteArticleActionReq _$v;
 
-  num _id;
-  num get id => _$this._id;
-  set id(num id) => _$this._id = id;
+  int _id;
+  int get id => _$this._id;
+  set id(int id) => _$this._id = id;
 
-  ListBuilder<num> _ids;
-  ListBuilder<num> get ids => _$this._ids ??= new ListBuilder<num>();
-  set ids(ListBuilder<num> ids) => _$this._ids = ids;
+  ListBuilder<int> _ids;
+  ListBuilder<int> get ids => _$this._ids ??= new ListBuilder<int>();
+  set ids(ListBuilder<int> ids) => _$this._ids = ids;
 
   DeleteArticleActionReqBuilder();
 

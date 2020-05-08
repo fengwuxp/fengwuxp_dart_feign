@@ -25,14 +25,14 @@ abstract class DeleteArticleActionReq implements Built<DeleteArticleActionReq, D
                     /// 在java中的类型为：Long
                 @nullable
                 @BuiltValueField(wireName: 'id')
-                num get id;
+                int get id;
 
                     /// ID集合
                     /// 在java中的类型为：数组
                     /// 在java中的类型为：Long
                 @nullable
                 @BuiltValueField(wireName: 'ids')
-                BuiltList<num> get ids;
+                BuiltList<int> get ids;
 
         @override
         Map<String, dynamic> toMap() {

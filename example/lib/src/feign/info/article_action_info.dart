@@ -26,13 +26,13 @@ abstract class ArticleActionInfo implements Built<ArticleActionInfo, ArticleActi
                     /// 在java中的类型为：Long
                 @nullable
                 @BuiltValueField(wireName: 'id')
-                num get id;
+                int get id;
 
                     /// 文章ID
                     /// 在java中的类型为：Long
                 @nullable
                 @BuiltValueField(wireName: 'articleId')
-                num get articleId;
+                int get articleId;
 
                     /// 互动类型
                     /// 在java中的类型为：ArticleActionType

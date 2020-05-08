@@ -28,7 +28,7 @@ class _$AddArticleActionReqSerializer
       result
         ..add('articleId')
         ..add(serializers.serialize(object.articleId,
-            specifiedType: const FullType(num)));
+            specifiedType: const FullType(int)));
     }
     if (object.actionType != null) {
       result
@@ -65,7 +65,7 @@ class _$AddArticleActionReqSerializer
       switch (key) {
         case 'articleId':
           result.articleId = serializers.deserialize(value,
-              specifiedType: const FullType(num)) as num;
+              specifiedType: const FullType(int)) as int;
           break;
         case 'actionType':
           result.actionType = serializers.deserialize(value,
@@ -89,7 +89,7 @@ class _$AddArticleActionReqSerializer
 
 class _$AddArticleActionReq extends AddArticleActionReq {
   @override
-  final num articleId;
+  final int articleId;
   @override
   final ArticleActionType actionType;
   @override
@@ -147,9 +147,9 @@ class AddArticleActionReqBuilder
     implements Builder<AddArticleActionReq, AddArticleActionReqBuilder> {
   _$AddArticleActionReq _$v;
 
-  num _articleId;
-  num get articleId => _$this._articleId;
-  set articleId(num articleId) => _$this._articleId = articleId;
+  int _articleId;
+  int get articleId => _$this._articleId;
+  set articleId(int articleId) => _$this._articleId = articleId;
 
   ArticleActionType _actionType;
   ArticleActionType get actionType => _$this._actionType;

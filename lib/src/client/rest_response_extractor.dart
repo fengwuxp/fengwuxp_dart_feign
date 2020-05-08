@@ -32,12 +32,14 @@ class HttpMessageConverterExtractor<T> implements ResponseExtractor<T> {
     for (HttpMessageConverter messageConverter in this._messageConverters) {
       if (this._responseType != null) {
         if (messageConverter.canRead(contentType, serializer: this._responseType)) {
-          return messageConverter.read<T>(response, serializer: this._responseType, specifiedType: this._specifiedType);
+          return messageConverter.read<T>(response,
+              serializer: this._responseType, specifiedType: this._specifiedType ?? specifiedType);
         }
       }
       if (messageConverter is GenericHttpMessageConverter) {
         if (messageConverter.canRead(contentType, serializer: serializer)) {
-          return messageConverter.read<T>(response, serializer: serializer, specifiedType: specifiedType);
+          return messageConverter.read<T>(response,
+              serializer: serializer, specifiedType: this._specifiedType ?? specifiedType);
         }
       }
     }

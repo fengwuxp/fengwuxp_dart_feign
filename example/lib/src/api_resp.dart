@@ -4,7 +4,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
 
-import '../serializers.dart';
+import './feign/serializers.dart';
 
 part 'api_resp.g.dart';
 

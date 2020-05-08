@@ -27,7 +27,7 @@ abstract class AddArticleActionReq implements Built<AddArticleActionReq, AddArti
                     /// 在java中的类型为：Long
                 @nullable
                 @BuiltValueField(wireName: 'articleId')
-                num get articleId;
+                int get articleId;
 
                     /// 互动类型
                     /// 属性：actionType为必填项，不能为空

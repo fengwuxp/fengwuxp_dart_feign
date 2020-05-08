@@ -18,11 +18,11 @@ import '../req/edit_article_action_req.dart';
 import '../req/delete_article_action_req.dart';
 import '../model/api_base_query_req.dart';
 
-/// 接口：POST
 void main() {
   initializeReflectable();
 }
 
+/// 接口：POST
 @FeignClient(
   value: '/article_action',
 )
@@ -40,7 +40,11 @@ class ArticleActionFeignClient extends FeignProxyClient {
     value: '/query',
   )
   Future<PageInfo<ArticleActionInfo>> query(QueryArticleActionReq req, [UIOptions feignOptions]) {
-    return this.delegateInvoke<PageInfo<ArticleActionInfo>>("query", [req],
+    return this.delegateInvoke<PageInfo<ArticleActionInfo>>(
+        "query",
+        [
+          req,
+        ],
         feignOptions: feignOptions,
         serializer: BuiltValueSerializable(
             serializer: PageInfo.serializer, specifiedType: FullType(PageInfo, [FullType(ArticleActionInfo)])));
@@ -53,8 +57,8 @@ class ArticleActionFeignClient extends FeignProxyClient {
   @PostMapping(
     value: '/create',
   )
-  Future<num> create(AddArticleActionReq req, [UIOptions feignOptions]) {
-    return this.delegateInvoke<num>(
+  Future<int> create(AddArticleActionReq req, [UIOptions feignOptions]) {
+    return this.delegateInvoke<int>(
       "create",
       [
         req,
@@ -70,7 +74,7 @@ class ArticleActionFeignClient extends FeignProxyClient {
   @GetMapping(
     value: '/{id}',
   )
-  Future<ArticleActionInfo> detail(@PathVariable() num id, [UIOptions feignOptions]) {
+  Future<ArticleActionInfo> detail(@PathVariable() int id, [UIOptions feignOptions]) {
     return this.delegateInvoke<ArticleActionInfo>(
         "detail",
         [

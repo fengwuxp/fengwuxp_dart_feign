@@ -23,23 +23,43 @@ class _$PageInfoSerializer implements StructuredSerializer<PageInfo<Object>> {
     final parameterT =
         isUnderspecified ? FullType.object : specifiedType.parameters[0];
 
-    final result = <Object>[
-      'total',
-      serializers.serialize(object.total, specifiedType: const FullType(int)),
-      'records',
-      serializers.serialize(object.records,
-          specifiedType: new FullType(BuiltList, [parameterT])),
-      'querySize',
-      serializers.serialize(object.querySize,
-          specifiedType: const FullType(int)),
-      'queryPage',
-      serializers.serialize(object.queryPage,
-          specifiedType: const FullType(int)),
-      'queryType',
-      serializers.serialize(object.queryType,
-          specifiedType: const FullType(String)),
-    ];
-
+    final result = <Object>[];
+    if (object.total != null) {
+      result
+        ..add('total')
+        ..add(serializers.serialize(object.total,
+            specifiedType: const FullType(int)));
+    }
+    if (object.queryType != null) {
+      result
+        ..add('queryType')
+        ..add(serializers.serialize(object.queryType,
+            specifiedType: const FullType(QueryType)));
+    }
+    if (object.records != null) {
+      result
+        ..add('records')
+        ..add(serializers.serialize(object.records,
+            specifiedType: new FullType(BuiltList, [parameterT])));
+    }
+    if (object.queryPage != null) {
+      result
+        ..add('queryPage')
+        ..add(serializers.serialize(object.queryPage,
+            specifiedType: const FullType(num)));
+    }
+    if (object.querySize != null) {
+      result
+        ..add('querySize')
+        ..add(serializers.serialize(object.querySize,
+            specifiedType: const FullType(num)));
+    }
+    if (object.empty != null) {
+      result
+        ..add('empty')
+        ..add(serializers.serialize(object.empty,
+            specifiedType: const FullType(bool)));
+    }
     return result;
   }
 
@@ -67,22 +87,26 @@ class _$PageInfoSerializer implements StructuredSerializer<PageInfo<Object>> {
           result.total = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
+        case 'queryType':
+          result.queryType = serializers.deserialize(value,
+              specifiedType: const FullType(QueryType)) as QueryType;
+          break;
         case 'records':
           result.records.replace(serializers.deserialize(value,
                   specifiedType: new FullType(BuiltList, [parameterT]))
               as BuiltList<Object>);
           break;
-        case 'querySize':
-          result.querySize = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
-          break;
         case 'queryPage':
           result.queryPage = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+              specifiedType: const FullType(num)) as num;
           break;
-        case 'queryType':
-          result.queryType = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+        case 'querySize':
+          result.querySize = serializers.deserialize(value,
+              specifiedType: const FullType(num)) as num;
+          break;
+        case 'empty':
+          result.empty = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
           break;
       }
     }
@@ -95,39 +119,27 @@ class _$PageInfo<T> extends PageInfo<T> {
   @override
   final int total;
   @override
+  final QueryType queryType;
+  @override
   final BuiltList<T> records;
   @override
-  final int querySize;
+  final num queryPage;
   @override
-  final int queryPage;
+  final num querySize;
   @override
-  final String queryType;
+  final bool empty;
 
   factory _$PageInfo([void Function(PageInfoBuilder<T>) updates]) =>
       (new PageInfoBuilder<T>()..update(updates)).build();
 
   _$PageInfo._(
       {this.total,
+      this.queryType,
       this.records,
-      this.querySize,
       this.queryPage,
-      this.queryType})
+      this.querySize,
+      this.empty})
       : super._() {
-    if (total == null) {
-      throw new BuiltValueNullFieldError('PageInfo', 'total');
-    }
-    if (records == null) {
-      throw new BuiltValueNullFieldError('PageInfo', 'records');
-    }
-    if (querySize == null) {
-      throw new BuiltValueNullFieldError('PageInfo', 'querySize');
-    }
-    if (queryPage == null) {
-      throw new BuiltValueNullFieldError('PageInfo', 'queryPage');
-    }
-    if (queryType == null) {
-      throw new BuiltValueNullFieldError('PageInfo', 'queryType');
-    }
     if (T == dynamic) {
       throw new BuiltValueMissingGenericsError('PageInfo', 'T');
     }
@@ -145,30 +157,34 @@ class _$PageInfo<T> extends PageInfo<T> {
     if (identical(other, this)) return true;
     return other is PageInfo &&
         total == other.total &&
+        queryType == other.queryType &&
         records == other.records &&
-        querySize == other.querySize &&
         queryPage == other.queryPage &&
-        queryType == other.queryType;
+        querySize == other.querySize &&
+        empty == other.empty;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc(0, total.hashCode), records.hashCode),
-                querySize.hashCode),
-            queryPage.hashCode),
-        queryType.hashCode));
+            $jc(
+                $jc($jc($jc(0, total.hashCode), queryType.hashCode),
+                    records.hashCode),
+                queryPage.hashCode),
+            querySize.hashCode),
+        empty.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('PageInfo')
           ..add('total', total)
+          ..add('queryType', queryType)
           ..add('records', records)
-          ..add('querySize', querySize)
           ..add('queryPage', queryPage)
-          ..add('queryType', queryType))
+          ..add('querySize', querySize)
+          ..add('empty', empty))
         .toString();
   }
 }
@@ -180,31 +196,36 @@ class PageInfoBuilder<T> implements Builder<PageInfo<T>, PageInfoBuilder<T>> {
   int get total => _$this._total;
   set total(int total) => _$this._total = total;
 
+  QueryType _queryType;
+  QueryType get queryType => _$this._queryType;
+  set queryType(QueryType queryType) => _$this._queryType = queryType;
+
   ListBuilder<T> _records;
   ListBuilder<T> get records => _$this._records ??= new ListBuilder<T>();
   set records(ListBuilder<T> records) => _$this._records = records;
 
-  int _querySize;
-  int get querySize => _$this._querySize;
-  set querySize(int querySize) => _$this._querySize = querySize;
+  num _queryPage;
+  num get queryPage => _$this._queryPage;
+  set queryPage(num queryPage) => _$this._queryPage = queryPage;
 
-  int _queryPage;
-  int get queryPage => _$this._queryPage;
-  set queryPage(int queryPage) => _$this._queryPage = queryPage;
+  num _querySize;
+  num get querySize => _$this._querySize;
+  set querySize(num querySize) => _$this._querySize = querySize;
 
-  String _queryType;
-  String get queryType => _$this._queryType;
-  set queryType(String queryType) => _$this._queryType = queryType;
+  bool _empty;
+  bool get empty => _$this._empty;
+  set empty(bool empty) => _$this._empty = empty;
 
   PageInfoBuilder();
 
   PageInfoBuilder<T> get _$this {
     if (_$v != null) {
       _total = _$v.total;
-      _records = _$v.records?.toBuilder();
-      _querySize = _$v.querySize;
-      _queryPage = _$v.queryPage;
       _queryType = _$v.queryType;
+      _records = _$v.records?.toBuilder();
+      _queryPage = _$v.queryPage;
+      _querySize = _$v.querySize;
+      _empty = _$v.empty;
       _$v = null;
     }
     return this;
@@ -230,15 +251,16 @@ class PageInfoBuilder<T> implements Builder<PageInfo<T>, PageInfoBuilder<T>> {
       _$result = _$v ??
           new _$PageInfo<T>._(
               total: total,
-              records: records.build(),
-              querySize: querySize,
+              queryType: queryType,
+              records: _records?.build(),
               queryPage: queryPage,
-              queryType: queryType);
+              querySize: querySize,
+              empty: empty);
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'records';
-        records.build();
+        _records?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'PageInfo', _$failedField, e.toString());

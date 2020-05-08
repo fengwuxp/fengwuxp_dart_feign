@@ -8,18 +8,18 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 import 'package:fengwuxp_dart_openfeign/src/built/date_time_serializer.dart';
-import 'package:fengwuxp_openfeign_example/src/feign/model/api_resp.dart';
 
-import './req/edit_article_action_req.dart';
-import './req/add_article_action_req.dart';
-import './article_action_type.dart';
-import './query_type.dart';
+import '../api_resp.dart';
 import './query_sort_type.dart';
-import './req/query_article_action_req.dart';
-import './model/api_base_query_req.dart';
-import './model/page_info.dart';
-import './req/delete_article_action_req.dart';
+import './query_type.dart';
 import './info/article_action_info.dart';
+import './req/add_article_action_req.dart';
+import './model/api_base_query_req.dart';
+import './article_action_type.dart';
+import './model/page_info.dart';
+import './req/query_article_action_req.dart';
+import './req/edit_article_action_req.dart';
+import './req/delete_article_action_req.dart';
 
 part 'serializers.g.dart';
 
@@ -35,19 +35,32 @@ part 'serializers.g.dart';
 ///
 /// You usually only need to do this once per project.
 @SerializersFor(const [
-  EditArticleActionReq,
-  AddArticleActionReq,
-  ArticleActionType,
-  QueryType,
   QuerySortType,
-  QueryArticleActionReq,
-  ApiBaseQueryReq,
-  PageInfo,
-  DeleteArticleActionReq,
+  QueryType,
   ArticleActionInfo,
+  AddArticleActionReq,
+  ApiBaseQueryReq,
+  ArticleActionType,
+  PageInfo,
+  QueryArticleActionReq,
+  EditArticleActionReq,
+  DeleteArticleActionReq,
   ApiResp
 ])
 final Serializers serializers = (_$serializers.toBuilder()
+      ..addBuilderFactory(
+          const FullType(BuiltMap, [
+            FullType(String),
+            FullType(BuiltList, [FullType(bool)])
+          ]),
+          () => MapBuilder<String, BuiltList<bool>>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, [
+            FullType(BuiltMap, [FullType(int), FullType(String)])
+          ]),
+          () => ListBuilder<BuiltMap<int, String>>())
+      ..addBuilderFactory(const FullType(BuiltMap, [FullType(String), FullType(int)]), () => MapBuilder<String, int>())
+      ..addBuilderFactory(const FullType(BuiltList, [FullType(int)]), () => ListBuilder<int>())
       ..addBuilderFactory(
           const FullType(PageInfo, [FullType(ArticleActionInfo)]), () => PageInfoBuilder<ArticleActionInfo>())
       ..addBuilderFactory(

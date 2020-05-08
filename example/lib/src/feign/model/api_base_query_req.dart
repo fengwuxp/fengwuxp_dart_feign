@@ -35,14 +35,14 @@ abstract class ApiBaseQueryReq implements Built<ApiBaseQueryReq, ApiBaseQueryReq
                     /// 在java中的类型为：Integer
                 @nullable
                 @BuiltValueField(wireName: 'queryPage')
-                num get queryPage;
+                int get queryPage;
 
                     /// 查询大小，默认20
                     /// 属性：querySize为必填项，不能为空
                     /// 在java中的类型为：Integer
                 @nullable
                 @BuiltValueField(wireName: 'querySize')
-                num get querySize;
+                int get querySize;
 
                     /// 排序字段
                     /// 在java中的类型为：数组

@@ -32,7 +32,6 @@ class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter
       _log.finer("read data ==> $data");
       if (inputMessage is ClientHttpResponse) {
         if (!inputMessage.ok) {
-          // {"data":null,"message":"Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; nested exception is java.lang.NumberFormatException: For input string: \"query_2\"","code":-1,"success":false}
           return jsonDecode(data);
         }
       }

@@ -29,13 +29,13 @@ abstract class QueryArticleActionReq implements Built<QueryArticleActionReq, Que
                     /// 在java中的类型为：Long
                 @nullable
                 @BuiltValueField(wireName: 'id')
-                num get id;
+                int get id;
 
                     /// 文章ID
                     /// 在java中的类型为：Long
                 @nullable
                 @BuiltValueField(wireName: 'articleId')
-                num get articleId;
+                int get articleId;
 
                     /// 互动类型
                     /// 在java中的类型为：ArticleActionType
@@ -79,14 +79,14 @@ abstract class QueryArticleActionReq implements Built<QueryArticleActionReq, Que
                     /// 在java中的类型为：Integer
                 @nullable
                 @BuiltValueField(wireName: 'queryPage')
-                num get queryPage;
+                int get queryPage;
 
                     /// 查询大小，默认20
                     /// 属性：querySize为必填项，不能为空
                     /// 在java中的类型为：Integer
                 @nullable
                 @BuiltValueField(wireName: 'querySize')
-                num get querySize;
+                int get querySize;
 
                     /// 排序字段
                     /// 在java中的类型为：数组
