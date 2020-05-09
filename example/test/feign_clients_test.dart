@@ -1,8 +1,10 @@
+import 'package:built_collection/built_collection.dart';
+import 'package:built_value/serializer.dart';
+import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_openfeign_example/src/example_feign_configuration_registry.dart';
 import 'package:fengwuxp_openfeign_example/src/feign/article_action_type.dart';
 import 'package:fengwuxp_openfeign_example/src/feign/clients/article_action_feign_client.dart';
-import 'package:fengwuxp_openfeign_example/src/feign/clients/article_action_feign_client.reflectable.dart';
-import 'package:fengwuxp_openfeign_example/src/feign/clients/example_feign_client.dart';
+import 'package:fengwuxp_openfeign_example/src/feign/clients/example_cms_feign_client.dart';
 import 'package:fengwuxp_openfeign_example/src/feign/req/add_article_action_req.dart';
 import 'package:fengwuxp_openfeign_example/src/feign/req/delete_article_action_req.dart';
 import 'package:fengwuxp_openfeign_example/src/feign/req/edit_article_action_req.dart';
@@ -56,28 +58,29 @@ void main() {
     });
   });
 
-  /// ===================>
+  /// ==========复杂的集合嵌套=========>
 
   test("feign client test 06", () async {
-    await exampleFeignClient.getNums(1).then((result) {
+    await exampleCmsFeignClient.getNums(1).then((result) {
       print("==get num=>  $result");
     });
   });
 
   test("feign client test 07", () async {
-    await exampleFeignClient.getMap().then((result) {
+    await exampleCmsFeignClient.getMap().then((result) {
       print("==get map=>  $result");
     });
   });
 
   test("feign client test 08", () async {
-    await exampleFeignClient.getMap2().then((result) {
+
+    await exampleCmsFeignClient.getMap2().then((result) {
       print("==get map 2=>  $result");
     });
   });
 
   test("feign client test 09", () async {
-    await exampleFeignClient.getMaps(100).then((result) {
+    await exampleCmsFeignClient.getMaps(100).then((result) {
       print("==get maps=>  $result");
     });
   });

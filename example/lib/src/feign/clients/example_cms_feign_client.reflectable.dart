@@ -2,7 +2,7 @@
 // https://github.com/dart-lang/reflectable.
 
 import 'dart:core';
-import 'example_feign_client.dart' as prefix1;
+import 'example_cms_feign_client.dart' as prefix1;
 import 'package:fengwuxp_dart_openfeign/src/annotations/feign_client.dart'
     as prefix0;
 import 'package:fengwuxp_dart_openfeign/src/annotations/request_mapping.dart'
@@ -24,8 +24,8 @@ final _data = <r.Reflectable, r.ReflectorData>{
   const prefix0.FeignClient(): r.ReflectorData(
       <m.TypeMirror>[
         r.NonGenericClassMirrorImpl(
-            r'ExampleFeignClient',
-            r'.ExampleFeignClient',
+            r'ExampleCmsFeignClient',
+            r'.ExampleCmsFeignClient',
             7,
             0,
             const prefix0.FeignClient(),
@@ -35,7 +35,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
             -1,
             {},
             {},
-            {r'': (b) => () => b ? prefix1.ExampleFeignClient() : null},
+            {r'': (b) => () => b ? prefix1.ExampleCmsFeignClient() : null},
             -1,
             0,
             const <int>[],
@@ -227,7 +227,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
             null,
             #serializer)
       ],
-      <Type>[prefix1.ExampleFeignClient],
+      <Type>[prefix1.ExampleCmsFeignClient],
       1,
       {
         r'==': (dynamic instance) => (x) => instance == x,
