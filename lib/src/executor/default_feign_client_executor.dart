@@ -39,10 +39,10 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
 
     //获取声明列表
     final classMirror = this.classMirror;
-    final Map<String, DeclarationMirror> map = classMirror.declarations;
-    final MethodMirror methodMirror = map[methodName];
-    final classMetadata = methodMirror.metadata;
-    final requestMapping = findRequestMapping(classMetadata) as RequestMapping;
+    final Map<String, DeclarationMirror> declarations = classMirror.declarations;
+    final MethodMirror methodMirror = declarations[methodName];
+    final methodMetadata = methodMirror.metadata;
+    final requestMapping = findRequestMapping(methodMetadata) as RequestMapping;
     final parameters = methodMirror.parameters;
 
     /// 解析参数
@@ -69,13 +69,6 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
 
     /// TODO 解析cookie
 
-    /// 处理签名
-    final apiSignatureStrategy = feignConfiguration.apiSignatureStrategy;
-    if (apiSignatureStrategy != null) {
-      final signature = findMetadata(classMetadata, Signature) as Signature;
-      // handle api signature
-      apiSignatureStrategy.sign(signature.fields, feignRequest);
-    }
     var responseExtractor = uiOptions.responseExtractor;
     var serializer = namedArguments[Symbol(FEIGN_SERIALIZER_PARAMETER_NAME)] as BuiltValueSerializable;
     if (responseExtractor == null) {
@@ -88,6 +81,14 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
     final requestId = appendRequestContextId(feignRequest);
     setRequestContext(requestId, methodMirror);
 
+    /// 处理签名
+    final apiSignatureStrategy = feignConfiguration.apiSignatureStrategy;
+    if (apiSignatureStrategy != null) {
+      final signature = findSignature(methodMetadata) as Signature;
+      // handle api signature
+      apiSignatureStrategy.sign(signature?.fields, feignRequest);
+    }
+
     /// 执行拦截器
     feignRequest = await this._preHandle(feignRequest, uiOptions, requestUrl, requestMapping);
 
@@ -99,6 +100,7 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
           request: feignRequest.body,
           queryParams: feignRequest.queryParams,
           pathVariables: feignRequest.pathVariables,
+          headers: feignRequest.headers,
           timeout: uiOptions.timeout);
     } catch (error) {
       // 请求失败或异常
@@ -129,10 +131,9 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
 
   /// 拦截器后置错误处理
   Future _postHandleError(FeignBaseRequest request, UIOptions uiOptions, String url, RequestMapping requestMapping,
-       error, BuiltValueSerializable serializer) async {
-    return this
-        ._executeInterceptor<FeignBaseRequest, Object>(request, uiOptions, url, requestMapping, error, (
-            [FeignClientExecutorInterceptor<FeignBaseRequest> interceptor]) {
+      error, BuiltValueSerializable serializer) async {
+    return this._executeInterceptor<FeignBaseRequest, Object>(request, uiOptions, url, requestMapping, error, (
+        [FeignClientExecutorInterceptor<FeignBaseRequest> interceptor]) {
       if (interceptor == null) {
         return Future.error(error);
       }

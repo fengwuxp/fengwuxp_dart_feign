@@ -6,7 +6,6 @@ import 'registry/feign_client_interceptor_registry.dart';
 
  class FeignConfigurationRegistry {
 
-  BuiltJsonSerializers get builtJsonSerializers=>null;
 
   void registryMessageConverters(List<HttpMessageConverter> registry){}
 

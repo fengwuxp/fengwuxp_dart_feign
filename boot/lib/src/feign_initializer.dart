@@ -1,9 +1,10 @@
+import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_dart_openfeign/index.dart';
 
 import 'feign_configuration_boot.dart';
 import 'feign_configuration_registry.dart';
 
-void feignInitializer(FeignConfigurationRegistry registry,
+void feignInitializer(FeignConfigurationRegistry registry, BuiltJsonSerializers builtJsonSerializers,
     {FeignClientExecutorFactory feignClientExecutorFactory,
     String defaultProduce = HttpMediaType.FORM_DATA,
     RestOperations restOperations,
@@ -12,8 +13,7 @@ void feignInitializer(FeignConfigurationRegistry registry,
     RequestHeaderResolver requestHeaderResolver,
     ApiSignatureStrategy apiSignatureStrategy,
     AuthenticationBroadcaster authenticationBroadcaster}) {
-
-  registryFeignConfiguration(FeignConfigurationBoot(registry,
+  registryFeignConfiguration(FeignConfigurationBoot(registry, builtJsonSerializers,
       feignClientExecutorFactory: feignClientExecutorFactory,
       defaultProduce: defaultProduce,
       restOperations: restOperations,

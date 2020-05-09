@@ -28,7 +28,6 @@ abstract class FeignBaseRequest implements FeignRequestId {
 }
 
 class FeignRequest implements FeignBaseRequest {
-
   String requestId;
 
   /// external query parameters
@@ -49,6 +48,11 @@ class FeignRequest implements FeignBaseRequest {
   List<dynamic> pathVariables;
 
   FeignRequest({this.requestId, this.queryParams, this.body, this.headers, this.pathVariables});
+
+  @override
+  String toString() {
+    return "requestId:$requestId,body:$body,headers:$headers,queryParams:$queryParams ";
+  }
 }
 
 class DataOptions {

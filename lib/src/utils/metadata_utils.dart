@@ -1,4 +1,5 @@
 import 'package:built_value/built_value.dart';
+import 'package:fengwuxp_dart_openfeign/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/cookie_value.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/path_variable.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/request_param.dart';
@@ -21,12 +22,18 @@ findMetadata(metadata, Type metaType) {
   return metadata.firstWhere((meta) => meta.runtimeType == metaType);
 }
 
+/// find [Signature]
+findSignature(List metadata) {
+  return metadata.firstWhere((meta) => meta is Signature, orElse: () => Signature(null));
+}
+
+// find RequestMapping
 findRequestMapping(List metadata) {
   return metadata.firstWhere((meta) => meta is RequestMapping);
 }
 
 // 是否为请求体
-isRequestBody(metadata){
+isRequestBody(metadata) {
   return metadata.runtimeType == RequestBody;
 }
 

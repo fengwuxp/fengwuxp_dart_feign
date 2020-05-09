@@ -12,6 +12,7 @@ dependencies:
     sdk: flutter
   reflectable:
     git: git://github.com/dart-lang/reflectable.git
+  logging: ^0.11.4
   fengwuxp_dart_basic:
     git: git://github.com/fengwuxp/fengwuxp_dart_basic.git
   fengwuxp_dart_openfeign:

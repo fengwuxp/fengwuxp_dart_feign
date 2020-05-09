@@ -9,11 +9,24 @@ import 'package:fengwuxp_openfeign_example/src/feign/req/add_article_action_req.
 import 'package:fengwuxp_openfeign_example/src/feign/req/delete_article_action_req.dart';
 import 'package:fengwuxp_openfeign_example/src/feign/req/edit_article_action_req.dart';
 import 'package:fengwuxp_openfeign_example/src/feign/req/query_article_action_req.dart';
+import 'package:fengwuxp_openfeign_example/src/feign/serializers.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fengwuxp_openfeign_boot/index.dart';
+import 'package:logging/logging.dart';
 
 void main() {
-  feignInitializer(new ExampleFeignConfigurationRegistry());
+  var md5signatureStrategy = Md5SignatureStrategy("app", "2aecdd9db7d816462e2232632c90f8fa", "mock");
+  feignInitializer(new ExampleFeignConfigurationRegistry(), BuiltJsonSerializers(serializers),
+      apiSignatureStrategy: md5signatureStrategy);
+  /// 日志打印
+  Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen((LogRecord rec) {
+    print('[${rec.loggerName}]:[${rec.level}]] ${rec.level.name}: ${rec.time}: ${rec.message}');
+    if (rec.error != null && rec.stackTrace != null) {
+      print('${rec.error}: ${rec.stackTrace}');
+    }
+  });
+
 
   test("feign client test 01, query api ", () async {
     await articleActionFeignClient.query(QueryArticleActionReq((b) => b.id = 1)).then((result) {
@@ -73,7 +86,6 @@ void main() {
   });
 
   test("feign client test 08", () async {
-
     await exampleCmsFeignClient.getMap2().then((result) {
       print("==get map 2=>  $result");
     });

@@ -26,7 +26,7 @@ class FeignConfigurationBoot implements FeignConfiguration {
 
   AuthenticationBroadcaster _authenticationBroadcaster;
 
-  FeignConfigurationBoot(FeignConfigurationRegistry registry,
+  FeignConfigurationBoot(FeignConfigurationRegistry registry, BuiltJsonSerializers builtJsonSerializers,
       {FeignClientExecutorFactory feignClientExecutorFactory,
       String defaultProduce = HttpMediaType.FORM_DATA,
       RestOperations restOperations,
@@ -37,7 +37,7 @@ class FeignConfigurationBoot implements FeignConfiguration {
       AuthenticationBroadcaster authenticationBroadcaster}) {
     this._feignClientExecutorFactory = feignClientExecutorFactory ?? DefaultFeignClientExecutorFactory();
     this._initInterceptor(registry);
-    this._initMessageConverts(registry);
+    this._initMessageConverts(registry, builtJsonSerializers);
     this._restTemplate = restOperations ??
         new RestTemplate(
             defaultProduce: defaultProduce,
@@ -48,11 +48,7 @@ class FeignConfigurationBoot implements FeignConfiguration {
     this._requestHeaderResolver = requestHeaderResolver ?? DefaultRequestHeaderResolver();
 
     this._authenticationBroadcaster = DebounceAuthenticationBroadcaster(authenticationBroadcaster);
-    this._apiSignatureStrategy = apiSignatureStrategy == null
-        ? null
-        : apiSignatureStrategy is CacheCapableSupport
-            ? CacheAuthenticationStrategy(apiSignatureStrategy as AuthenticationStrategy)
-            : apiSignatureStrategy;
+    this._apiSignatureStrategy = apiSignatureStrategy;
   }
 
   /// init interceptor
@@ -66,10 +62,10 @@ class FeignConfigurationBoot implements FeignConfiguration {
     this._feignClientExecutorInterceptors = feignClientInterceptorRegistry.getInterceptors();
   }
 
-  void _initMessageConverts(FeignConfigurationRegistry registry) {
+  void _initMessageConverts(FeignConfigurationRegistry registry, BuiltJsonSerializers builtJsonSerializers) {
     final List<HttpMessageConverter> list = [
       FormDataHttpMessageConverter(),
-      BuiltValueHttpMessageConverter(registry.builtJsonSerializers),
+      BuiltValueHttpMessageConverter(builtJsonSerializers),
     ];
     registry.registryMessageConverters(list);
     this._httpMessageConverters = list;

@@ -39,6 +39,16 @@ String appendRequestContextId(FeignRequest feignRequestOptions) {
   return requestId;
 }
 
+// 获取请求id
+String getRequestId(Map<String, String> headers) {
+  return headers[REQUEST_ID_HEADER_NAME];
+}
+
+// 移除请求id
+void removeRequestId(Map<String, String> headers) {
+  headers.remove(REQUEST_ID_HEADER_NAME);
+}
+
 /// 通过请求上下文id 获取FeignClientMethodConfig
 /// @param req
 /// {@link REQUEST_NUM}

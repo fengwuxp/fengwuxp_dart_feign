@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:fengwuxp_dart_openfeign/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/client/streamed_request.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/client_http_request.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/clinet_http_response.dart';
@@ -54,8 +55,8 @@ class RestClientHttpRequest implements ClientHttpRequest {
         }
       }
     }
-
-
+    // 移除掉请求id
+    removeRequestId(request.headers);
 
     request.body.close();
     return request.send();

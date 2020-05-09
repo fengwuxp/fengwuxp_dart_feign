@@ -9,8 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ExampleFeignConfigurationRegistry extends FeignConfigurationRegistry {
-  @override
-  BuiltJsonSerializers get builtJsonSerializers => BuiltJsonSerializers(serializers);
+
 
   @override
   void registryMessageConverters(List<HttpMessageConverter> registry) {}
