@@ -64,4 +64,11 @@ class MockFeignConfiguration implements FeignConfiguration {
         messageConverters: messageConverters,
         interceptors: [RoutingClientHttpRequestInterceptor('http://localhost:8090/api/')]);
   }
+
+  @override
+  // TODO: implement feignToastHandle
+  get feignToastHandle => (result) {
+        print("==========>$result");
+        return Future.value();
+      };
 }

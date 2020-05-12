@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:fengwuxp_dart_openfeign/index.dart';
+
 /// http header content type name
 const CONTENT_TYPE_NAME = 'Content-Type';
 
@@ -6,6 +10,8 @@ const FEIGN_OPTIONS_PARAMETER_NAME = "feignOptions";
 
 const FEIGN_SERIALIZER_PARAMETER_NAME = "serializer";
 
-
 /// request id header name
- const REQUEST_ID_HEADER_NAME = 'Dart-Feign-Request-Id';
+const REQUEST_ID_HEADER_NAME = 'Dart-Feign-Request-Id';
+
+///  mock unauthorized response
+final UNAUTHORIZED_RESPONSE = ResponseEntity(HttpStatus.unauthorized, {}, null, null);

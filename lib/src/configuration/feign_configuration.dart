@@ -11,9 +11,10 @@ import 'package:fengwuxp_dart_openfeign/src/signature/api_signature_strategy.dar
 
 import '../cache_capable_support.dart';
 
+/// [error] error is [String] or [ResponseEntity] or customize type
+typedef Future FeignToastHandle(error);
+
 abstract class FeignConfiguration extends CacheCapableSupport {
-
-
   FeignClientExecutorFactory get feignClientExecutorFactory;
 
   RestOperations get restTemplate;
@@ -34,4 +35,6 @@ abstract class FeignConfiguration extends CacheCapableSupport {
   List<FeignClientExecutorInterceptor> get feignClientExecutorInterceptors;
 
   AuthenticationBroadcaster get authenticationBroadcaster;
+
+  FeignToastHandle get feignToastHandle;
 }

@@ -17,7 +17,10 @@ import 'package:logging/logging.dart';
 void main() {
   var md5signatureStrategy = Md5SignatureStrategy("app", "2aecdd9db7d816462e2232632c90f8fa", "mock");
   feignInitializer(new ExampleFeignConfigurationRegistry(), BuiltJsonSerializers(serializers),
-      apiSignatureStrategy: md5signatureStrategy);
+      apiSignatureStrategy: md5signatureStrategy, feignToastHandle: (resp) {
+
+      });
+
   /// 日志打印
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((LogRecord rec) {
@@ -26,7 +29,6 @@ void main() {
       print('${rec.error}: ${rec.stackTrace}');
     }
   });
-
 
   test("feign client test 01, query api ", () async {
     await articleActionFeignClient.query(QueryArticleActionReq((b) => b.id = 1)).then((result) {

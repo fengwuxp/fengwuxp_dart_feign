@@ -5,6 +5,7 @@ import 'package:fengwuxp_dart_openfeign/src/cache_capable_support.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/authentication_strategy.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/cache_authentication_strategy.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/client_http_request_interceptor.dart';
+import 'package:fengwuxp_dart_openfeign/src/constant/feign_constant_var.dart';
 import 'package:fengwuxp_dart_openfeign/src/context/request_context_holder.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/client_http_request.dart';
 import 'package:fengwuxp_dart_openfeign/src/network/simple_none_network_failback.dart';
@@ -66,7 +67,6 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
       return request;
     }
 
-//    final {aheadOfTimes, blockingRefreshAuthorization, authenticationStrategy} = this;
     final aheadOfTimes = this._aheadOfTimes,
         blockingRefreshAuthorization = this._blockingRefreshAuthorization,
         authenticationStrategy = this._authenticationStrategy;
@@ -77,11 +77,12 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
       if (!forceCertification) {
         return request;
       }
-      return Future.error(HttpException("authorization is null", uri: request.url));
+      /// see[UnifiedFailureToastExecutorInterceptor]
+      return Future.error(UNAUTHORIZED_RESPONSE);
     }
 
     if (authorization == null) {
-      return Future.error(HttpException("authorization is null", uri: request.url));
+      return Future.error(UNAUTHORIZED_RESPONSE);
     }
 
     final needRefreshAuthorization =
@@ -101,7 +102,8 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
           return request;
         }
         // refresh authorization error
-        return Future.error(HttpException("refresh authorization error", uri: request.url));
+//        return Future.error(HttpException("refresh authorization error", uri: request.url));
+        return Future.error(UNAUTHORIZED_RESPONSE);
       }
     } else {
       if (this._refreshing) {

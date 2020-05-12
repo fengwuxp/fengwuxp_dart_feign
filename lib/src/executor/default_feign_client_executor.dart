@@ -2,6 +2,7 @@ import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/feign_client.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/request_mapping.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/signature.dart';
+import 'package:fengwuxp_dart_openfeign/src/client/authentication_strategy.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/response_extractor.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/rest_response_extractor.dart';
 import 'package:fengwuxp_dart_openfeign/src/configuration/feign_configuration.dart';
@@ -11,6 +12,7 @@ import 'package:fengwuxp_dart_openfeign/src/context/request_context_holder.dart'
 import 'package:fengwuxp_dart_openfeign/src/http/client/client_exception.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 import 'package:fengwuxp_dart_openfeign/src/interceptor/mapped_feign_client_executor_interceptor.dart';
+import 'package:fengwuxp_dart_openfeign/src/signature/api_signature_strategy.dart';
 import 'package:fengwuxp_dart_openfeign/src/utils/metadata_utils.dart';
 import 'package:reflectable/reflectable.dart';
 
@@ -111,6 +113,7 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
     return this._postHandle(feignRequest, uiOptions, requestUrl, requestMapping, response, serializer);
   }
 
+
   /// 前置拦截器
   Future _preHandle(FeignRequest request, UIOptions uiOptions, String url, RequestMapping requestMapping) async {
     return this
@@ -138,11 +141,12 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
         return Future.error(error);
       }
       return interceptor.postError(request, uiOptions, error, serializer: serializer);
-    });
+    }, true);
   }
 
   Future _executeInterceptor<T extends FeignBaseRequest, R>(FeignBaseRequest request, UIOptions uiOptions, String url,
-      RequestMapping requestMapping, R defaultValue, ExecuteInterceptor<T> execute) async {
+      RequestMapping requestMapping, R defaultValue, ExecuteInterceptor<T> execute,
+      [bool needTry = false]) async {
     final feignClientExecutorInterceptors = this.feignConfiguration.feignClientExecutorInterceptors;
     if (feignClientExecutorInterceptors == null) {
       return defaultValue;
@@ -152,7 +156,15 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
       var feignClientExecutorInterceptor = feignClientExecutorInterceptors[index];
       var interceptor = this._getInterceptor(feignClientExecutorInterceptor, url, request.headers, requestMapping);
       if (interceptor != null) {
-        result = await execute(interceptor);
+        if (needTry) {
+          try {
+            result = await execute(interceptor);
+          } catch (e) {
+            result = e;
+          }
+        } else {
+          result = await execute(interceptor);
+        }
       }
       index++;
     }
