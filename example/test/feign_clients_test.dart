@@ -17,9 +17,7 @@ import 'package:logging/logging.dart';
 void main() {
   var md5signatureStrategy = Md5SignatureStrategy("app", "2aecdd9db7d816462e2232632c90f8fa", "mock");
   feignInitializer(new ExampleFeignConfigurationRegistry(), BuiltJsonSerializers(serializers),
-      apiSignatureStrategy: md5signatureStrategy, feignToastHandle: (resp) {
-
-      });
+      apiSignatureStrategy: md5signatureStrategy);
 
   /// 日志打印
   Logger.root.level = Level.ALL;

@@ -26,8 +26,6 @@ class FeignConfigurationBoot implements FeignConfiguration {
 
   AuthenticationBroadcaster _authenticationBroadcaster;
 
-  FeignToastHandle _feignToastHandle;
-
   FeignConfigurationBoot(FeignConfigurationRegistry registry, BuiltJsonSerializers builtJsonSerializers,
       {FeignClientExecutorFactory feignClientExecutorFactory,
       String defaultProduce = HttpMediaType.FORM_DATA,
@@ -36,8 +34,7 @@ class FeignConfigurationBoot implements FeignConfiguration {
       RequestParamsResolver requestParamsResolver,
       RequestHeaderResolver requestHeaderResolver,
       ApiSignatureStrategy apiSignatureStrategy,
-      AuthenticationBroadcaster authenticationBroadcaster,
-      FeignToastHandle feignToastHandle}) {
+      AuthenticationBroadcaster authenticationBroadcaster}) {
     this._feignClientExecutorFactory = feignClientExecutorFactory ?? DefaultFeignClientExecutorFactory();
     this._initInterceptor(registry);
     this._initMessageConverts(registry, builtJsonSerializers);
@@ -52,7 +49,6 @@ class FeignConfigurationBoot implements FeignConfiguration {
 
     this._authenticationBroadcaster = DebounceAuthenticationBroadcaster(authenticationBroadcaster);
     this._apiSignatureStrategy = apiSignatureStrategy;
-    this._feignToastHandle = feignToastHandle;
   }
 
   /// init interceptor
@@ -105,6 +101,4 @@ class FeignConfigurationBoot implements FeignConfiguration {
   @override
   AuthenticationBroadcaster get authenticationBroadcaster => this._authenticationBroadcaster;
 
-  @override
-  FeignToastHandle get feignToastHandle => this._feignToastHandle;
 }

@@ -12,8 +12,7 @@ void feignInitializer(FeignConfigurationRegistry registry, BuiltJsonSerializers 
     RequestParamsResolver requestParamsResolver,
     RequestHeaderResolver requestHeaderResolver,
     ApiSignatureStrategy apiSignatureStrategy,
-    AuthenticationBroadcaster authenticationBroadcaster,
-    FeignToastHandle feignToastHandle}) {
+    AuthenticationBroadcaster authenticationBroadcaster}) {
   registryFeignConfiguration(FeignConfigurationBoot(registry, builtJsonSerializers,
       feignClientExecutorFactory: feignClientExecutorFactory,
       defaultProduce: defaultProduce,
@@ -22,6 +21,5 @@ void feignInitializer(FeignConfigurationRegistry registry, BuiltJsonSerializers 
       requestParamsResolver: requestParamsResolver,
       requestHeaderResolver: requestHeaderResolver,
       apiSignatureStrategy: apiSignatureStrategy,
-      authenticationBroadcaster: authenticationBroadcaster,
-      feignToastHandle: feignToastHandle));
+      authenticationBroadcaster: authenticationBroadcaster));
 }
