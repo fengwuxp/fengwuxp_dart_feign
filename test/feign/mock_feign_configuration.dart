@@ -58,17 +58,13 @@ class MockFeignConfiguration implements FeignConfiguration {
           return null;
         }
         return ApiResp.formJsonBySerializer(body);
+      }, (result) {
+        print("==========>$result");
+        return Future.value();
       })
     ];
     this.restTemplate = new RestTemplate(
         messageConverters: messageConverters,
         interceptors: [RoutingClientHttpRequestInterceptor('http://localhost:8090/api/')]);
   }
-
-  @override
-  // TODO: implement feignToastHandle
-  get feignToastHandle => (result) {
-        print("==========>$result");
-        return Future.value();
-      };
 }

@@ -10,6 +10,9 @@ import '../feign_request_options.dart';
 
 typedef void UnifiedFailureToast(ResponseEntity response);
 
+/// [error] error is [String] or [ResponseEntity] or customize type
+typedef Future FeignToastHandle(error);
+
 /// 转换统一返回的错误数据的函数
 /// [data]
 /// [serializer]
@@ -18,8 +21,9 @@ typedef T TransformerResponseData<T>(data, BuiltValueSerializable serializer);
 //  unified transform failure toast
 class UnifiedFailureToastExecutorInterceptor<T extends FeignBaseRequest> implements FeignClientExecutorInterceptor<T> {
   TransformerResponseData _transformerResponseData;
+  FeignToastHandle _feignToastHandle;
 
-  UnifiedFailureToastExecutorInterceptor(this._transformerResponseData);
+  UnifiedFailureToastExecutorInterceptor(this._transformerResponseData, this._feignToastHandle);
 
   Future<T> preHandle(T request, UIOptions uiOptions) async {
     return request;
@@ -36,7 +40,7 @@ class UnifiedFailureToastExecutorInterceptor<T extends FeignBaseRequest> impleme
   /// [options]
   /// [exception]
   Future postError<E>(T options, UIOptions uiOptions, error, {BuiltValueSerializable serializer}) {
-    var result = error;
+    var result;
     if (error is ClientTimeOutException) {
       result = UNAUTHORIZED_RESPONSE;
     }
@@ -44,15 +48,18 @@ class UnifiedFailureToastExecutorInterceptor<T extends FeignBaseRequest> impleme
       // 其他异常
       result = ResponseEntity(HttpStatus.internalServerError, {}, null, null);
     }
-    if (result != error) {
+    if (result == null) {
+      // error is customize type
       var isResponseEntity = serializer.specifiedType != null && serializer.specifiedType.root == ResponseEntity;
       result = isResponseEntity ? error : this._transformerResponseData(error, serializer);
     }
-    if (error is ResponseEntity) {
+    if (result is ResponseEntity) {
       if (HttpStatus.unauthorized == result.statusCode) {
-        // 发送需要登陆的广播
+        // send
         getFeignConfiguration().authenticationBroadcaster?.sendUnAuthorizedEvent();
       }
+    } else {
+      // TODO 其他未处理的类型
     }
     _tryToast(result, uiOptions);
     return Future.error(result);
@@ -62,6 +69,6 @@ class UnifiedFailureToastExecutorInterceptor<T extends FeignBaseRequest> impleme
     if (uiOptions.useUnifiedToast == false || uiOptions.useProgressBar == false) {
       return;
     }
-    getFeignConfiguration().feignToastHandle(resp);
+    this._feignToastHandle(resp);
   }
 }
