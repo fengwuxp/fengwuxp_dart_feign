@@ -30,7 +30,7 @@ class ExampleFeignConfigurationRegistry extends FeignConfigurationRegistry {
         return null;
       }
       return ApiResp.formJsonBySerializer(body);
-    }, (result) {
+    }, (result) async {
       print("===>$result");
     }));
   }
