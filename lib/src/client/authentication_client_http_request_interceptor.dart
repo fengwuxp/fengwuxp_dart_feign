@@ -44,7 +44,7 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
   Future<void> interceptor(ClientHttpRequest request) async {
     final looseMode = this._looseMode;
     // need force certification
-    var forceCertification = !looseMode, onlyTryGetToken = false;
+    var forceCertification = !looseMode;
     var requestMapping = getRequestMappingByRequest(request);
     if (requestMapping != null) {
       if (requestMapping.needCertification == false) {
@@ -52,7 +52,6 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
         // return req;
         if (looseMode) {
           forceCertification = false;
-          onlyTryGetToken = true;
         } else {
           return request;
         }
@@ -77,6 +76,7 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
       if (!forceCertification) {
         return request;
       }
+
       /// see[UnifiedFailureToastExecutorInterceptor]
       return Future.error(UNAUTHORIZED_RESPONSE);
     }
@@ -85,9 +85,9 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
       return Future.error(UNAUTHORIZED_RESPONSE);
     }
 
-    final needRefreshAuthorization =
-        !onlyTryGetToken || authorization.expireDate < DateTime.now().millisecond + aheadOfTimes;
-    if (authorization.expireDate == NEVER_REFRESH_FLAG || !needRefreshAuthorization) {
+    final authorizationIsInvalid = authorization.expireDate != NEVER_REFRESH_FLAG &&
+        authorization.expireDate < DateTime.now().millisecond + aheadOfTimes;
+    if (!authorizationIsInvalid) {
       this._appendAuthorizationHeader(authorization, request.headers);
       return request;
     }
