@@ -19,9 +19,6 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
 
   AuthenticationStrategy _authenticationStrategy;
 
-  // In the loose mode, it only tries to obtain the authentication information. If it does not obtain it, it does nothing.
-  bool _looseMode = true;
-
   // is refreshing status
   bool _refreshing = false;
 
@@ -29,7 +26,7 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
   List<WaitHttpRequest<ClientHttpRequest>> _syncQueue = [];
 
   AuthenticationClientHttpRequestInterceptor(AuthenticationStrategy authenticationStrategy,
-      {int aheadOfTimes, bool looseMode, bool blockingRefreshAuthorization}) {
+      {int aheadOfTimes, bool blockingRefreshAuthorization}) {
     if (authenticationStrategy is CacheCapableSupport) {
       this._authenticationStrategy = new CacheAuthenticationStrategy(authenticationStrategy);
     } else {
@@ -37,28 +34,15 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
     }
     this._aheadOfTimes = aheadOfTimes ?? 5 * 60 * 1000;
     this._blockingRefreshAuthorization = blockingRefreshAuthorization ?? true;
-    this._looseMode = looseMode ?? true;
   }
 
   @override
   Future<void> interceptor(ClientHttpRequest request) async {
-    final looseMode = this._looseMode;
-    // need force certification
-    var forceCertification = !looseMode;
     var requestMapping = getRequestMappingByRequest(request);
     if (requestMapping != null) {
       if (requestMapping.needCertification == false) {
         // none certification
-        // return req;
-        if (looseMode) {
-          forceCertification = false;
-        } else {
-          return request;
-        }
-      }
-      if (requestMapping.needCertification == true) {
-        // force none certification
-        forceCertification = true;
+        return request;
       }
     }
     if (!this._needAppendAuthorizationHeader(request.headers)) {
@@ -73,10 +57,6 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
     try {
       authorization = await authenticationStrategy.getAuthorization(request.url, request.headers, request.method);
     } catch (e) {
-      if (!forceCertification) {
-        return request;
-      }
-
       /// see[UnifiedFailureToastExecutorInterceptor]
       return Future.error(UNAUTHORIZED_RESPONSE);
     }
@@ -98,9 +78,6 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
         authorization = await authenticationStrategy.refreshAuthorization(
             authorization, request.url, request.headers, request.method);
       } catch (e) {
-        if (!forceCertification) {
-          return request;
-        }
         // refresh authorization error
 //        return Future.error(HttpException("refresh authorization error", uri: request.url));
         return Future.error(UNAUTHORIZED_RESPONSE);
@@ -119,10 +96,7 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
               authorization, request.url, request.headers, request.method);
         } catch (e) {
           // refresh authorization error
-          error = e;
-          if (!looseMode) {
-            return Future.error(e);
-          }
+          return Future.error(UNAUTHORIZED_RESPONSE);
         }
         this._refreshing = false;
         // clear
