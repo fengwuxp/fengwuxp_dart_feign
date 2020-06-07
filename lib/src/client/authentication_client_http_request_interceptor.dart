@@ -1,6 +1,5 @@
 import 'dart:async';
-import 'dart:io';
-
+import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/cache_capable_support.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/authentication_strategy.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/cache_authentication_strategy.dart';
@@ -61,12 +60,16 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
       return Future.error(UNAUTHORIZED_RESPONSE);
     }
 
-    if (authorization == null) {
+    if (authorization == null || !StringUtils.hasText(authorization.authorization)) {
       return Future.error(UNAUTHORIZED_RESPONSE);
     }
-
-    final authorizationIsInvalid = authorization.expireDate != NEVER_REFRESH_FLAG &&
-        authorization.expireDate < DateTime.now().millisecond + aheadOfTimes;
+    final isNever = authorization.expireDate == NEVER_REFRESH_FLAG;
+    final currentTimes =  DateTime.now().millisecond;
+    if (authorization.expireDate <= currentTimes - 20 * 1000 && !isNever) {
+      // 20 seconds in advance, the token is invalid and needs to be re-authenticated
+      return Future.error(UNAUTHORIZED_RESPONSE);
+    }
+    final authorizationIsInvalid = !isNever && authorization.expireDate < currentTimes + aheadOfTimes;
     if (!authorizationIsInvalid) {
       this._appendAuthorizationHeader(authorization, request.headers);
       return request;
