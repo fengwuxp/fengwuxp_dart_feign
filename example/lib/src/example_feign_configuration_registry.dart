@@ -64,14 +64,13 @@ class ExampleRequestProgressBar implements RequestProgressBar {
   @override
   void showProgressBar([ProgressBarOptions barOptions]) {
     this._cancelFunc = BotToast.showCustomLoading(
-      wrapAnimation: loadingAnimation,
-      align: Alignment.center,
-      crossPage: true,
-      clickClose: false,
-      allowClick: false,
-      backgroundColor: Colors.black26,
-      toastBuilder: (_) => const SpinKitCircle(color: Colors.white),
-    );
+        wrapAnimation: loadingAnimation,
+        align: Alignment.center,
+        crossPage: true,
+        clickClose: false,
+        allowClick: false,
+        backgroundColor: Colors.black26,
+        toastBuilder: (_) => SpinKitCircle());
   }
 
   @override

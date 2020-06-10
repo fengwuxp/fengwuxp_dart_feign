@@ -38,13 +38,14 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
 
   @override
   Future<void> interceptor(ClientHttpRequest request) async {
-    var requestMapping = getRequestMappingByRequest(request);
-    if (requestMapping != null) {
-      if (requestMapping.needCertification == false) {
-        // none certification
-        return request;
-      }
-    }
+//    var requestMapping = getRequestMappingByRequest(request);
+//    if (requestMapping != null) {
+//      if (requestMapping.needCertification == false) {
+//        // none certification
+//        return request;
+//      }
+//    }
+
     if (!this._needAppendAuthorizationHeader(request.headers)) {
       // Prevent recursion on refresh
       return request;
@@ -65,7 +66,7 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
       return Future.error(UNAUTHORIZED_RESPONSE);
     }
     final isNever = authorization.expireDate == NEVER_REFRESH_FLAG;
-    final currentTimes =  DateTime.now().millisecond;
+    final currentTimes = DateTime.now().millisecond;
     if (authorization.expireDate <= currentTimes - 20 * 1000 && !isNever) {
       // 20 seconds in advance, the token is invalid and needs to be re-authenticated
       return Future.error(UNAUTHORIZED_RESPONSE);

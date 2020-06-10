@@ -44,7 +44,7 @@ class RequestMapping {
 
   /// need authentication information
   /// default @see [FeignConfiguration]
-  final bool needCertification;
+//  final bool needCertification;
 
   /// 响应数据类型
   /// 由于dart的反射在面对复杂的泛型是无法得到正确的类型 使用手动传入得到形式
@@ -64,14 +64,14 @@ class RequestMapping {
       {String value,
       String method,
       num timeout,
-      bool needCertification,
+//      bool needCertification,
       Map<String, String> headers,
       List<String> consumes,
       List<String> produces})
       : this.value = value,
         this.timeout = timeout,
         this.method = method,
-        this.needCertification = needCertification ?? false,
+//        this.needCertification = needCertification ?? false,
         this.headers = headers ?? const {},
         this.consumes = consumes ?? const [],
         this.produces = consumes ?? const [];

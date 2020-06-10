@@ -1,6 +1,4 @@
 abstract class InterceptorRegistration {
-
-
   List<String> _includePatterns = [];
 
   List<String> _excludePatterns = [];
@@ -17,33 +15,33 @@ abstract class InterceptorRegistration {
 
   InterceptorRegistration(this.interceptor);
 
-  addPathPatterns(List<String> patterns) {
+  InterceptorRegistration addPathPatterns(List<String> patterns) {
     this._includePatterns.addAll(patterns);
     return this;
   }
 
-  excludePathPatterns(List<String> patterns) {
+  InterceptorRegistration excludePathPatterns(List<String> patterns) {
     this._excludePatterns.addAll(patterns);
     return this;
   }
 
-  addHttpMethods(List<String> patterns) {
+  InterceptorRegistration addHttpMethods(List<String> patterns) {
     this._includeMethods.addAll(patterns);
     return this;
   }
 
-  excludeHttpMethods(List<String> patterns) {
+  InterceptorRegistration excludeHttpMethods(List<String> patterns) {
     this._excludeMethods.addAll(patterns);
     return this;
   }
 
   /// [headers]
-  addHeadersPatterns(List<List<String>> headers) {
+  InterceptorRegistration addHeadersPatterns(List<List<String>> headers) {
     this._includeHeaders.addAll(headers);
     return this;
   }
 
-  excludeHeadersPatterns(List<List<String>> headers) {
+  InterceptorRegistration excludeHeadersPatterns(List<List<String>> headers) {
     this._excludeHeaders.addAll(headers);
     return this;
   }
