@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/constant/http/http_media_type.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/client/utils.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/converter/abstract_http_message_converter.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/http_output_message.dart';
 import 'package:logging/logging.dart';

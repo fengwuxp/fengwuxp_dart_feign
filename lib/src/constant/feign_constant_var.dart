@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:fengwuxp_dart_openfeign/index.dart';
 
 /// http header content type name
-const CONTENT_TYPE_NAME = 'Content-Type';
+//const CONTENT_TYPE_NAME = HttpHeaders.contentTypeHeader;
 
 /// feign options 命名参数的名称
 const FEIGN_OPTIONS_PARAMETER_NAME = "feignOptions";

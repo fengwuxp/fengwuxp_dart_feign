@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:fengwuxp_dart_openfeign/src/http/client/byte_stream.dart';

@@ -1,5 +1,4 @@
 import 'package:fengwuxp_dart_openfeign/src/client/authentication_strategy.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/client_http_request.dart';
 
 /// cache AuthenticationStrategy
 /// [CacheCapableAuthenticationStrategy]

@@ -1,6 +1,4 @@
 import 'package:fengwuxp_dart_openfeign/src/http/client/client_exception.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/clinet_http_response.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 
 import '../feign_request_options.dart';
 

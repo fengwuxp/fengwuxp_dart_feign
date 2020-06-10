@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:fengwuxp_dart_openfeign/src/http/clinet_http_response.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/http_input_message.dart';
 
 import 'base_request.dart';
 

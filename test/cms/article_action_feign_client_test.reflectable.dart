@@ -116,8 +116,8 @@ final _data = <r.Reflectable, r.ReflectorData>{
             const [],
             null,
             null),
-        r.ParameterMirrorImpl(r'other', 16390, 2, const prefix0.FeignClient(),
-            null, -1, -1, null, const [], null, null),
+        r.ParameterMirrorImpl(r'other', 32774, 2, const prefix0.FeignClient(),
+            -1, -1, -1, null, const [], null, null),
         r.ParameterMirrorImpl(
             r'invocation',
             32774,

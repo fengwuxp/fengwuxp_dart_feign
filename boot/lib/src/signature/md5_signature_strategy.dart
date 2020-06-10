@@ -45,16 +45,6 @@ class Md5SignatureStrategy extends ApiSignatureStrategy {
       _APP_SIGN_HEADER_KEY: appSignature,
       _CHANNEL_CODE_HEADER_KEY: channelCode
     });
-    //签名处理
-    if (feignRequest.body != null) {
-      feignRequest.body.addAll({
-        _APP_ID_KEY: appId,
-        _TIME_STAMP_KEY: timestamp,
-        _NONCE_STR_KEY: noneStr,
-        _API_SIGNATURE_KEY: appSignature,
-        _CHANNEL_CODE_HEADER_KEY: channelCode,
-      });
-    }
   }
 
   /// ap请求时签名
@@ -67,23 +57,24 @@ class Md5SignatureStrategy extends ApiSignatureStrategy {
     List<String> values = [];
     if (fields != null) {
       _log.finer("需要签名的字段 $fields");
-      var body = feignRequest.body;
-      fields.sort();
+
+      // 优先使用body里面的参数进行提交
+      var params = feignRequest.body.isEmpty ? feignRequest.queryParams : feignRequest.body;
       values.addAll(fields.map((item) {
-        var param = body[item];
+        var param = params[item];
         if (param == null) {
-          throw SignatureException(message: "参与签名的参数：${item} 未传入或值无效!");
+          throw SignatureException(message: "参与签名的参数：$item 未传入或值无效!");
         }
         return "$item=$param";
       }));
     }
     //加入appId 、appSecret 时间戳参与签名
     values.addAll({
-      "${_APP_ID_KEY}=${appId}",
-      "${_APP_SECRET_KEY}=${appSecret}",
-      "${_CHANNEL_CODE_KEY}=${channelCode}",
-      "${_NONCE_STR_KEY}=${noneStr}",
-      "${_TIME_STAMP_KEY}=${timestamp}"
+      "$_APP_ID_KEY=$appId",
+      "$_APP_SECRET_KEY=$appSecret",
+      "$_CHANNEL_CODE_KEY=$channelCode",
+      "$_NONCE_STR_KEY=$noneStr",
+      "$_TIME_STAMP_KEY=$timestamp"
     });
     StringBuffer signText = StringBuffer();
     signText.writeAll(values, "&");

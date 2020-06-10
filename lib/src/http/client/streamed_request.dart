@@ -4,7 +4,6 @@
 
 import 'dart:async';
 
-import 'package:fengwuxp_dart_openfeign/src/http/http_input_message.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/http_output_message.dart';
 
 import 'base_request.dart';

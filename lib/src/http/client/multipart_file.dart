@@ -8,7 +8,6 @@ import 'dart:convert';
 import 'package:http_parser/http_parser.dart';
 
 import 'byte_stream.dart';
-// ignore: uri_does_not_exist
 import 'multipart_file_stub.dart'
     // ignore: uri_does_not_exist
     if (dart.library.io) 'multipart_file_io.dart';

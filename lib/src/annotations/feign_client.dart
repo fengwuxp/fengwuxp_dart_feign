@@ -1,4 +1,3 @@
-import 'package:fengwuxp_dart_openfeign/src/configuration/feign_configuration.dart';
 import 'package:reflectable/reflectable.dart';
 
 

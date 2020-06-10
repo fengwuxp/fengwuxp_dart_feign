@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:fengwuxp_dart_openfeign/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/executor/feign_client_executor_interceptor.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/client/client_exception.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 import 'package:fengwuxp_dart_openfeign/src/ui/request_progress_bar.dart';
 
 /// 请求进度条拦截器

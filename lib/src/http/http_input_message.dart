@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:fengwuxp_dart_openfeign/src/http/http_message.dart';
 
 import 'client/byte_stream.dart';

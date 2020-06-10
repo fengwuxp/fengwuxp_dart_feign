@@ -1,7 +1,5 @@
-import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/constant/feign_constant_var.dart';
-import 'package:fengwuxp_dart_openfeign/src/utils/metadata_utils.dart';
 import 'package:reflectable/reflectable.dart';
 
 import 'annotations/feign_client.dart';

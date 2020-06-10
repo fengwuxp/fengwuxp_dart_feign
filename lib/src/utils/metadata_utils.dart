@@ -2,10 +2,10 @@ import 'package:built_value/built_value.dart';
 import 'package:fengwuxp_dart_openfeign/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/cookie_value.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/path_variable.dart';
-import 'package:fengwuxp_dart_openfeign/src/annotations/request_param.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/request_body.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/request_header.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/request_mapping.dart';
+import 'package:fengwuxp_dart_openfeign/src/annotations/request_param.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/request_part.dart';
 import 'package:fengwuxp_dart_openfeign/src/constant/http/http_method.dart';
 

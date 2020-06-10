@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/cache_capable_support.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/authentication_strategy.dart';

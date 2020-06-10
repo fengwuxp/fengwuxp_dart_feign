@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:fengwuxp_dart_basic/index.dart';
+import 'package:fengwuxp_dart_openfeign/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/client/multipart_file.dart';
 import 'package:fengwuxp_dart_openfeign/src/utils/metadata_utils.dart';
 import 'package:reflectable/reflectable.dart';
@@ -30,7 +31,7 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
   FeignRequest resolve(List positionalArguments, List<ParameterMirror> parametersMetadata, String httpMethod,
       {UIOptions options}) {
     var result = FeignRequest(queryParams: {}, body: {}, headers: {}, pathVariables: []);
-
+    var _supportRequestBody = supportRequestBody(httpMethod);
     var length = positionalArguments.length;
     for (var i = 0; i < length; i++) {
       var parameter = parametersMetadata[i];
@@ -38,7 +39,7 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
       var simpleName = parameter.simpleName;
       var argument = positionalArguments[i];
       if (metadata == null || metadata.isEmpty) {
-        if (supportRequestBody(httpMethod)) {
+        if (_supportRequestBody) {
           _margeData(result.body, simpleName, metadata, argument);
         } else {
           _margeData(result.queryParams, simpleName, metadata, argument);
@@ -46,7 +47,8 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
       } else {
         var meta = metadata[0];
         var isFile = argument is File;
-        if (isRequestParam(meta)) {
+        var useFormData = isRequestParam(meta) && _supportRequestBody;
+        if (!useFormData) {
           _margeData(result.queryParams, simpleName, metadata, argument);
         } else if (isRequestHeader(meta)) {
           result.headers[simpleName] = argument;
@@ -57,15 +59,21 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
           } else if (isFile) {
             result.files[simpleName] = MultipartFile.fromBytes(simpleName, argument.readAsBytesSync());
           }
+          // 文件上传
+          result.headers[HttpHeaders.contentTypeHeader] = HttpMediaType.MULTIPART_FORM_DATA;
         } else if (isCookieValue(meta)) {
         } else if (isPathVariable(meta)) {
           result.pathVariables.add(argument);
-        } else if (isRequestBody(metadata)) {
-          // request body
+        } else if (isRequestBody(metadata) || useFormData) {
+          // request body，如果是被 RequestParam 标记过的参数，优先使用 body 传递
           _margeData(result.body, simpleName, metadata, argument);
         } else {
           // TODO
           _margeData(result.body, simpleName, metadata, argument);
+        }
+
+        if (useFormData && result.headers[HttpHeaders.contentTypeHeader] == null) {
+          result.headers[HttpHeaders.contentTypeHeader] = HttpMediaType.FORM_DATA;
         }
       }
     }

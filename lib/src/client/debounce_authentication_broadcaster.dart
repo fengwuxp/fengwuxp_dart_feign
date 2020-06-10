@@ -1,5 +1,5 @@
-import 'package:fengwuxp_dart_openfeign/src/client/authentication_strategy.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
+import 'package:fengwuxp_dart_openfeign/src/client/authentication_strategy.dart';
 
 class DebounceAuthenticationBroadcaster implements AuthenticationBroadcaster {
   static const String DEBOUNCE_TAG = "DebounceAuthenticationBroadcaster#sendUnAuthorizedEvent";

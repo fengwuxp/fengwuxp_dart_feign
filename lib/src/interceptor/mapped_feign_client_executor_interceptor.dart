@@ -1,5 +1,4 @@
 import 'package:fengwuxp_dart_openfeign/src/executor/feign_client_executor_interceptor.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/client/base_request.dart';
 
 import '../feign_request_options.dart';
 import 'mapped_interceptor.dart';
