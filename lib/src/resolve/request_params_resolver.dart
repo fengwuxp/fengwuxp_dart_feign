@@ -48,7 +48,7 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
         var meta = metadata[0];
         var isFile = argument is File;
         var useFormData = isRequestParam(meta) && _supportRequestBody;
-        if (!useFormData) {
+        if (isRequestParam(meta) && !_supportRequestBody) {
           _margeData(result.queryParams, simpleName, metadata, argument);
         } else if (isRequestHeader(meta)) {
           result.headers[simpleName] = argument;
