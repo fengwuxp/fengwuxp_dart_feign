@@ -11,7 +11,7 @@ class CacheAuthenticationStrategy<T extends AuthenticationToken> implements Auth
 
   @override
   List<String> getAuthorizationHeaderNames() {
-    return this.getAuthorizationHeaderNames();
+    return this._authenticationStrategy.getAuthorizationHeaderNames();
   }
 
   @override
