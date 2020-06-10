@@ -14,13 +14,18 @@ abstract class CacheCapableAuthenticationStrategy {
 abstract class AuthenticationStrategy<T extends AuthenticationToken> implements CacheCapableSupport {
   /// get authorization header names
   /// default :['Authorization']
-  List<String> getAuthorizationHeaderNames();
+  List<String> getAuthorizationHeaderNames() {
+    return ["Authorization"];
+  }
 
   Future<T> getAuthorization(Uri uri, Map<String, String> headers, String method);
 
   Future<T> refreshAuthorization(T authorization, Uri uri, Map<String, String> headers, String method);
 
-  Map<String, String> appendAuthorizationHeader(T authorization, Map<String, String> headers);
+  Map<String, String> appendAuthorizationHeader(T authorization, Map<String, String> headers) {
+    headers.putIfAbsent(getAuthorizationHeaderNames().first, () => authorization.authorization);
+    return headers;
+  }
 }
 
 // never refresh token flag

@@ -8,6 +8,27 @@ import 'package:bot_toast/src/toast_widget/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+class ExampleAuthenticationToken implements AuthenticationToken {
+  final String authorization;
+
+  final int expireDate;
+
+  const ExampleAuthenticationToken(this.authorization, this.expireDate);
+}
+
+class ExampleAuthenticationStrategy extends AuthenticationStrategy<ExampleAuthenticationToken> {
+  @override
+  Future<ExampleAuthenticationToken> refreshAuthorization(
+      AuthenticationToken authorization, Uri uri, Map<String, String> headers, String method) {
+    return Future.value(ExampleAuthenticationToken("12", -1));
+  }
+
+  @override
+  Future<ExampleAuthenticationToken> getAuthorization(Uri uri, Map<String, String> headers, String method) {
+    return Future.value(ExampleAuthenticationToken("32", -1));
+  }
+}
+
 class ExampleFeignConfigurationRegistry extends FeignConfigurationRegistry {
   @override
   void registryMessageConverters(List<HttpMessageConverter> registry) {}
@@ -16,6 +37,7 @@ class ExampleFeignConfigurationRegistry extends FeignConfigurationRegistry {
   void registryClientHttpRequestInterceptors(ClientHttpInterceptorRegistry registry) {
 //    registry.addInterceptor(NetworkClientHttpRequestInterceptor(networkFailBack: SimpleNoneNetworkFailBack()));
     registry.addInterceptor(RoutingClientHttpRequestInterceptor("http://localhost:8090/api/"));
+    registry.addInterceptor(AuthenticationClientHttpRequestInterceptor(new ExampleAuthenticationStrategy()));
   }
 
   @override
