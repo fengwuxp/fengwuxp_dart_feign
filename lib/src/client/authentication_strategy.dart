@@ -32,10 +32,17 @@ abstract class AuthenticationStrategy<T extends AuthenticationToken> implements 
 const NEVER_REFRESH_FLAG = -1;
 
 abstract class AuthenticationToken {
+  // authorization token
   String get authorization;
+
+  // refresh token
+  String get refreshToken;
 
   //if never refresh token ,return [NEVER_REFRESH_FLAG]
   int get expireDate;
+
+  // never refresh token
+  int get refreshExpireDate;
 }
 
 /// use broadcast event handle authentication

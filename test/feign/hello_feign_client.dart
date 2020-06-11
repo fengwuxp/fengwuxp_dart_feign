@@ -7,6 +7,7 @@ import 'package:fengwuxp_dart_openfeign/src/annotations/request_param.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/request_header.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/request_mapping.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/signature.dart';
+import 'package:fengwuxp_dart_openfeign/src/constant/authentication_type.dart';
 import 'package:fengwuxp_dart_openfeign/src/feign_proxy_client.dart';
 import 'package:fengwuxp_dart_openfeign/src/feign_request_options.dart';
 
@@ -19,7 +20,7 @@ import '../built/req/query_hello_req.dart';
 class HelloFeignClient extends FeignProxyClient {
   /// 返回具体类型
   /// 为了能够返回具体类型 骗过 dart运行时泛型匹配使用如下方式调用
-  @GetMapping(value: "/")
+  @GetMapping(value: "/", authenticationType: AuthenticationType.NONE)
   Future<Hello> getHello(@RequestHeader() String name, @RequestParam() num id, [UIOptions feignOptions]) {
     return this.delegateInvoke<Hello>("getHello", [name, id],
         feignOptions: feignOptions, serializer: BuiltValueSerializable(serializer: Hello.serializer));

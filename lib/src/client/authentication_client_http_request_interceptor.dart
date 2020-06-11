@@ -5,6 +5,7 @@ import 'package:fengwuxp_dart_openfeign/src/cache_capable_support.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/authentication_strategy.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/cache_authentication_strategy.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/client_http_request_interceptor.dart';
+import 'package:fengwuxp_dart_openfeign/src/constant/authentication_type.dart';
 import 'package:fengwuxp_dart_openfeign/src/constant/feign_constant_var.dart';
 import 'package:fengwuxp_dart_openfeign/src/context/request_context_holder.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/client_http_request.dart';
@@ -38,13 +39,16 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
 
   @override
   Future<void> interceptor(ClientHttpRequest request) async {
-//    var requestMapping = getRequestMappingByRequest(request);
-//    if (requestMapping != null) {
-//      if (requestMapping.needCertification == false) {
-//        // none certification
-//        return request;
-//      }
-//    }
+    var requestMapping = getRequestMappingByRequest(request);
+    var isTryAuthentication = false;
+    if (requestMapping != null) {
+      final authenticationType = requestMapping.authenticationType;
+      if (authenticationType == AuthenticationType.NONE) {
+        // none certification
+        return request;
+      }
+      isTryAuthentication = authenticationType == AuthenticationType.TRY;
+    }
 
     if (!this._needAppendAuthorizationHeader(request.headers)) {
       // Prevent recursion on refresh
@@ -58,20 +62,36 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
     try {
       authorization = await authenticationStrategy.getAuthorization(request.url, request.headers, request.method);
     } catch (e) {
+      if (isTryAuthentication) {
+        return request;
+      }
+
       /// see[UnifiedFailureToastExecutorInterceptor]
       return Future.error(UNAUTHORIZED_RESPONSE);
     }
 
     if (authorization == null || !StringUtils.hasText(authorization.authorization)) {
+      if (isTryAuthentication) {
+        return request;
+      }
       return Future.error(UNAUTHORIZED_RESPONSE);
     }
-    final isNever = authorization.expireDate == NEVER_REFRESH_FLAG;
+
     final currentTimes = DateTime.now().millisecond;
-    if (authorization.expireDate <= currentTimes - 20 * 1000 && !isNever) {
+    final tokenIsNever = authorization.expireDate == NEVER_REFRESH_FLAG;
+    final refreshTokenIsNever = authorization.refreshExpireDate == NEVER_REFRESH_FLAG;
+    final refreshTokenIsInvalid =
+        authorization.refreshExpireDate <= currentTimes + this._aheadOfTimes && !refreshTokenIsNever;
+    if (refreshTokenIsInvalid && !tokenIsNever) {
       // 20 seconds in advance, the token is invalid and needs to be re-authenticated
+      if (isTryAuthentication) {
+        return request;
+      }
+      // refresh token invalid ,need authorization
       return Future.error(UNAUTHORIZED_RESPONSE);
     }
-    final authorizationIsInvalid = !isNever && authorization.expireDate < currentTimes + aheadOfTimes;
+
+    final authorizationIsInvalid = authorization.expireDate <= currentTimes + aheadOfTimes && !tokenIsNever;
     if (!authorizationIsInvalid) {
       this._appendAuthorizationHeader(authorization, request.headers);
       return request;
@@ -83,8 +103,6 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
         authorization = await authenticationStrategy.refreshAuthorization(
             authorization, request.url, request.headers, request.method);
       } catch (e) {
-        // refresh authorization error
-//        return Future.error(HttpException("refresh authorization error", uri: request.url));
         return Future.error(UNAUTHORIZED_RESPONSE);
       }
     } else {
@@ -125,6 +143,7 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
     return request;
   }
 
+  /// add wait request
   Completer<void> _addWaitItem(ClientHttpRequest request) {
     final syncQueue = this._syncQueue;
     final completer = Completer<void>();

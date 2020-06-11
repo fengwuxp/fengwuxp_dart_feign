@@ -1,4 +1,5 @@
 import 'package:built_value/serializer.dart';
+import 'package:fengwuxp_dart_openfeign/src/constant/authentication_type.dart';
 import 'package:fengwuxp_dart_openfeign/src/constant/http/http_method.dart';
 
 //typedef T ResultTransformer<T>(data);
@@ -44,7 +45,7 @@ class RequestMapping {
 
   /// need authentication information
   /// default @see [FeignConfiguration]
-//  final bool needCertification;
+  final AuthenticationType authenticationType;
 
   /// 响应数据类型
   /// 由于dart的反射在面对复杂的泛型是无法得到正确的类型 使用手动传入得到形式
@@ -64,14 +65,14 @@ class RequestMapping {
       {String value,
       String method,
       num timeout,
-//      bool needCertification,
+      AuthenticationType authenticationType,
       Map<String, String> headers,
       List<String> consumes,
       List<String> produces})
       : this.value = value,
         this.timeout = timeout,
         this.method = method,
-//        this.needCertification = needCertification ?? false,
+        this.authenticationType = authenticationType ?? AuthenticationType.FORCE,
         this.headers = headers ?? const {},
         this.consumes = consumes ?? const [],
         this.produces = consumes ?? const [];
@@ -85,6 +86,7 @@ class GetMapping extends RequestMapping {
       Map<String, dynamic> headers,
       List<String> consumes,
       List<String> produces,
+      AuthenticationType authenticationType,
       Serializer serializer,
       ResultTransformer resultTransformer})
       : super(
@@ -92,6 +94,7 @@ class GetMapping extends RequestMapping {
             timeout: timeout,
             method: HttpMethod.GET,
             headers: headers,
+            authenticationType: authenticationType,
             consumes: consumes,
             produces: produces);
 }
@@ -104,6 +107,7 @@ class PostMapping extends RequestMapping {
       Map<String, dynamic> headers,
       List<String> consumes,
       List<String> produces,
+      AuthenticationType authenticationType,
       Serializer serializer,
       ResultTransformer resultTransformer})
       : super(
@@ -111,6 +115,7 @@ class PostMapping extends RequestMapping {
             timeout: timeout,
             method: HttpMethod.POST,
             headers: headers,
+            authenticationType: authenticationType,
             consumes: consumes,
             produces: produces);
 }
@@ -123,6 +128,7 @@ class PutMapping extends RequestMapping {
       Map<String, dynamic> headers,
       List<String> consumes,
       List<String> produces,
+      AuthenticationType authenticationType,
       Serializer serializer,
       ResultTransformer resultTransformer})
       : super(
@@ -130,6 +136,7 @@ class PutMapping extends RequestMapping {
             timeout: timeout,
             method: HttpMethod.PUT,
             headers: headers,
+            authenticationType: authenticationType,
             consumes: consumes,
             produces: produces);
 }
@@ -142,6 +149,7 @@ class DeleteMapping extends RequestMapping {
       Map<String, dynamic> headers,
       List<String> consumes,
       List<String> produces,
+      AuthenticationType authenticationType,
       Serializer serializer,
       ResultTransformer resultTransformer})
       : super(
@@ -149,6 +157,7 @@ class DeleteMapping extends RequestMapping {
             timeout: timeout,
             method: HttpMethod.DELETE,
             headers: headers,
+            authenticationType: authenticationType,
             consumes: consumes,
             produces: produces);
 }
@@ -161,6 +170,7 @@ class HeadMapping extends RequestMapping {
       Map<String, dynamic> headers,
       List<String> consumes,
       List<String> produces,
+      AuthenticationType authenticationType,
       Serializer serializer,
       ResultTransformer resultTransformer})
       : super(
@@ -168,6 +178,7 @@ class HeadMapping extends RequestMapping {
             timeout: timeout,
             method: HttpMethod.HEAD,
             headers: headers,
+            authenticationType: authenticationType,
             consumes: consumes,
             produces: produces);
 }
@@ -180,6 +191,7 @@ class PatchMapping extends RequestMapping {
       Map<String, dynamic> headers,
       List<String> consumes,
       List<String> produces,
+      AuthenticationType authenticationType,
       Serializer serializer,
       ResultTransformer resultTransformer})
       : super(
@@ -187,6 +199,7 @@ class PatchMapping extends RequestMapping {
             timeout: timeout,
             method: HttpMethod.PATCH,
             headers: headers,
+            authenticationType: authenticationType,
             consumes: consumes,
             produces: produces);
 }
