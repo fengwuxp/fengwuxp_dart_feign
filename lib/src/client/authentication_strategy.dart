@@ -41,7 +41,7 @@ abstract class AuthenticationToken {
   //if never refresh token ,return [NEVER_REFRESH_FLAG]
   int get expireDate;
 
-  // never refresh token
+  // if never refresh token ,return [NEVER_REFRESH_FLAG]
   int get refreshExpireDate;
 }
 

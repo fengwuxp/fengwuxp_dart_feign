@@ -81,7 +81,7 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
     final tokenIsNever = authorization.expireDate == NEVER_REFRESH_FLAG;
     final refreshTokenIsNever = authorization.refreshExpireDate == NEVER_REFRESH_FLAG;
     final refreshTokenIsInvalid =
-        authorization.refreshExpireDate <= currentTimes + this._aheadOfTimes && !refreshTokenIsNever;
+        authorization.refreshExpireDate <= currentTimes + aheadOfTimes && !refreshTokenIsNever;
     if (refreshTokenIsInvalid && !tokenIsNever) {
       // 20 seconds in advance, the token is invalid and needs to be re-authenticated
       if (isTryAuthentication) {

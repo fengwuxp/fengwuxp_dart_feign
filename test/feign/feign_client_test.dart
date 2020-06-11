@@ -34,6 +34,6 @@ void main() {
       print("===reslt 2===>  $data");
     });
 
-//    helloFeignClient.getTest("name", BuiltList([1]));
+    helloFeignClient.getTest("name", BuiltList([1]));
   });
 }
