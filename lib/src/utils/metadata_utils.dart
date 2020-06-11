@@ -42,6 +42,11 @@ isRequestParam(metadata) {
   return metadata.runtimeType == RequestParam;
 }
 
+// is queryMap
+isQueryMap(metadata) {
+  return metadata.runtimeType == QueryMap;
+}
+
 // 是否为请求头
 isRequestHeader(metadata) {
   return metadata.runtimeType == RequestHeader;

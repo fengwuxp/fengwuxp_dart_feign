@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_dart_openfeign/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/client/multipart_file.dart';
+import 'package:fengwuxp_dart_openfeign/src/named_support.dart';
 import 'package:fengwuxp_dart_openfeign/src/utils/metadata_utils.dart';
 import 'package:reflectable/reflectable.dart';
 
@@ -33,11 +34,13 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
     var result = FeignRequest(queryParams: {}, body: {}, headers: {}, pathVariables: []);
     var _supportRequestBody = supportRequestBody(httpMethod);
     var length = positionalArguments.length;
+
     for (var i = 0; i < length; i++) {
       var parameter = parametersMetadata[i];
       var metadata = parameter.metadata;
       var simpleName = parameter.simpleName;
       var argument = positionalArguments[i];
+
       if (metadata == null || metadata.isEmpty) {
         if (_supportRequestBody) {
           _margeData(result.body, simpleName, metadata, argument);
@@ -46,9 +49,19 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
         }
       } else {
         var meta = metadata[0];
+        if (meta is Named) {
+          // 使用命名对象中的名称
+          simpleName = meta.name ?? simpleName;
+        }
         var isFile = argument is File;
+        // 是否需要使用formData提交
         var useFormData = isRequestParam(meta) && _supportRequestBody;
+
         if (isRequestParam(meta) && !_supportRequestBody) {
+          // 是查询参数 且不支持RequestBody(Get 请求)
+          _margeData(result.queryParams, simpleName, metadata, argument);
+        } else if (isQueryMap(meta)) {
+          // 查询参数对象
           _margeData(result.queryParams, simpleName, metadata, argument);
         } else if (isRequestHeader(meta)) {
           result.headers[simpleName] = argument;
@@ -62,6 +75,7 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
           // 文件上传
           result.headers[HttpHeaders.contentTypeHeader] = HttpMediaType.MULTIPART_FORM_DATA;
         } else if (isCookieValue(meta)) {
+          //TODO 提交cookie
         } else if (isPathVariable(meta)) {
           result.pathVariables.add(argument);
         } else if (isRequestBody(metadata) || useFormData) {
@@ -92,8 +106,7 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
     if (isSimpleType(data)) {
       target[propName] = data;
     } else if (data is Iterable) {
-      var length = data.length;
-      if (length == 0) {
+      if (data.isEmpty) {
         return;
       }
       target[propName] = data;

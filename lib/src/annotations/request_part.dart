@@ -1,3 +1,4 @@
+import '../named_support.dart';
 
 /// target field
 /// request part
@@ -6,8 +7,7 @@
 ///
 ///  If the tagged "String" represents a file path,
 ///  the "File" type is by default one request part
-class RequestPart {
-
+class RequestPart implements Named {
   /// The name of the part in the {@link HttpMediaType.MULTIPART_FORM_DATA} request to bind to.
   final String name;
 
