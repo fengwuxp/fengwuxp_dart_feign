@@ -26,3 +26,12 @@ abstract class RequestProgressBar<T extends ProgressBarOptions> {
 
   void hideProgressBar();
 }
+
+class FileUploadProgressBarOptions extends ProgressBarOptions {}
+
+//  file upload progressbar
+abstract class FileUploadProgressBar extends RequestProgressBar<FileUploadProgressBarOptions> {
+  /// param [progress]  upload progress
+  /// param [fileIndex]
+  void onUploadProgressChange(num progress, int fileIndex);
+}

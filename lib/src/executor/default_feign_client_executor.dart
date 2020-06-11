@@ -110,7 +110,6 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
     return this._postHandle(feignRequest, uiOptions, requestUrl, requestMapping, response, serializer);
   }
 
-
   /// 前置拦截器
   Future _preHandle(FeignRequest request, UIOptions uiOptions, String url, RequestMapping requestMapping) async {
     return this

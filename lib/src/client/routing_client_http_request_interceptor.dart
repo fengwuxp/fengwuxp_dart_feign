@@ -24,5 +24,6 @@ class RoutingClientHttpRequestInterceptor implements ClientHttpRequestIntercepto
 
   Future<void> interceptor(ClientHttpRequest request) {
     request.uri(routing(request.url, this._routeMapping));
+    return Future.value();
   }
 }

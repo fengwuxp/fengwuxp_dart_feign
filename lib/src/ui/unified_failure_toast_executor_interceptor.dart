@@ -55,7 +55,7 @@ class UnifiedFailureToastExecutorInterceptor<T extends FeignBaseRequest> impleme
     }
     if (result is ResponseEntity) {
       if (HttpStatus.unauthorized == result.statusCode) {
-        // send
+        // send unauthorized
         getFeignConfiguration().authenticationBroadcaster?.sendUnAuthorizedEvent();
       }
     } else {

@@ -66,14 +66,13 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
         } else if (isRequestHeader(meta)) {
           result.headers[simpleName] = argument;
         } else if (isRequestPart(meta) || isFile) {
-          if (argument is String) {
-            // 文件路径
-            result.files[simpleName] = MultipartFile.fromPath(simpleName, argument);
-          } else if (isFile) {
-            result.files[simpleName] = MultipartFile.fromBytes(simpleName, argument.readAsBytesSync());
-          }
-          // 文件上传
-          result.headers[HttpHeaders.contentTypeHeader] = HttpMediaType.MULTIPART_FORM_DATA;
+//          if (argument is String) {
+//            // 文件路径
+//            result.files[simpleName] = MultipartFile.fromPath(simpleName, argument);
+//          } else if (isFile) {
+//            result.files[simpleName] = MultipartFile.fromBytes(simpleName, argument.readAsBytesSync());
+//          }
+          result.files[simpleName] = argument;
         } else if (isCookieValue(meta)) {
           //TODO 提交cookie
         } else if (isPathVariable(meta)) {
