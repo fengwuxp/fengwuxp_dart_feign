@@ -50,7 +50,7 @@ class UnifiedFailureToastExecutorInterceptor<T extends FeignBaseRequest> impleme
     }
     if (result == null) {
       // error is customize type
-      var isResponseEntity = serializer.specifiedType != null && serializer.specifiedType.root == ResponseEntity;
+      var isResponseEntity = serializer?.specifiedType != null && serializer?.specifiedType?.root == ResponseEntity;
       result = isResponseEntity ? error : this._transformerResponseData(error, serializer);
     }
     if (result is ResponseEntity) {
