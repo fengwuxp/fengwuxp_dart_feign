@@ -1,3 +1,4 @@
+import 'package:fengwuxp_dart_openfeign/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/authentication_strategy.dart';
 
 /// cache AuthenticationStrategy
@@ -7,7 +8,9 @@ class CacheAuthenticationStrategy<T extends AuthenticationToken> implements Auth
 
   T _cacheAuthenticationToken;
 
-  CacheAuthenticationStrategy(this._authenticationStrategy);
+  CacheAuthenticationStrategy(this._authenticationStrategy) {
+    getFeignConfiguration().authenticationBroadcaster?.receiveAuthorizedEvent(this.clearCache);
+  }
 
   @override
   List<String> getAuthorizationHeaderNames() {
@@ -29,7 +32,8 @@ class CacheAuthenticationStrategy<T extends AuthenticationToken> implements Auth
 
   @override
   Future<T> refreshAuthorization(T authorization, Uri uri, Map<String, String> headers, String method) async {
-    this._cacheAuthenticationToken = await this._authenticationStrategy.refreshAuthorization(authorization, uri,headers,method);
+    this._cacheAuthenticationToken =
+        await this._authenticationStrategy.refreshAuthorization(authorization, uri, headers, method);
     return this._cacheAuthenticationToken;
   }
 
