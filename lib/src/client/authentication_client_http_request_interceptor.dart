@@ -29,12 +29,7 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
 
   AuthenticationClientHttpRequestInterceptor(AuthenticationStrategy authenticationStrategy,
       {int aheadOfTimes, bool blockingRefreshAuthorization}) {
-    if (authenticationStrategy is CacheCapableSupport) {
-      final cacheAuthenticationStrategy = new CacheAuthenticationStrategy(authenticationStrategy);
-      this._authenticationStrategy = cacheAuthenticationStrategy;
-    } else {
-      this._authenticationStrategy = authenticationStrategy;
-    }
+    this._authenticationStrategy = authenticationStrategy;
     this._aheadOfTimes = aheadOfTimes ?? 5 * 60 * 1000;
     this._blockingRefreshAuthorization = blockingRefreshAuthorization ?? true;
   }

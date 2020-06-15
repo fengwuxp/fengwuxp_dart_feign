@@ -11,7 +11,7 @@ abstract class CacheCapableAuthenticationStrategy {
 }
 
 /// authentication strategy
-abstract class AuthenticationStrategy<T extends AuthenticationToken> implements CacheCapableSupport {
+abstract class AuthenticationStrategy<T extends AuthenticationToken> {
   /// get authorization header names
   /// default :['Authorization']
   List<String> getAuthorizationHeaderNames() {
@@ -48,7 +48,6 @@ abstract class AuthenticationToken {
 /// use broadcast event handle authentication
 /// {@see HttpStatus.UNAUTHORIZED}
 abstract class AuthenticationBroadcaster {
-
   /// send unauthorized event
   void sendUnAuthorizedEvent();
 

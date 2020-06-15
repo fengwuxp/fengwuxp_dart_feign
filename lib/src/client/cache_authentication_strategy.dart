@@ -8,17 +8,7 @@ class CacheAuthenticationStrategy<T extends AuthenticationToken> implements Auth
 
   T _cacheAuthenticationToken;
 
-  CacheAuthenticationStrategy(this._authenticationStrategy) {
-    Future.delayed(Duration(seconds: 1)).then((value) {
-      final feignConfiguration = getFeignConfiguration();
-      feignConfiguration?.authenticationBroadcaster?.receiveAuthorizedEvent(() {
-        this.clearCache();
-      });
-      feignConfiguration?.authenticationBroadcaster?.receiveSignOutEvent(() {
-        this.clearCache();
-      });
-    });
-  }
+  CacheAuthenticationStrategy(this._authenticationStrategy);
 
   @override
   List<String> getAuthorizationHeaderNames() {
@@ -44,7 +34,7 @@ class CacheAuthenticationStrategy<T extends AuthenticationToken> implements Auth
       this._cacheAuthenticationToken = value;
       return value;
     }).catchError((error) {
-      this._cacheAuthenticationToken = null;
+      this.clearCache();
       return Future.error(error);
     });
   }
