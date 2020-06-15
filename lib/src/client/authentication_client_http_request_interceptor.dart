@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:fengwuxp_dart_basic/index.dart';
+import 'package:fengwuxp_dart_openfeign/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/cache_capable_support.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/authentication_strategy.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/cache_authentication_strategy.dart';
@@ -29,7 +30,8 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
   AuthenticationClientHttpRequestInterceptor(AuthenticationStrategy authenticationStrategy,
       {int aheadOfTimes, bool blockingRefreshAuthorization}) {
     if (authenticationStrategy is CacheCapableSupport) {
-      this._authenticationStrategy = new CacheAuthenticationStrategy(authenticationStrategy);
+      final cacheAuthenticationStrategy = new CacheAuthenticationStrategy(authenticationStrategy);
+      this._authenticationStrategy = cacheAuthenticationStrategy;
     } else {
       this._authenticationStrategy = authenticationStrategy;
     }

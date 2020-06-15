@@ -48,10 +48,25 @@ abstract class AuthenticationToken {
 /// use broadcast event handle authentication
 /// {@see HttpStatus.UNAUTHORIZED}
 abstract class AuthenticationBroadcaster {
+
   /// send unauthorized event
   void sendUnAuthorizedEvent();
+
+  /// send authorized event
+  void sendAuthorizedEvent();
+
+  /// send sign out event
+  void sendSignOutEvent();
+
+  /// receive unauthorized success event
+  /// [handle]
+  receiveUnAuthorizedEvent(void handle());
 
   /// receive authorized success event
   /// [handle]
   receiveAuthorizedEvent(void handle());
+
+  /// receive sign out event
+  /// [handle]
+  receiveSignOutEvent(void handle());
 }

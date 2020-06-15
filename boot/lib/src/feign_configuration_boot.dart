@@ -47,8 +47,7 @@ class FeignConfigurationBoot implements FeignConfiguration {
     this._requestParamsResolver = requestParamsResolver ?? DefaultRequestParamsResolver();
     this._requestHeaderResolver = requestHeaderResolver ?? DefaultRequestHeaderResolver();
 
-    this._authenticationBroadcaster =
-        authenticationBroadcaster ?? DebounceAuthenticationBroadcaster(authenticationBroadcaster);
+    this._authenticationBroadcaster = authenticationBroadcaster;
     this._apiSignatureStrategy = apiSignatureStrategy;
   }
 

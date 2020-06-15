@@ -9,7 +9,15 @@ class CacheAuthenticationStrategy<T extends AuthenticationToken> implements Auth
   T _cacheAuthenticationToken;
 
   CacheAuthenticationStrategy(this._authenticationStrategy) {
-    getFeignConfiguration().authenticationBroadcaster?.receiveAuthorizedEvent(this.clearCache);
+    Future.delayed(Duration(seconds: 1)).then((value) {
+      final feignConfiguration = getFeignConfiguration();
+      feignConfiguration?.authenticationBroadcaster?.receiveAuthorizedEvent(() {
+        this.clearCache();
+      });
+      feignConfiguration?.authenticationBroadcaster?.receiveSignOutEvent(() {
+        this.clearCache();
+      });
+    });
   }
 
   @override
@@ -32,9 +40,13 @@ class CacheAuthenticationStrategy<T extends AuthenticationToken> implements Auth
 
   @override
   Future<T> refreshAuthorization(T authorization, Uri uri, Map<String, String> headers, String method) async {
-    this._cacheAuthenticationToken =
-        await this._authenticationStrategy.refreshAuthorization(authorization, uri, headers, method);
-    return this._cacheAuthenticationToken;
+    return this._authenticationStrategy.refreshAuthorization(authorization, uri, headers, method).then((value) {
+      this._cacheAuthenticationToken = value;
+      return value;
+    }).catchError((error) {
+      this._cacheAuthenticationToken = null;
+      return Future.error(error);
+    });
   }
 
   @override
