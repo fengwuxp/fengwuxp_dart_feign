@@ -43,7 +43,7 @@ class IOClient extends BaseClient {
         try {
           await future.timeout(Duration(milliseconds: request.timeout)) as HttpClientResponse;
         } on TimeoutException {
-          throw ClientTimeOutException(message: "reqeust timeout , [${request.timeout}]ms", request: request);
+          throw ClientTimeOutException(message: "request timeout , [${request.timeout}]ms", request: request);
         }
       } else {
         response = await future as HttpClientResponse;

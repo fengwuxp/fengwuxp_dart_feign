@@ -42,13 +42,14 @@ class UnifiedFailureToastExecutorInterceptor<T extends FeignBaseRequest> impleme
   Future postError<E>(T options, UIOptions uiOptions, error, {BuiltValueSerializable serializer}) {
     var result;
     if (error is ClientTimeOutException) {
-      result = UNAUTHORIZED_RESPONSE;
-    }
-    if (error is Exception) {
+      // 请求超时
+      result = GATEWAY_TIME_RESPONSE;
+    } else if (error is Exception) {
       // 其他异常
       result = ResponseEntity(HttpStatus.internalServerError, {}, null, null);
-    }
-    if (result == null) {
+    } else if (error is ResponseEntity) {
+      result = error;
+    } else {
       // error is customize type
       var isResponseEntity = serializer?.specifiedType != null && serializer?.specifiedType?.root == ResponseEntity;
       result = isResponseEntity ? error : this._transformerResponseData(error, serializer);

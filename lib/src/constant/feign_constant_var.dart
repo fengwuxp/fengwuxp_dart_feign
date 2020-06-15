@@ -16,4 +16,7 @@ const REQUEST_ID_HEADER_NAME = 'Dart-Feign-Request-Id';
 ///  mock unauthorized response
 final UNAUTHORIZED_RESPONSE = ResponseEntity(HttpStatus.unauthorized, {}, null, null);
 
+/// mock gatewayTimeout response
+final GATEWAY_TIME_RESPONSE = ResponseEntity(HttpStatus.gatewayTimeout, {}, null, null);
+
 const NETWORK_NONE="network none";
