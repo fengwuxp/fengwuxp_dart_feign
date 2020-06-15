@@ -11,12 +11,12 @@ class DebounceAuthenticationBroadcaster implements AuthenticationBroadcaster {
   @override
   void sendUnAuthorizedEvent() {
     EasyDebounce.debounce(DEBOUNCE_TAG, Duration(milliseconds: 200), () {
-      this._authenticationBroadcaster.sendUnAuthorizedEvent();
+      this._authenticationBroadcaster?.sendUnAuthorizedEvent();
     });
   }
 
   @override
   receiveAuthorizedEvent(void Function() handle) {
-    this._authenticationBroadcaster.receiveAuthorizedEvent(handle);
+    this._authenticationBroadcaster?.receiveAuthorizedEvent(handle);
   }
 }

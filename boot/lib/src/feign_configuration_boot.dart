@@ -47,7 +47,8 @@ class FeignConfigurationBoot implements FeignConfiguration {
     this._requestParamsResolver = requestParamsResolver ?? DefaultRequestParamsResolver();
     this._requestHeaderResolver = requestHeaderResolver ?? DefaultRequestHeaderResolver();
 
-    this._authenticationBroadcaster = DebounceAuthenticationBroadcaster(authenticationBroadcaster);
+    this._authenticationBroadcaster =
+        authenticationBroadcaster ?? DebounceAuthenticationBroadcaster(authenticationBroadcaster);
     this._apiSignatureStrategy = apiSignatureStrategy;
   }
 
@@ -100,5 +101,4 @@ class FeignConfigurationBoot implements FeignConfiguration {
 
   @override
   AuthenticationBroadcaster get authenticationBroadcaster => this._authenticationBroadcaster;
-
 }
