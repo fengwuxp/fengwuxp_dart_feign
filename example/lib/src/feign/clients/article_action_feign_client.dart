@@ -23,6 +23,7 @@ void main() {
 }
 
 /// 接口：POST
+@Feign
 @FeignClient(
   value: '/article_action',
 )

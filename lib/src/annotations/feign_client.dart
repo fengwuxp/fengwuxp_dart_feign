@@ -1,6 +1,5 @@
 import 'package:reflectable/reflectable.dart';
 
-
 // mark class is FeignClient
 //class ReflectFeign extends Reflectable {
 //  const ReflectFeign() : super(
@@ -16,12 +15,11 @@ import 'package:reflectable/reflectable.dart';
 //// feign reflectable
 //const Feign = ReflectFeign();
 
-
 const DEFAULT_MODULE = "default";
 
 /// target Class
 /// 用来标记api 所属的模块 不同服务模块的api接口可能入口地址不同
-class FeignClient extends Reflectable{
+class FeignClient {
   /// unique feign client name
   final String name;
 
@@ -39,17 +37,19 @@ class FeignClient extends Reflectable{
   /// independent configuration
 //  final FeignConfiguration configuration;
 
-  const FeignClient({this.apiModule = DEFAULT_MODULE,
-    this.name,
-    this.value,
-    this.url}): super(
-      metadataCapability,
-      invokingCapability,
-      declarationsCapability,
-      typeRelationsCapability,
-      instanceInvokeCapability,
-//      libraryCapability,
-      newInstanceCapability);
+  const FeignClient({this.apiModule = DEFAULT_MODULE, this.name, this.value, this.url});
 }
 
-const Feign = FeignClient();
+class DartFeignClient extends Reflectable {
+  const DartFeignClient()
+      : super(
+            metadataCapability,
+            invokingCapability,
+            declarationsCapability,
+            typeRelationsCapability,
+            instanceInvokeCapability,
+//      libraryCapability,
+            newInstanceCapability);
+}
+
+const Feign = DartFeignClient();
