@@ -14,6 +14,12 @@ class ExampleAuthenticationToken implements AuthenticationToken {
   final int expireDate;
 
   const ExampleAuthenticationToken(this.authorization, this.expireDate);
+
+  @override
+  int get refreshExpireDate => this.expireDate;
+
+  @override
+  String get refreshToken => this.authorization;
 }
 
 class ExampleAuthenticationStrategy extends AuthenticationStrategy<ExampleAuthenticationToken> {
