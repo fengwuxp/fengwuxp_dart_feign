@@ -1,19 +1,5 @@
 import 'package:reflectable/reflectable.dart';
 
-// mark class is FeignClient
-//class ReflectFeign extends Reflectable {
-//  const ReflectFeign() : super(
-//      metadataCapability,
-//      invokingCapability,
-//      declarationsCapability,
-//      typeRelationsCapability,
-//      instanceInvokeCapability,
-//      libraryCapability,
-//      newInstanceCapability);
-//}
-//
-//// feign reflectable
-//const Feign = ReflectFeign();
 
 const DEFAULT_MODULE = "default";
 

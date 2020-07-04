@@ -20,10 +20,13 @@ class ProgressBarOptions {
         this.icon = icon;
 }
 
-/// process bar
+/// request process bar
 abstract class RequestProgressBar<T extends ProgressBarOptions> {
+
+  // It will not be called until the last 'ProgressBar' is closed,
   void showProgressBar([ProgressBarOptions barOptions]);
 
+  /// [hideProgressBar] will be called more times than [showProgressBar]
   void hideProgressBar();
 }
 
