@@ -12,12 +12,15 @@ import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 import 'package:fengwuxp_dart_openfeign/src/interceptor/mapped_feign_client_executor_interceptor.dart';
 import 'package:fengwuxp_dart_openfeign/src/utils/metadata_utils.dart';
 import 'package:reflectable/reflectable.dart';
-
+import 'package:logging/logging.dart';
 import '../feign_request_options.dart';
 import 'feign_client_executor.dart';
 import 'feign_client_executor_interceptor.dart';
 
 class DefaultFeignClientExecutor implements FeignClientExecutor {
+  static const String _TAG = "DefaultFeignClientExecutor";
+  static var _log = Logger(_TAG);
+
   /// proxy feign client type
   final Type targetType;
 
@@ -34,8 +37,9 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
 
   @override
   Future invoke(String methodName, List<Object> positionalArguments, [Map<Symbol, dynamic> namedArguments]) async {
-    final feignConfiguration = this.feignConfiguration;
+    _log.finer("proxy invoke $methodName");
 
+    final feignConfiguration = this.feignConfiguration;
     //获取声明列表
     final classMirror = this.classMirror;
     final Map<String, DeclarationMirror> declarations = classMirror.declarations;
@@ -95,6 +99,7 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
     final restTemplate = feignConfiguration.restTemplate;
     var response;
     try {
+      _log.finer("send http request ==> $requestUrl");
       response = await restTemplate.execute(requestUrl, requestMapping.method, responseExtractor,
           request: feignRequest.body,
           queryParams: feignRequest.queryParams,

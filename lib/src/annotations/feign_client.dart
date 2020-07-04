@@ -43,13 +43,10 @@ class FeignClient {
 class DartFeignClient extends Reflectable {
   const DartFeignClient()
       : super(
-            metadataCapability,
-            invokingCapability,
-            declarationsCapability,
-            typeRelationsCapability,
-            instanceInvokeCapability,
-//      libraryCapability,
-            newInstanceCapability);
+          metadataCapability,
+          declarationsCapability,
+          instanceInvokeCapability,
+        );
 }
 
 const Feign = DartFeignClient();

@@ -38,7 +38,7 @@ class ProcessBarExecutorInterceptor<T extends FeignBaseRequest> implements Feign
       var progressBar = this.progressBar, progressBarOptions = this.progressBarOptions;
       // 显示加载进度条
       if (this.preventJitter) {
-        this._timer = Timer(Duration(milliseconds: progressBarOptions.delay * 1000), () {
+        this._timer = Timer(Duration(milliseconds: progressBarOptions.delay), () {
           progressBar.showProgressBar(progressBarOptions);
         });
       } else {
@@ -85,10 +85,9 @@ class ProcessBarExecutorInterceptor<T extends FeignBaseRequest> implements Feign
       //清除定时器
       if (this._timer != null) {
         this._timer.cancel();
-      } else {
-        //隐藏加载进度条
-        progressBar.hideProgressBar();
       }
+      //隐藏加载进度条
+      progressBar.hideProgressBar();
     }
   }
 }
