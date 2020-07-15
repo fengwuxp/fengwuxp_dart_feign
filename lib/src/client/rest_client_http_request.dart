@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:fengwuxp_dart_openfeign/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/client/streamed_request.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/client_http_request.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/clinet_http_response.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/client_http_response.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/converter/http_message_converter.dart';
 import 'package:fengwuxp_dart_openfeign/src/utils/metadata_utils.dart';
 import 'package:logging/logging.dart';

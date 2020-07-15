@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:fengwuxp_dart_openfeign/src/http/clinet_http_response.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/client_http_response.dart';
 
 import 'base_request.dart';
 

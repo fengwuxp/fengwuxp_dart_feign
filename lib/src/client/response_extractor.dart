@@ -1,5 +1,5 @@
 import 'package:built_value/serializer.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/clinet_http_response.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/client_http_response.dart';
 
 /// Generic callback interface used by {@link RestTemplate}'s retrieval methods
 /// Implementations of this interface perform the actual work of extracting data
@@ -12,5 +12,11 @@ import 'package:fengwuxp_dart_openfeign/src/http/clinet_http_response.dart';
 /// [RestTemplate]
 abstract class ResponseExtractor<T> {
   /// Extract data from the given {@code [ClientHttpResponse]} and return it.
-  Future<T> extractData(ClientHttpResponse response, {Serializer serializer, FullType specifiedType});
+  Future<T> extractData(ClientHttpResponse response,
+      {Serializer serializer, FullType specifiedType});
 }
+
+/// Judge whether the business is successfully processed and capture the data results of business response
+/// [response]  the HTTP response data
+/// [return] the extracted data
+//  typedef BusinessResponseExtractor<T> = Future<T> Function(Map<String,Object> response);

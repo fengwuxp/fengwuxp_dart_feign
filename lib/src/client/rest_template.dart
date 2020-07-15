@@ -10,7 +10,7 @@ import 'package:fengwuxp_dart_openfeign/src/client/uri_template_handler.dart';
 import 'package:fengwuxp_dart_openfeign/src/constant/http/http_media_type.dart';
 import 'package:fengwuxp_dart_openfeign/src/constant/http/http_method.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/client_http_request.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/clinet_http_response.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/client_http_response.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/converter/http_message_converter.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 

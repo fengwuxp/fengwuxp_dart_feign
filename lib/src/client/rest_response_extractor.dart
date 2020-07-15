@@ -4,7 +4,7 @@ import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/message_body_client_http_response_wrapper.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/response_extractor.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/clinet_http_response.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/client_http_response.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/converter/http_message_converter.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 

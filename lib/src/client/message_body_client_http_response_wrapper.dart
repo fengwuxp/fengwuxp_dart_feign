@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:fengwuxp_dart_openfeign/src/http/client/byte_stream.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/clinet_http_response.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/client_http_response.dart';
 
 class MessageBodyClientHttpResponseWrapper implements ClientHttpResponse {
   final ClientHttpResponse _response;

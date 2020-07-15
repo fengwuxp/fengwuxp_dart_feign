@@ -1,4 +1,4 @@
-import 'clinet_http_response.dart';
+import 'client_http_response.dart';
 import 'http_message.dart';
 
 ///  Represents a client-side HTTP request.
