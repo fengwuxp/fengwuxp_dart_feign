@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/clinet_http_response.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/client_http_response.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/converter/abstract_http_message_converter.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/http_input_message.dart';
 import 'package:logging/logging.dart';
