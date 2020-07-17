@@ -31,13 +31,14 @@ class FeignConfigurationBoot implements FeignConfiguration {
       String defaultProduce = HttpMediaType.FORM_DATA,
       RestOperations restOperations,
       RequestURLResolver requestURLResolver,
+      BusinessResponseExtractor businessResponseExtractor,
       RequestParamsResolver requestParamsResolver,
       RequestHeaderResolver requestHeaderResolver,
       ApiSignatureStrategy apiSignatureStrategy,
       AuthenticationBroadcaster authenticationBroadcaster}) {
     this._feignClientExecutorFactory = feignClientExecutorFactory ?? DefaultFeignClientExecutorFactory();
     this._initInterceptor(registry);
-    this._initMessageConverts(registry, builtJsonSerializers);
+    this._initMessageConverts(registry, builtJsonSerializers, businessResponseExtractor);
     this._restTemplate = restOperations ??
         new RestTemplate(
             defaultProduce: defaultProduce,
@@ -62,10 +63,11 @@ class FeignConfigurationBoot implements FeignConfiguration {
     this._feignClientExecutorInterceptors = feignClientInterceptorRegistry.getInterceptors();
   }
 
-  void _initMessageConverts(FeignConfigurationRegistry registry, BuiltJsonSerializers builtJsonSerializers) {
+  void _initMessageConverts(FeignConfigurationRegistry registry, BuiltJsonSerializers builtJsonSerializers,
+      BusinessResponseExtractor businessResponseExtractor) {
     final List<HttpMessageConverter> list = [
       FormDataHttpMessageConverter(),
-      BuiltValueHttpMessageConverter(builtJsonSerializers),
+      BuiltValueHttpMessageConverter(builtJsonSerializers, businessResponseExtractor),
     ];
     registry.registryMessageConverters(list);
     this._httpMessageConverters = list;

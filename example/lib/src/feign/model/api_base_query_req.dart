@@ -5,11 +5,10 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
 
-            import '../query_sort_type.dart';
-            import '../query_type.dart';
-            import '../serializers.dart';
+import '../query_type.dart';
+import '../serializers.dart';
 
-    part 'api_base_query_req.g.dart';
+part 'api_base_query_req.g.dart';
 
      /// 基础的查询请求对象
 

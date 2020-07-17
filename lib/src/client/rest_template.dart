@@ -143,7 +143,7 @@ class RestTemplate implements RestOperations {
           return Future.error(result);
         }
       } catch (e) {
-        throw e;
+        return Future.error(e);
       }
     }
     return Future.value(clientHttpResponse as T);

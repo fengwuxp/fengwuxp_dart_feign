@@ -1,14 +1,13 @@
 import 'dart:convert';
 
-import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
 
-            import '../article_action_type.dart';
-            import '../serializers.dart';
+import '../article_action_type.dart';
+import '../serializers.dart';
 
-    part 'article_action_info.g.dart';
+part 'article_action_info.g.dart';
 
      /// ArticleAction
 

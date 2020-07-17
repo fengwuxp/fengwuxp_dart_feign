@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/default_url_template_handler.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/uri_template_handler.dart';
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   /// grab shaped like example '1{abc}2ll3{efg}' string  ==> abc, efg

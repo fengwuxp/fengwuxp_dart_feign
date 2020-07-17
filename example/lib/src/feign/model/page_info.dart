@@ -5,10 +5,10 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
 
-            import '../query_type.dart';
-            import '../serializers.dart';
+import '../query_type.dart';
+import '../serializers.dart';
 
-    part 'page_info.g.dart';
+part 'page_info.g.dart';
 
      /// 分页对象
 

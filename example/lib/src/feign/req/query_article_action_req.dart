@@ -5,13 +5,11 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
 
-            import '../article_action_type.dart';
-            import '../query_sort_type.dart';
-            import '../query_type.dart';
-            import '../serializers.dart';
-            import '../model/api_base_query_req.dart';
+import '../article_action_type.dart';
+import '../query_type.dart';
+import '../serializers.dart';
 
-    part 'query_article_action_req.g.dart';
+part 'query_article_action_req.g.dart';
 
      /// 查询ArticleAction
 

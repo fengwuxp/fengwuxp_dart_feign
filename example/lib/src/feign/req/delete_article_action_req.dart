@@ -5,9 +5,9 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
 
-            import '../serializers.dart';
+import '../serializers.dart';
 
-    part 'delete_article_action_req.g.dart';
+part 'delete_article_action_req.g.dart';
 
      /// 删除ArticleAction
 

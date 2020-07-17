@@ -1,10 +1,10 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:bot_toast/src/toast_widget/animation.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
-import 'package:fengwuxp_openfeign_boot/index.dart';
 import 'package:fengwuxp_dart_openfeign/index.dart';
+import 'package:fengwuxp_openfeign_boot/index.dart';
 import 'package:fengwuxp_openfeign_example/src/api_resp.dart';
 import 'package:fengwuxp_openfeign_example/src/feign/serializers.dart';
-import 'package:bot_toast/src/toast_widget/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 

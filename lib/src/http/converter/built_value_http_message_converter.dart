@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
+import 'package:fengwuxp_dart_openfeign/src/client/response_extractor.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/client_http_response.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/converter/abstract_http_message_converter.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/http_input_message.dart';
@@ -19,26 +20,37 @@ class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter
 
   BuiltJsonSerializers _builtJsonSerializers;
 
-  BuiltValueHttpMessageConverter(BuiltJsonSerializers builtJsonSerializers) : super([ContentType.json]) {
+  BusinessResponseExtractor _businessResponseExtractor;
+
+  BuiltValueHttpMessageConverter(
+      BuiltJsonSerializers builtJsonSerializers, BusinessResponseExtractor businessResponseExtractor)
+      : super([ContentType.json]) {
     this._builtJsonSerializers = builtJsonSerializers;
+    this._businessResponseExtractor = businessResponseExtractor ?? noneBusinessResponseExtractor;
   }
 
-  factory(BuiltJsonSerializers builtJsonSerializers) {
-    return new BuiltValueHttpMessageConverter(builtJsonSerializers);
+  factory(BuiltJsonSerializers builtJsonSerializers, {BusinessResponseExtractor businessResponseExtractor}) {
+    return new BuiltValueHttpMessageConverter(builtJsonSerializers, businessResponseExtractor);
   }
 
   Future<E> read<E>(HttpInputMessage inputMessage, {Serializer<E> serializer, FullType specifiedType}) {
-    return inputMessage.stream.bytesToString().then((data) {
-      _log.finer("read data ==> $data");
-      if (inputMessage is ClientHttpResponse) {
-        if (!inputMessage.ok) {
-          return jsonDecode(data);
-        }
-      }
-      return this._builtJsonSerializers.parseObject(data, serializer: serializer, specifiedType: specifiedType);
-    }).catchError((e) {
+    return inputMessage.stream.bytesToString().catchError((e) {
       _log.finer("read data error ==> $e");
       return Future.error(e);
+    }).then((responseBody) {
+      _log.finer("read http response body ==> $responseBody");
+      if (inputMessage is ClientHttpResponse) {
+        if (!inputMessage.ok) {
+          // http error
+//          return Future.error(responseBody);
+          return responseBody as dynamic;
+        }
+      }
+      return this._businessResponseExtractor(responseBody).then((value) {
+        return this
+            ._builtJsonSerializers
+            .parseObject(responseBody, serializer: serializer, specifiedType: specifiedType);
+      });
     });
   }
 

@@ -12,11 +12,15 @@ import 'package:fengwuxp_dart_openfeign/src/http/client_http_response.dart';
 /// [RestTemplate]
 abstract class ResponseExtractor<T> {
   /// Extract data from the given {@code [ClientHttpResponse]} and return it.
-  Future<T> extractData(ClientHttpResponse response,
-      {Serializer serializer, FullType specifiedType});
+  Future<T> extractData(ClientHttpResponse response, {Serializer serializer, FullType specifiedType});
 }
 
 /// Judge whether the business is successfully processed and capture the data results of business response
-/// [response]  the HTTP response data
-/// [return] the extracted data
-//  typedef BusinessResponseExtractor<T> = Future<T> Function(Map<String,Object> response);
+/// [responseBody]  the HTTP response data
+/// [return] if request business handle success return business data [String] or [Map] or [List], else return [Future#error(json.decode(responseBody))]
+typedef BusinessResponseExtractor = Future<dynamic> Function(String responseBody);
+
+/// none handle [BusinessResponseExtractor]
+final BusinessResponseExtractor noneBusinessResponseExtractor = (String responseBody) {
+  return Future.value(responseBody);
+};
