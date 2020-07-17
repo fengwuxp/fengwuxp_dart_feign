@@ -22,5 +22,6 @@ void feignInitializer(FeignConfigurationRegistry registry, BuiltJsonSerializers 
       requestParamsResolver: requestParamsResolver,
       requestHeaderResolver: requestHeaderResolver,
       apiSignatureStrategy: apiSignatureStrategy,
+      businessResponseExtractor: businessResponseExtractor,
       authenticationBroadcaster: authenticationBroadcaster));
 }

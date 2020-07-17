@@ -47,9 +47,7 @@ class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter
         }
       }
       return this._businessResponseExtractor(responseBody).then((value) {
-        return this
-            ._builtJsonSerializers
-            .parseObject(responseBody, serializer: serializer, specifiedType: specifiedType);
+        return this._builtJsonSerializers.parseObject(value, serializer: serializer, specifiedType: specifiedType);
       });
     });
   }
