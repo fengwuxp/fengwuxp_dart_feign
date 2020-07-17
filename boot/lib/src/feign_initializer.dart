@@ -11,6 +11,7 @@ void feignInitializer(FeignConfigurationRegistry registry, BuiltJsonSerializers 
     RequestURLResolver requestURLResolver,
     RequestParamsResolver requestParamsResolver,
     RequestHeaderResolver requestHeaderResolver,
+    BusinessResponseExtractor businessResponseExtractor,
     ApiSignatureStrategy apiSignatureStrategy,
     AuthenticationBroadcaster authenticationBroadcaster}) {
   registryFeignConfiguration(FeignConfigurationBoot(registry, builtJsonSerializers,
