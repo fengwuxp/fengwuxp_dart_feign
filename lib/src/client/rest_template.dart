@@ -140,7 +140,9 @@ class RestTemplate implements RestOperations {
         if (clientHttpResponse.ok) {
           return result;
         } else {
-          return Future.error(result);
+          // http error response
+          return Future.error(ResponseEntity(
+              clientHttpResponse.statusCode, clientHttpResponse.headers, result, clientHttpResponse.reasonPhrase));
         }
       } catch (e) {
         return Future.error(e);
