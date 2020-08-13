@@ -19,8 +19,8 @@ void main() {
     var helloFeignClient = HelloFeignClient();
 
     /// 运行时泛型检查
-    var result = await helloFeignClient.getHello("name", 1);
-    print("==${result}==>");
+//    var result = await helloFeignClient.getHello("name", 1);
+//    print("==${result}==>");
     var hello = QueryHelloReq((b) => b
       ..id = 1
       ..date = "2"
@@ -28,11 +28,13 @@ void main() {
       ..type = "4"
       ..link = "5");
 
-//     返回Object
-    helloFeignClient.queryHello(hello).then((data) {
-      print("===reslt 2===>  $data");
-    });
+    await helloFeignClient.putDataTest(hello);
 
-    helloFeignClient.getTest("name", BuiltList([1]));
+//     返回Object
+//    helloFeignClient.queryHello(hello).then((data) {
+//      print("===reslt 2===>  $data");
+//    });
+//
+//    helloFeignClient.getTest("name", BuiltList([1]));
   });
 }

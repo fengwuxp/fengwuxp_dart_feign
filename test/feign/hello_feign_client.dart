@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:built_collection/built_collection.dart';
+import 'package:fengwuxp_dart_openfeign/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/feign_client.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/path_variable.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/request_header.dart';
@@ -44,4 +45,7 @@ class HelloFeignClient extends FeignProxyClient {
 
   @GetMapping(value: "/get_hello/{id}")
   Future findHelloById(@PathVariable() String id, [UIOptions feignOptions]);
+
+  @PutMapping(value: "/put_data_test")
+  Future putDataTest(@RequestBody() QueryHelloReq req, [UIOptions feignOptions]);
 }

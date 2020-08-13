@@ -2,11 +2,13 @@
 // https://github.com/dart-lang/reflectable.
 
 import 'dart:core';
-
+import 'hello_feign_client.dart' as prefix1;
 import 'package:fengwuxp_dart_openfeign/src/annotations/feign_client.dart'
     as prefix0;
 import 'package:fengwuxp_dart_openfeign/src/annotations/path_variable.dart'
     as prefix7;
+import 'package:fengwuxp_dart_openfeign/src/annotations/request_body.dart'
+    as prefix8;
 import 'package:fengwuxp_dart_openfeign/src/annotations/request_header.dart'
     as prefix5;
 import 'package:fengwuxp_dart_openfeign/src/annotations/request_mapping.dart'
@@ -17,11 +19,18 @@ import 'package:fengwuxp_dart_openfeign/src/annotations/signature.dart'
     as prefix4;
 import 'package:fengwuxp_dart_openfeign/src/constant/authentication_type.dart'
     as prefix3;
-import 'package:reflectable/mirrors.dart' as m;
-import 'package:reflectable/reflectable.dart' as r show Reflectable;
-import 'package:reflectable/src/reflectable_builder_based.dart' as r;
 
-import 'hello_feign_client.dart' as prefix1;
+// ignore_for_file: prefer_adjacent_string_concatenation
+// ignore_for_file: prefer_collection_literals
+// ignore_for_file: unnecessary_const
+// ignore_for_file: implementation_imports
+
+// ignore:unused_import
+import 'package:reflectable/mirrors.dart' as m;
+// ignore:unused_import
+import 'package:reflectable/src/reflectable_builder_based.dart' as r;
+// ignore:unused_import
+import 'package:reflectable/reflectable.dart' as r show Reflectable;
 
 final _data = <r.Reflectable, r.ReflectorData>{
   const prefix0.DartFeignClient(): r.ReflectorData(
@@ -38,10 +47,10 @@ final _data = <r.Reflectable, r.ReflectorData>{
             -1,
             {},
             {},
-            {r'': (b) => () => b ? prefix1.HelloFeignClient() : null},
+            {},
             -1,
-            0,
-            const <int>[],
+            -1,
+            const <int>[-1],
             const <Object>[
               prefix0.Feign,
               const prefix0.FeignClient(name: "hello_client", value: "/")
@@ -111,10 +120,19 @@ final _data = <r.Reflectable, r.ReflectorData>{
             const <int>[11, 12],
             const prefix0.DartFeignClient(),
             const <Object>[const prefix2.GetMapping(value: "/get_hello/{id}")]),
-        r.MethodMirrorImpl(r'', 64, 0, -1, -1, -1, null, const <int>[],
-            const prefix0.DartFeignClient(), const []),
+        r.MethodMirrorImpl(
+            r'putDataTest',
+            4325890,
+            0,
+            -1,
+            -1,
+            -1,
+            null,
+            const <int>[13, 14],
+            const prefix0.DartFeignClient(),
+            const <Object>[const prefix2.PutMapping(value: "/put_data_test")]),
         r.MethodMirrorImpl(r'==', 131074, null, -1, -1, -1, null,
-            const <int>[13], const prefix0.DartFeignClient(), const []),
+            const <int>[15], const prefix0.DartFeignClient(), const []),
         r.MethodMirrorImpl(r'toString', 131074, null, -1, -1, -1, null,
             const <int>[], const prefix0.DartFeignClient(), const []),
         r.MethodMirrorImpl(
@@ -125,7 +143,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
             -1,
             -1,
             null,
-            const <int>[14],
+            const <int>[16],
             const prefix0.DartFeignClient(),
             const <Object>[override]),
         r.MethodMirrorImpl(r'hashCode', 131075, null, -1, -1, -1, null,
@@ -140,7 +158,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
             -1,
             -1,
             null,
-            const <int>[15, 16, 17, 18],
+            const <int>[17, 18, 19, 20],
             const prefix0.DartFeignClient(),
             const [])
       ],
@@ -283,6 +301,30 @@ final _data = <r.Reflectable, r.ReflectorData>{
             r'feignOptions',
             36870,
             4,
+            const prefix0.DartFeignClient(),
+            -1,
+            -1,
+            -1,
+            null,
+            const [],
+            null,
+            null),
+        r.ParameterMirrorImpl(
+            r'req',
+            32774,
+            5,
+            const prefix0.DartFeignClient(),
+            -1,
+            -1,
+            -1,
+            null,
+            const <Object>[const prefix8.RequestBody()],
+            null,
+            null),
+        r.ParameterMirrorImpl(
+            r'feignOptions',
+            36870,
+            5,
             const prefix0.DartFeignClient(),
             -1,
             -1,
