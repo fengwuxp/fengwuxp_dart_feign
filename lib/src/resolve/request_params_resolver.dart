@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_dart_openfeign/index.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/client/multipart_file.dart';
 import 'package:fengwuxp_dart_openfeign/src/named_support.dart';
 import 'package:fengwuxp_dart_openfeign/src/utils/metadata_utils.dart';
 import 'package:reflectable/reflectable.dart';
@@ -57,6 +56,7 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
         // 是否需要使用formData提交
         var useFormData = isRequestParam(meta) && _supportRequestBody;
 
+        var useRequestBody = isRequestBody(metadata);
         if (isRequestParam(meta) && !_supportRequestBody) {
           // 是查询参数 且不支持RequestBody(Get 请求)
           _margeData(result.queryParams, simpleName, metadata, argument);
@@ -77,9 +77,13 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
           //TODO 提交cookie
         } else if (isPathVariable(meta)) {
           result.pathVariables.add(argument);
-        } else if (isRequestBody(metadata) || useFormData) {
+        } else if (useRequestBody || useFormData) {
           // request body，如果是被 RequestParam 标记过的参数，优先使用 body 传递
           _margeData(result.body, simpleName, metadata, argument);
+          if (useRequestBody) {
+            // 有RequestBody注解表示
+            result.headers[HttpHeaders.contentTypeHeader] = HttpMediaType.APPLICATION_JSON_UTF8;
+          }
         } else {
           // TODO
           _margeData(result.body, simpleName, metadata, argument);
