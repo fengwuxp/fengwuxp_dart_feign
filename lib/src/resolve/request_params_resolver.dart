@@ -55,7 +55,7 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
         var isFile = argument is File;
         // 是否需要使用formData提交
         var useFormData = isRequestParam(meta) && _supportRequestBody;
-
+        // 是否需要使用RequestBody
         var useRequestBody = isRequestBody(meta);
         if (isRequestParam(meta) && !_supportRequestBody) {
           // 是查询参数 且不支持RequestBody(Get 请求)
