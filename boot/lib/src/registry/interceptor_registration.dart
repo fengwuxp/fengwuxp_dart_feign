@@ -1,3 +1,6 @@
+
+
+/// 拦截器注册器
 abstract class InterceptorRegistration {
   List<String> _includePatterns = [];
 

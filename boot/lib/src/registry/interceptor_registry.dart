@@ -1,5 +1,7 @@
 import 'interceptor_registration.dart';
 
+
+/// 拦截器注册中心
 abstract class InterceptorRegistry {
   InterceptorRegistration addInterceptor(interceptor);
 
