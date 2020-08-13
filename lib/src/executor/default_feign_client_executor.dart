@@ -11,8 +11,9 @@ import 'package:fengwuxp_dart_openfeign/src/context/request_context_holder.dart'
 import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 import 'package:fengwuxp_dart_openfeign/src/interceptor/mapped_feign_client_executor_interceptor.dart';
 import 'package:fengwuxp_dart_openfeign/src/utils/metadata_utils.dart';
-import 'package:reflectable/reflectable.dart';
 import 'package:logging/logging.dart';
+import 'package:reflectable/reflectable.dart';
+
 import '../feign_request_options.dart';
 import 'feign_client_executor.dart';
 import 'feign_client_executor_interceptor.dart';

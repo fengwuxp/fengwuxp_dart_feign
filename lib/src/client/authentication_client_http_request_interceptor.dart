@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_dart_openfeign/index.dart';
-import 'package:fengwuxp_dart_openfeign/src/cache_capable_support.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/authentication_strategy.dart';
-import 'package:fengwuxp_dart_openfeign/src/client/cache_authentication_strategy.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/client_http_request_interceptor.dart';
 import 'package:fengwuxp_dart_openfeign/src/constant/authentication_type.dart';
 import 'package:fengwuxp_dart_openfeign/src/constant/feign_constant_var.dart';

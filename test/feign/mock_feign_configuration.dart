@@ -46,7 +46,7 @@ class MockFeignConfiguration implements FeignConfiguration {
     this.requestURLResolver = RestfulRequestURLResolver();
     this.requestHeaderResolver = DefaultRequestHeaderResolver();
     this.requestParamsResolver = DefaultRequestParamsResolver();
-    var messageConverters = [new BuiltValueHttpMessageConverter(new BuiltJsonSerializers(serializers))];
+    var messageConverters = [new BuiltValueHttpMessageConverter(new BuiltJsonSerializers(serializers), null)];
     this.messageConverters = messageConverters;
     this.feignClientExecutorInterceptors = [
       new UnifiedFailureToastExecutorInterceptor((data, BuiltValueSerializable serializer) {

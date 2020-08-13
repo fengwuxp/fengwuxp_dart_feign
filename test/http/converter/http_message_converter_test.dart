@@ -12,9 +12,7 @@ import '../../built/serializers.dart';
 import 'json_object_http_message_converter.dart';
 
 class InputStreamHttpInputMessage implements HttpInputMessage {
-
   ByteStream _inputStream;
-
 
   InputStreamHttpInputMessage(Stream<List<int>> source) {
     this._inputStream = ByteStream(source);
@@ -56,7 +54,7 @@ void main() {
   test('test  built http message converter', () async {
     var codeUnits = jsonText.codeUnits;
     var inputMessage = new InputStreamHttpInputMessage(Stream.value(codeUnits));
-    var builtValueHttpMessageConverter = BuiltValueHttpMessageConverter(new BuiltJsonSerializers(serializers));
+    var builtValueHttpMessageConverter = BuiltValueHttpMessageConverter(new BuiltJsonSerializers(serializers), null);
     if (builtValueHttpMessageConverter.canRead(ContentType.json)) {
       Hello result = await builtValueHttpMessageConverter.read(inputMessage, serializer: Hello.serializer);
       print("==Hello=> $result");

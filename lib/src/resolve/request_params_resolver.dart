@@ -66,6 +66,7 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
         } else if (isRequestHeader(meta)) {
           result.headers[simpleName] = argument;
         } else if (isRequestPart(meta) || isFile) {
+          // TODO 文件处理
 //          if (argument is String) {
 //            // 文件路径
 //            result.files[simpleName] = MultipartFile.fromPath(simpleName, argument);
@@ -78,18 +79,19 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
         } else if (isPathVariable(meta)) {
           result.pathVariables.add(argument);
         } else if (useRequestBody || useFormData) {
-          // request body，如果是被 RequestParam 标记过的参数，优先使用 body 传递
+          /// 支持 request body，如果是被 [RequestParam] 标记过的参数，优先使用 body 传递
           _margeData(result.body, simpleName, metadata, argument);
           if (useRequestBody) {
-            // 有RequestBody注解表示
+            // 有[RequestBody]注解，则默认使用json传递数据
             result.headers[HttpHeaders.contentTypeHeader] = HttpMediaType.APPLICATION_JSON_UTF8;
           }
         } else {
-          // TODO
+          // TODO 其他情况
           _margeData(result.body, simpleName, metadata, argument);
         }
 
         if (useFormData && result.headers[HttpHeaders.contentTypeHeader] == null) {
+          // 使用表单提交数据
           result.headers[HttpHeaders.contentTypeHeader] = HttpMediaType.FORM_DATA;
         }
       }
@@ -98,10 +100,10 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
     return result;
   }
 
-  /// [target]
-  /// [propName]
-  /// [metadata]
-  /// [data]
+  /// [target]     请求体
+  /// [propName]   在请求体属性名称
+  /// [metadata]   描述元数据对象
+  /// [data]       提交的数据内容
   void _margeData(Map<String, dynamic> target, String propName, metadata, data) {
     if (data == null) {
       return;

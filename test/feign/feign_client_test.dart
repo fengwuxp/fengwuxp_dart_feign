@@ -1,7 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 @TestOn('vm')
 import 'package:fengwuxp_dart_openfeign/src/configuration/feign_configuration_registry.dart';
-import 'package:fengwuxp_dart_openfeign/src/feign_request_options.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../built/req/query_hello_req.dart';

@@ -1,7 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:fengwuxp_dart_openfeign/src/built/descriptive_enum.dart';
 
 part 'article_action_type.g.dart';
 

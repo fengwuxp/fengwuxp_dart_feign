@@ -29,7 +29,7 @@ class DefaultRequestHeaderResolver implements RequestHeaderResolver {
     }
     final produces = requestMapping.produces;
     if (produces.isNotEmpty){
-      // 强行指定content-type
+      // 强行指定Content-Type
       headers[HttpHeaders.contentTypeHeader] = produces[0];
     }
     return headers;

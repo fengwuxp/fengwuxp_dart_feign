@@ -1,4 +1,4 @@
-import 'package:fengwuxp_dart_openfeign/src/cache_capable_support.dart';
+
 
 /// marked authentication strategy cache support
 /// [CacheAuthenticationStrategy]

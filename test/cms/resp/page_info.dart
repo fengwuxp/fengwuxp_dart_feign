@@ -6,7 +6,6 @@ import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
 
 import '../../built/serializers.dart';
-import '../info/article_action_info.dart';
 
 part 'page_info.g.dart';
 
