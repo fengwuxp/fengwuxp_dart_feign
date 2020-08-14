@@ -46,22 +46,27 @@ class UnifiedFailureToastExecutorInterceptor<T extends FeignBaseRequest> impleme
       result = GATEWAY_TIME_RESPONSE;
     } else if (error is Exception) {
       // 其他异常
-      result = ResponseEntity(HttpStatus.internalServerError, {}, null, null);
+      result = ResponseEntity(HttpStatus.internalServerError, {}, null, error.toString() ?? "未知异常");
     } else if (error is ResponseEntity) {
-      result = error;
-    } else {
-      // error is customize type
-      var isResponseEntity = serializer?.specifiedType != null && serializer?.specifiedType?.root == ResponseEntity;
-      result = isResponseEntity ? error : this._transformerResponseData(error, serializer);
-    }
-    if (result is ResponseEntity) {
-      if (HttpStatus.unauthorized == result.statusCode) {
+      // 处理401
+      if (HttpStatus.unauthorized == error.statusCode) {
         // send unauthorized
         getFeignConfiguration().authenticationBroadcaster?.sendUnAuthorizedEvent();
       }
     } else {
-      // TODO 其他未处理的类型
+      // TODO
     }
+    result = this._transformerResponseData(error, serializer);
+
+    //else if (error is ResponseEntity) {
+    //
+//      result = this._transformerResponseData(error, serializer);
+//    } else {
+//       error is customize type
+//      var isResponseEntity = serializer?.specifiedType != null && serializer?.specifiedType?.root == ResponseEntity;
+//      result = isResponseEntity ? error : this._transformerResponseData(error, serializer);
+//    }
+
     _tryToast(result, uiOptions);
     return Future.error(result);
   }
