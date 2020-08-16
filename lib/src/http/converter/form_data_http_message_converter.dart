@@ -25,6 +25,9 @@ class FormDataHttpMessageConverter extends AbstractHttpMessageConverter {
 
   @override
   Future write(data, ContentType mediaType, HttpOutputMessage outputMessage) {
+    if (data == null) {
+      return Future.value();
+    }
     if (mediaType.value == _FORM_DATA.value) {
       _writeFormData(data, outputMessage);
     } else {

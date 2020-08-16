@@ -34,7 +34,10 @@ abstract class AbstractHttpMessageConverter<T> implements HttpMessageConverter<T
     return requiredEncodingForCharset(contentType.parameters["charset"]);
   }
 
-  void writeBody(String value,ContentType mediaType, HttpOutputMessage outputMessage){
+  void writeBody(String value, ContentType mediaType, HttpOutputMessage outputMessage) {
+    if (value == null) {
+      return;
+    }
     var bytes = this.getEncoding(mediaType).encode(value);
     outputMessage.body.add(bytes);
     outputMessage.addContentLength(bytes.length);
