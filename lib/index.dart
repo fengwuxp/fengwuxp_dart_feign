@@ -10,7 +10,6 @@ export 'src/annotations/request_mapping.dart';
 export 'src/annotations/request_param.dart';
 export 'src/annotations/request_part.dart';
 export 'src/annotations/signature.dart';
-export 'src/built/date_time_serializer.dart';
 export 'src/cache_capable_support.dart';
 export 'src/client/authentication_client_http_request_interceptor.dart';
 export 'src/client/authentication_strategy.dart';
