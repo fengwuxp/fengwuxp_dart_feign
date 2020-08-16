@@ -35,12 +35,15 @@ class FormDataHttpMessageConverter extends AbstractHttpMessageConverter {
     }
   }
 
-  _writeFormData(data, HttpOutputMessage outputMessage) {
+  void _writeFormData(data, HttpOutputMessage outputMessage) {
     _log.finer("write form data $data");
     var text = QueryStringParser.stringify(data);
+    if (text == null) {
+      return;
+    }
     super.writeBody(text, _FORM_DATA, outputMessage);
   }
 
-  // TODO 文件上传
-  _writeMultipartFormData(data, HttpOutputMessage outputMessage) {}
+  // TODO 处理文件上传
+  void _writeMultipartFormData(data, HttpOutputMessage outputMessage) {}
 }
