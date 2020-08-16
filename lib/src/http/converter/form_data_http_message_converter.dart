@@ -38,9 +38,6 @@ class FormDataHttpMessageConverter extends AbstractHttpMessageConverter {
   void _writeFormData(data, HttpOutputMessage outputMessage) {
     _log.finer("write form data $data");
     var text = QueryStringParser.stringify(data);
-    if (text == null) {
-      return;
-    }
     super.writeBody(text, _FORM_DATA, outputMessage);
   }
 
