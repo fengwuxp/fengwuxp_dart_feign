@@ -6,5 +6,10 @@ class RequestHeader implements Named{
   ///提交的请求头名称，默认为标记字段的名称
   final String name;
 
-  const RequestHeader([this.name ]);
+  /// 是否必须，默认true
+  final bool required;
+
+  const RequestHeader({String name: "", bool required: true})
+      : this.name = name,
+        this.required = required;
 }

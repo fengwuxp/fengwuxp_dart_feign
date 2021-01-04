@@ -22,30 +22,37 @@ class HelloFeignClient extends FeignProxyClient {
   /// 返回具体类型
   /// 为了能够返回具体类型 骗过 dart运行时泛型匹配使用如下方式调用
   @GetMapping(value: "/", authenticationType: AuthenticationType.NONE)
-  Future<Hello> getHello(@RequestHeader() String name, @RequestParam() num id, [UIOptions feignOptions]) {
+  Future<Hello> getHello(@RequestHeader() String name, @RequestParam() num id,
+      [UIOptions feignOptions]) {
     return this.delegateInvoke<Hello>("getHello", [name, id],
-        feignOptions: feignOptions, serializer: BuiltValueSerializable(serializer: Hello.serializer));
+        feignOptions: feignOptions,
+        serializer: BuiltValueSerializable(serializer: Hello.serializer));
   }
 
   /// 返回具体类型
   /// 为了能够返回具体类型 骗过 dart运行时泛型匹配使用如下方式调用
   @GetMapping(value: "/test")
-  Future<String> getTest(@RequestHeader() String name, @RequestParam() BuiltList<num> id, [UIOptions feignOptions]) {
-    return this.delegateInvoke<String>("getTest", [name, id], feignOptions: feignOptions);
+  Future<String> getTest(@RequestHeader() String name,
+      @RequestParam(name: "id", required: false) BuiltList<num> id,
+      [UIOptions feignOptions]) {
+    return this.delegateInvoke<String>("getTest", [name, id],
+        feignOptions: feignOptions);
   }
 
   /// 不返回具体类型  dart运行时泛型匹配的限制
   /// noSuchMethod 永远返回 Future<dynamic>
   @GetMapping(value: "/get_hello")
-  Future getHelloForObject(@RequestHeader() String name, @RequestParam() num id, [UIOptions feignOptions]);
+  Future getHelloForObject(@RequestHeader() String name, @RequestParam() num id,
+      [UIOptions feignOptions]);
 
   @GetMapping(value: "/get_hello")
-  @Signature(["id"])
+  @Signature(fields: ['id'])
   Future queryHello(QueryHelloReq req, [UIOptions feignOptions]);
 
   @GetMapping(value: "/get_hello/{id}")
   Future findHelloById(@PathVariable() String id, [UIOptions feignOptions]);
 
   @PutMapping(value: "/put_data_test")
-  Future putDataTest(@RequestBody() QueryHelloReq req, [UIOptions feignOptions]);
+  Future putDataTest(@RequestBody() QueryHelloReq req,
+      [UIOptions feignOptions]);
 }

@@ -11,24 +11,30 @@ abstract class RequestHeaderResolver {
   /// param [headers]
   /// param [data]
   /// return new headers
-  Map<String, String> resolve(
-      RequestMapping methodRequestMapping, Map<String, String> headers, Map<String, dynamic> data);
+  Map<String, String> resolve(RequestMapping methodRequestMapping,
+      Map<String, String> headers, Map<String, dynamic> data);
 }
 
 class DefaultRequestHeaderResolver implements RequestHeaderResolver {
   const DefaultRequestHeaderResolver();
 
   @override
-  Map<String, String> resolve(RequestMapping requestMapping, Map<String, String> headers, Map<String, dynamic> data) {
+  Map<String, String> resolve(RequestMapping requestMapping,
+      Map<String, String> headers, Map<String, dynamic> data) {
     final configHeaders = requestMapping.headers;
 
     if (configHeaders.isNotEmpty) {
       configHeaders.forEach((key, val) {
-        headers[key] = replacePathVariableValue(val, data);
+        if (val == null) {
+          return;
+        }
+        headers[key] = val is String
+            ? replacePathVariableValue(val, data)
+            : val.toString();
       });
     }
     final produces = requestMapping.produces;
-    if (produces.isNotEmpty){
+    if (produces.isNotEmpty) {
       // 强行指定Content-Type
       headers[HttpHeaders.contentTypeHeader] = produces[0];
     }

@@ -6,5 +6,10 @@ class CookieValue implements Named {
   /// 提交的cookie值的名称，默认为标记字段的名称
   final String name;
 
-  const CookieValue([this.name]);
+  /// 是否必须，默认true
+  final bool required;
+
+  const CookieValue({String name: "", bool required: true})
+      : this.name = name,
+        this.required = required;
 }
