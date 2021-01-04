@@ -27,10 +27,13 @@ class DefaultRequestHeaderResolver implements RequestHeaderResolver {
       configHeaders.forEach((key, val) {
         if (val == null) {
           return;
+        } else if (val is String) {
+          headers[key] = replacePathVariableValue(val, data)
+        } else if (val is Iterable) {
+          headers[key] = val.join(";");
+        } else {
+          headers[key] = val.toString();
         }
-        headers[key] = val is String
-            ? replacePathVariableValue(val, data)
-            : val.toString();
       });
     }
     final produces = requestMapping.produces;
