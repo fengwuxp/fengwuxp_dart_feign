@@ -72,8 +72,8 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
         } else if (isQueryMap(meta)) {
           // 查询参数对象
           _margeData(feignRequest.queryParams, simpleName, metadata, argument);
-        } else if (isRequestHeader(meta)) {
-          feignRequest.headers[simpleName] = argument;
+        } else if (meta is RequestHeader) {
+          feignRequest.headers[simpleName] = argument ?? meta.defaultValue;
         } else if (isRequestPart(meta) || isFile) {
           // TODO 文件处理
 //          if (argument is String) {
@@ -124,7 +124,7 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
     data = data ?? defaultValue;
     if (data == null) {
       if (required) {
-        throw new ArgumentError("参数：${propName}，不能为null");
+        throw new ArgumentError("参数：$propName，不能为null");
       }
       return;
     }
