@@ -40,9 +40,16 @@ class UnifiedFailureToastExecutorInterceptor<T extends FeignBaseRequest> impleme
   Future postError<E>(T options, UIOptions uiOptions, error, {BuiltValueSerializable serializer}) {
     var result;
     if (error is Exception) {
-      // 其他异常
-      result = ResponseEntity(-1, {}, null, error.toString() ?? "请求出现异常");
-      _tryToast(result, uiOptions);
+      // TODO 是否将异常做转换以及日志输出
+      // var statusCode = HttpStatus.internalServerError;
+      // if (error is ClientTimeOutException) {
+      //   statusCode = HttpStatus.gatewayTimeout;
+      // } else if (error is IOException) {
+      //   statusCode = HttpStatus.networkConnectTimeoutError;
+      // }
+      // // 请求出现异常
+      // result = ResponseEntity(statusCode, {}, null, error.toString() ?? "请求出现异常");
+      // _tryToast(result, uiOptions);
       return Future.error(error);
     } else if (error is ResponseEntity) {
       // 处理401
@@ -51,7 +58,7 @@ class UnifiedFailureToastExecutorInterceptor<T extends FeignBaseRequest> impleme
         getFeignConfiguration().authenticationBroadcaster?.sendUnAuthorizedEvent();
       }
     } else {
-      // TODO
+      // 其他情况
       result = error;
     }
     result = this._transformerResponseData(result, serializer);
