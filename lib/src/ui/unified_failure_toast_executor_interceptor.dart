@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:fengwuxp_dart_openfeign/index.dart';
-import 'package:fengwuxp_dart_openfeign/src/constant/feign_constant_var.dart';
 import 'package:fengwuxp_dart_openfeign/src/executor/feign_client_executor_interceptor.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/client/client_exception.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 
 import '../feign_request_options.dart';
@@ -41,12 +39,11 @@ class UnifiedFailureToastExecutorInterceptor<T extends FeignBaseRequest> impleme
   /// [exception]
   Future postError<E>(T options, UIOptions uiOptions, error, {BuiltValueSerializable serializer}) {
     var result;
-    if (error is ClientTimeOutException) {
-      // 请求超时
-      result = GATEWAY_TIME_RESPONSE;
-    } else if (error is Exception) {
+    if (error is Exception) {
       // 其他异常
-      result = ResponseEntity(HttpStatus.internalServerError, {}, null, error.toString() ?? "未知异常");
+      result = ResponseEntity(-1, {}, null, error.toString() ?? "请求出现异常");
+      _tryToast(result, uiOptions);
+      return Future.error(error);
     } else if (error is ResponseEntity) {
       // 处理401
       if (HttpStatus.unauthorized == error.statusCode) {
@@ -55,18 +52,9 @@ class UnifiedFailureToastExecutorInterceptor<T extends FeignBaseRequest> impleme
       }
     } else {
       // TODO
+      result = error;
     }
-    result = this._transformerResponseData(error, serializer);
-
-    //else if (error is ResponseEntity) {
-    //
-//      result = this._transformerResponseData(error, serializer);
-//    } else {
-//       error is customize type
-//      var isResponseEntity = serializer?.specifiedType != null && serializer?.specifiedType?.root == ResponseEntity;
-//      result = isResponseEntity ? error : this._transformerResponseData(error, serializer);
-//    }
-
+    result = this._transformerResponseData(result, serializer);
     _tryToast(result, uiOptions);
     return Future.error(result);
   }
