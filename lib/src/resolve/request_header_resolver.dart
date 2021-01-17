@@ -28,7 +28,7 @@ class DefaultRequestHeaderResolver implements RequestHeaderResolver {
         if (val == null) {
           return;
         } else if (val is String) {
-          headers[key] = replacePathVariableValue(val, data)
+          headers[key] = replacePathVariableValue(val, data);
         } else if (val is Iterable) {
           headers[key] = val.join(";");
         } else {

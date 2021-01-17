@@ -12,7 +12,9 @@ dependencies:
     sdk: flutter
   glob: ^1.2.0
   reflectable:
-    git: git://github.com/dart-lang/reflectable.git
+    git:
+      url: git://github.com/dart-lang/reflectable.git
+      path: ./reflectable
   meta: ^1.0.4
   built_collection: '>=2.0.0 <5.0.0'
   built_value: ^7.0.2
