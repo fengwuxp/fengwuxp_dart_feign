@@ -1,6 +1,6 @@
 name: fengwuxp_openfeign_boot
 description: openfeign dart  boot
-version: 0.0.3
+version: 0.0.4
 author: fengwuxp
 homepage: https://github.com/fengwuxp/dart_openfeign
 
@@ -10,29 +10,28 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  reflectable:
-    git: git://github.com/dart-lang/reflectable.git
-  logging: ^0.11.4
+  reflectable: ^2.2.9
   fengwuxp_dart_basic:
     git: git://github.com/fengwuxp/fengwuxp_dart_basic.git
   fengwuxp_dart_openfeign:
-    git: git://github.com/fengwuxp/fengwuxp_dart_feign.git
-#    path: ../
+    path: ../
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  quiver: '>=0.21.0 <3.0.0'
+  quiver: ^3.0.0
   test: ^1.0.0
   build_runner: any
   build_test: any
   # If you need to run web tests, you will also need this dependency.
   #  build_web_compilers: any
-  built_value_generator: ^7.0.9
+  built_value_generator: '>7.0.0'
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
+flutter:
+ The following section is specific to Flutter.
 flutter:
 
 # To add assets to your package, add an assets section, like this:
