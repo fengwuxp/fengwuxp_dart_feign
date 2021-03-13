@@ -10,9 +10,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  built_collection:  ^8.0.2
-  built_value:  ^8.0.2
-  logging: ^0.11.4
+  reflectable: ^2.2.9
+#  logging: ^0.11.2
+  built_collection: ^5.0.0
+  built_value: ^8.0.2
   fengwuxp_dart_basic:
     git: git://github.com/fengwuxp/fengwuxp_dart_basic.git
   fengwuxp_openfeign_boot:
@@ -22,6 +23,7 @@ dependencies:
 
 dev_dependencies:
   flutter_test:
+    sdk: flutter
   test: ^1.0.0
   build_runner: any
   build_test: any
