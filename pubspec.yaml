@@ -10,10 +10,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  #  glob: ^1.1.0
   meta: ^1.3.0
-  #  logging: ^0.11.2
-  reflectable: ^2.2.9
+  reflectable: 3.0.0-nullsafety.1
+#  reflectable:
+#    git:
+#      url: git://github.com/dart-lang/reflectable.git
+#      path: reflectable
   built_collection: ^5.0.0
   built_value: ^8.0.2
   fengwuxp_dart_basic:

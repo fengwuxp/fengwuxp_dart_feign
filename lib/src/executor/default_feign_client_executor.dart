@@ -109,7 +109,7 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
           timeout: uiOptions.timeout);
     } catch (error) {
       // 请求失败或异常
-      var result = await this._postHandleError(feignRequest, uiOptions, requestUrl, requestMapping, error, serializer);
+      final result = await this._postHandleError(feignRequest, uiOptions, requestUrl, requestMapping, error, serializer);
       return Future.error(result);
     }
 

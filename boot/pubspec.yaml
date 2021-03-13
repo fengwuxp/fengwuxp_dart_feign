@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  reflectable: ^2.2.9
   fengwuxp_dart_basic:
     git: git://github.com/fengwuxp/fengwuxp_dart_basic.git
   fengwuxp_dart_openfeign:
