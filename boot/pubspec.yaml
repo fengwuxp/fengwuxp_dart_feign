@@ -14,7 +14,7 @@ dependencies:
   fengwuxp_dart_basic:
     git: git://github.com/fengwuxp/fengwuxp_dart_basic.git
   fengwuxp_dart_openfeign:
-    path: ../
+    git: git://github.com/fengwuxp/fengwuxp_dart_feign.git
 
 dev_dependencies:
   flutter_test:
