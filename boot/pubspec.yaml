@@ -10,22 +10,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  reflectable: '>=2.0.0'
-
-  logging: ^0.11.4
+  reflectable: ^2.2.9
+  logging: ^1.0.0
   fengwuxp_dart_basic:
     git: git://github.com/fengwuxp/fengwuxp_dart_basic.git
-#  fengwuxp_dart_openfeign:
-#    git:
-#      url: git://github.com/fengwuxp/fengwuxp_dart_feign.git
-#      ref: feature/annotation_changes
   fengwuxp_dart_openfeign:
     path: ../
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  quiver: '>=0.21.0 <3.0.0'
+  quiver: ^3.0.0
   test: ^1.0.0
   build_runner: any
   build_test: any
