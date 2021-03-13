@@ -45,7 +45,7 @@ class _$FindArticleActionsReqSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'articleId':
           result.articleId = serializers.deserialize(value,
@@ -73,12 +73,10 @@ class _$FindArticleActionsReq extends FindArticleActionsReq {
       (new FindArticleActionsReqBuilder()..update(updates)).build();
 
   _$FindArticleActionsReq._({this.articleId, this.sourceCode}) : super._() {
-    if (articleId == null) {
-      throw new BuiltValueNullFieldError('FindArticleActionsReq', 'articleId');
-    }
-    if (sourceCode == null) {
-      throw new BuiltValueNullFieldError('FindArticleActionsReq', 'sourceCode');
-    }
+    BuiltValueNullFieldError.checkNotNull(
+        articleId, 'FindArticleActionsReq', 'articleId');
+    BuiltValueNullFieldError.checkNotNull(
+        sourceCode, 'FindArticleActionsReq', 'sourceCode');
   }
 
   @override
@@ -127,9 +125,10 @@ class FindArticleActionsReqBuilder
   FindArticleActionsReqBuilder();
 
   FindArticleActionsReqBuilder get _$this {
-    if (_$v != null) {
-      _articleId = _$v.articleId;
-      _sourceCode = _$v.sourceCode;
+    final $v = _$v;
+    if ($v != null) {
+      _articleId = $v.articleId;
+      _sourceCode = $v.sourceCode;
       _$v = null;
     }
     return this;
@@ -137,9 +136,7 @@ class FindArticleActionsReqBuilder
 
   @override
   void replace(FindArticleActionsReq other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$FindArticleActionsReq;
   }
 
@@ -152,7 +149,10 @@ class FindArticleActionsReqBuilder
   _$FindArticleActionsReq build() {
     final _$result = _$v ??
         new _$FindArticleActionsReq._(
-            articleId: articleId, sourceCode: sourceCode);
+            articleId: BuiltValueNullFieldError.checkNotNull(
+                articleId, 'FindArticleActionsReq', 'articleId'),
+            sourceCode: BuiltValueNullFieldError.checkNotNull(
+                sourceCode, 'FindArticleActionsReq', 'sourceCode'));
     replace(_$result);
     return _$result;
   }

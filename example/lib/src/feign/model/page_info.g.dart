@@ -24,41 +24,45 @@ class _$PageInfoSerializer implements StructuredSerializer<PageInfo<Object>> {
         isUnderspecified ? FullType.object : specifiedType.parameters[0];
 
     final result = <Object>[];
-    if (object.total != null) {
+    Object value;
+    value = object.total;
+    if (value != null) {
       result
         ..add('total')
-        ..add(serializers.serialize(object.total,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    if (object.queryType != null) {
+    value = object.queryType;
+    if (value != null) {
       result
         ..add('queryType')
-        ..add(serializers.serialize(object.queryType,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(QueryType)));
     }
-    if (object.records != null) {
+    value = object.records;
+    if (value != null) {
       result
         ..add('records')
-        ..add(serializers.serialize(object.records,
+        ..add(serializers.serialize(value,
             specifiedType: new FullType(BuiltList, [parameterT])));
     }
-    if (object.queryPage != null) {
+    value = object.queryPage;
+    if (value != null) {
       result
         ..add('queryPage')
-        ..add(serializers.serialize(object.queryPage,
-            specifiedType: const FullType(num)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(num)));
     }
-    if (object.querySize != null) {
+    value = object.querySize;
+    if (value != null) {
       result
         ..add('querySize')
-        ..add(serializers.serialize(object.querySize,
-            specifiedType: const FullType(num)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(num)));
     }
-    if (object.empty != null) {
+    value = object.empty;
+    if (value != null) {
       result
         ..add('empty')
-        ..add(serializers.serialize(object.empty,
-            specifiedType: const FullType(bool)));
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
     }
     return result;
   }
@@ -75,13 +79,13 @@ class _$PageInfoSerializer implements StructuredSerializer<PageInfo<Object>> {
 
     final result = isUnderspecified
         ? new PageInfoBuilder<Object>()
-        : serializers.newBuilder(specifiedType) as PageInfoBuilder;
+        : serializers.newBuilder(specifiedType) as PageInfoBuilder<Object>;
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'total':
           result.total = serializers.deserialize(value,
@@ -219,13 +223,14 @@ class PageInfoBuilder<T> implements Builder<PageInfo<T>, PageInfoBuilder<T>> {
   PageInfoBuilder();
 
   PageInfoBuilder<T> get _$this {
-    if (_$v != null) {
-      _total = _$v.total;
-      _queryType = _$v.queryType;
-      _records = _$v.records?.toBuilder();
-      _queryPage = _$v.queryPage;
-      _querySize = _$v.querySize;
-      _empty = _$v.empty;
+    final $v = _$v;
+    if ($v != null) {
+      _total = $v.total;
+      _queryType = $v.queryType;
+      _records = $v.records?.toBuilder();
+      _queryPage = $v.queryPage;
+      _querySize = $v.querySize;
+      _empty = $v.empty;
       _$v = null;
     }
     return this;
@@ -233,9 +238,7 @@ class PageInfoBuilder<T> implements Builder<PageInfo<T>, PageInfoBuilder<T>> {
 
   @override
   void replace(PageInfo<T> other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$PageInfo<T>;
   }
 

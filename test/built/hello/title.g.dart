@@ -35,7 +35,7 @@ class _$TitleSerializer implements StructuredSerializer<Title> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'rendered':
           result.rendered = serializers.deserialize(value,
@@ -56,9 +56,7 @@ class _$Title extends Title {
       (new TitleBuilder()..update(updates)).build();
 
   _$Title._({this.rendered}) : super._() {
-    if (rendered == null) {
-      throw new BuiltValueNullFieldError('Title', 'rendered');
-    }
+    BuiltValueNullFieldError.checkNotNull(rendered, 'Title', 'rendered');
   }
 
   @override
@@ -96,8 +94,9 @@ class TitleBuilder implements Builder<Title, TitleBuilder> {
   TitleBuilder();
 
   TitleBuilder get _$this {
-    if (_$v != null) {
-      _rendered = _$v.rendered;
+    final $v = _$v;
+    if ($v != null) {
+      _rendered = $v.rendered;
       _$v = null;
     }
     return this;
@@ -105,9 +104,7 @@ class TitleBuilder implements Builder<Title, TitleBuilder> {
 
   @override
   void replace(Title other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Title;
   }
 
@@ -118,7 +115,10 @@ class TitleBuilder implements Builder<Title, TitleBuilder> {
 
   @override
   _$Title build() {
-    final _$result = _$v ?? new _$Title._(rendered: rendered);
+    final _$result = _$v ??
+        new _$Title._(
+            rendered: BuiltValueNullFieldError.checkNotNull(
+                rendered, 'Title', 'rendered'));
     replace(_$result);
     return _$result;
   }

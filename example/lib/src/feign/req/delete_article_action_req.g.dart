@@ -24,16 +24,18 @@ class _$DeleteArticleActionReqSerializer
       Serializers serializers, DeleteArticleActionReq object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[];
-    if (object.id != null) {
+    Object value;
+    value = object.id;
+    if (value != null) {
       result
         ..add('id')
-        ..add(serializers.serialize(object.id,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    if (object.ids != null) {
+    value = object.ids;
+    if (value != null) {
       result
         ..add('ids')
-        ..add(serializers.serialize(object.ids,
+        ..add(serializers.serialize(value,
             specifiedType:
                 const FullType(BuiltList, const [const FullType(int)])));
     }
@@ -50,7 +52,7 @@ class _$DeleteArticleActionReqSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'id':
           result.id = serializers.deserialize(value,
@@ -127,9 +129,10 @@ class DeleteArticleActionReqBuilder
   DeleteArticleActionReqBuilder();
 
   DeleteArticleActionReqBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _ids = _$v.ids?.toBuilder();
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _ids = $v.ids?.toBuilder();
       _$v = null;
     }
     return this;
@@ -137,9 +140,7 @@ class DeleteArticleActionReqBuilder
 
   @override
   void replace(DeleteArticleActionReq other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$DeleteArticleActionReq;
   }
 

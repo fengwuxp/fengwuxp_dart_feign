@@ -20,55 +20,62 @@ class _$ApiBaseQueryReqSerializer
   Iterable<Object> serialize(Serializers serializers, ApiBaseQueryReq object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[];
-    if (object.queryType != null) {
+    Object value;
+    value = object.queryType;
+    if (value != null) {
       result
         ..add('queryType')
-        ..add(serializers.serialize(object.queryType,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(QueryType)));
     }
-    if (object.queryPage != null) {
+    value = object.queryPage;
+    if (value != null) {
       result
         ..add('queryPage')
-        ..add(serializers.serialize(object.queryPage,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    if (object.querySize != null) {
+    value = object.querySize;
+    if (value != null) {
       result
         ..add('querySize')
-        ..add(serializers.serialize(object.querySize,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    if (object.orderBy != null) {
+    value = object.orderBy;
+    if (value != null) {
       result
         ..add('orderBy')
-        ..add(serializers.serialize(object.orderBy,
+        ..add(serializers.serialize(value,
             specifiedType:
                 const FullType(BuiltList, const [const FullType(String)])));
     }
-    if (object.orderType != null) {
+    value = object.orderType;
+    if (value != null) {
       result
         ..add('orderType')
-        ..add(serializers.serialize(object.orderType,
+        ..add(serializers.serialize(value,
             specifiedType:
                 const FullType(BuiltList, const [const FullType(String)])));
     }
-    if (object.fromCache != null) {
+    value = object.fromCache;
+    if (value != null) {
       result
         ..add('fromCache')
-        ..add(serializers.serialize(object.fromCache,
-            specifiedType: const FullType(bool)));
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
     }
-    if (object.orderByArr != null) {
+    value = object.orderByArr;
+    if (value != null) {
       result
         ..add('orderByArr')
-        ..add(serializers.serialize(object.orderByArr,
+        ..add(serializers.serialize(value,
             specifiedType:
                 const FullType(BuiltList, const [const FullType(String)])));
     }
-    if (object.join != null) {
+    value = object.join;
+    if (value != null) {
       result
         ..add('join')
-        ..add(serializers.serialize(object.join,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
     return result;
@@ -84,7 +91,7 @@ class _$ApiBaseQueryReqSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'queryType':
           result.queryType = serializers.deserialize(value,
@@ -259,15 +266,16 @@ class ApiBaseQueryReqBuilder
   ApiBaseQueryReqBuilder();
 
   ApiBaseQueryReqBuilder get _$this {
-    if (_$v != null) {
-      _queryType = _$v.queryType;
-      _queryPage = _$v.queryPage;
-      _querySize = _$v.querySize;
-      _orderBy = _$v.orderBy?.toBuilder();
-      _orderType = _$v.orderType?.toBuilder();
-      _fromCache = _$v.fromCache;
-      _orderByArr = _$v.orderByArr?.toBuilder();
-      _join = _$v.join;
+    final $v = _$v;
+    if ($v != null) {
+      _queryType = $v.queryType;
+      _queryPage = $v.queryPage;
+      _querySize = $v.querySize;
+      _orderBy = $v.orderBy?.toBuilder();
+      _orderType = $v.orderType?.toBuilder();
+      _fromCache = $v.fromCache;
+      _orderByArr = $v.orderByArr?.toBuilder();
+      _join = $v.join;
       _$v = null;
     }
     return this;
@@ -275,9 +283,7 @@ class ApiBaseQueryReqBuilder
 
   @override
   void replace(ApiBaseQueryReq other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$ApiBaseQueryReq;
   }
 
