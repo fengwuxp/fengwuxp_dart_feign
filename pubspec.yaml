@@ -20,7 +20,7 @@ dependencies:
   built_value: ^8.0.2
   fengwuxp_dart_basic:
     git: https://github.com/fengwuxp/fengwuxp_dart_basic.git
-  connectivity: ^0.4.8
+  connectivity: ^3.0.2
 
 dev_dependencies:
   flutter_test:
