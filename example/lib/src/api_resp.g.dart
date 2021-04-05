@@ -30,15 +30,18 @@ class _$ApiRespSerializer implements StructuredSerializer<ApiResp<Object>> {
       serializers.serialize(object.success,
           specifiedType: const FullType(bool)),
     ];
-    if (object.data != null) {
+    Object value;
+    value = object.data;
+    if (value != null) {
       result
         ..add('data')
-        ..add(serializers.serialize(object.data, specifiedType: parameterT));
+        ..add(serializers.serialize(value, specifiedType: parameterT));
     }
-    if (object.message != null) {
+    value = object.message;
+    if (value != null) {
       result
         ..add('message')
-        ..add(serializers.serialize(object.message,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
     return result;
@@ -56,13 +59,13 @@ class _$ApiRespSerializer implements StructuredSerializer<ApiResp<Object>> {
 
     final result = isUnderspecified
         ? new ApiRespBuilder<Object>()
-        : serializers.newBuilder(specifiedType) as ApiRespBuilder;
+        : serializers.newBuilder(specifiedType) as ApiRespBuilder<Object>;
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'data':
           result.data =
@@ -101,12 +104,8 @@ class _$ApiResp<T> extends ApiResp<T> {
       (new ApiRespBuilder<T>()..update(updates)).build();
 
   _$ApiResp._({this.data, this.message, this.code, this.success}) : super._() {
-    if (code == null) {
-      throw new BuiltValueNullFieldError('ApiResp', 'code');
-    }
-    if (success == null) {
-      throw new BuiltValueNullFieldError('ApiResp', 'success');
-    }
+    BuiltValueNullFieldError.checkNotNull(code, 'ApiResp', 'code');
+    BuiltValueNullFieldError.checkNotNull(success, 'ApiResp', 'success');
     if (T == dynamic) {
       throw new BuiltValueMissingGenericsError('ApiResp', 'T');
     }
@@ -169,11 +168,12 @@ class ApiRespBuilder<T> implements Builder<ApiResp<T>, ApiRespBuilder<T>> {
   ApiRespBuilder();
 
   ApiRespBuilder<T> get _$this {
-    if (_$v != null) {
-      _data = _$v.data;
-      _message = _$v.message;
-      _code = _$v.code;
-      _success = _$v.success;
+    final $v = _$v;
+    if ($v != null) {
+      _data = $v.data;
+      _message = $v.message;
+      _code = $v.code;
+      _success = $v.success;
       _$v = null;
     }
     return this;
@@ -181,9 +181,7 @@ class ApiRespBuilder<T> implements Builder<ApiResp<T>, ApiRespBuilder<T>> {
 
   @override
   void replace(ApiResp<T> other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$ApiResp<T>;
   }
 
@@ -196,7 +194,12 @@ class ApiRespBuilder<T> implements Builder<ApiResp<T>, ApiRespBuilder<T>> {
   _$ApiResp<T> build() {
     final _$result = _$v ??
         new _$ApiResp<T>._(
-            data: data, message: message, code: code, success: success);
+            data: data,
+            message: message,
+            code:
+                BuiltValueNullFieldError.checkNotNull(code, 'ApiResp', 'code'),
+            success: BuiltValueNullFieldError.checkNotNull(
+                success, 'ApiResp', 'success'));
     replace(_$result);
     return _$result;
   }

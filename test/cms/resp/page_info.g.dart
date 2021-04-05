@@ -55,13 +55,13 @@ class _$PageInfoSerializer implements StructuredSerializer<PageInfo<Object>> {
 
     final result = isUnderspecified
         ? new PageInfoBuilder<Object>()
-        : serializers.newBuilder(specifiedType) as PageInfoBuilder;
+        : serializers.newBuilder(specifiedType) as PageInfoBuilder<Object>;
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'total':
           result.total = serializers.deserialize(value,
@@ -113,21 +113,11 @@ class _$PageInfo<T> extends PageInfo<T> {
       this.queryPage,
       this.queryType})
       : super._() {
-    if (total == null) {
-      throw new BuiltValueNullFieldError('PageInfo', 'total');
-    }
-    if (records == null) {
-      throw new BuiltValueNullFieldError('PageInfo', 'records');
-    }
-    if (querySize == null) {
-      throw new BuiltValueNullFieldError('PageInfo', 'querySize');
-    }
-    if (queryPage == null) {
-      throw new BuiltValueNullFieldError('PageInfo', 'queryPage');
-    }
-    if (queryType == null) {
-      throw new BuiltValueNullFieldError('PageInfo', 'queryType');
-    }
+    BuiltValueNullFieldError.checkNotNull(total, 'PageInfo', 'total');
+    BuiltValueNullFieldError.checkNotNull(records, 'PageInfo', 'records');
+    BuiltValueNullFieldError.checkNotNull(querySize, 'PageInfo', 'querySize');
+    BuiltValueNullFieldError.checkNotNull(queryPage, 'PageInfo', 'queryPage');
+    BuiltValueNullFieldError.checkNotNull(queryType, 'PageInfo', 'queryType');
     if (T == dynamic) {
       throw new BuiltValueMissingGenericsError('PageInfo', 'T');
     }
@@ -199,12 +189,13 @@ class PageInfoBuilder<T> implements Builder<PageInfo<T>, PageInfoBuilder<T>> {
   PageInfoBuilder();
 
   PageInfoBuilder<T> get _$this {
-    if (_$v != null) {
-      _total = _$v.total;
-      _records = _$v.records?.toBuilder();
-      _querySize = _$v.querySize;
-      _queryPage = _$v.queryPage;
-      _queryType = _$v.queryType;
+    final $v = _$v;
+    if ($v != null) {
+      _total = $v.total;
+      _records = $v.records.toBuilder();
+      _querySize = $v.querySize;
+      _queryPage = $v.queryPage;
+      _queryType = $v.queryType;
       _$v = null;
     }
     return this;
@@ -212,9 +203,7 @@ class PageInfoBuilder<T> implements Builder<PageInfo<T>, PageInfoBuilder<T>> {
 
   @override
   void replace(PageInfo<T> other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$PageInfo<T>;
   }
 
@@ -229,11 +218,15 @@ class PageInfoBuilder<T> implements Builder<PageInfo<T>, PageInfoBuilder<T>> {
     try {
       _$result = _$v ??
           new _$PageInfo<T>._(
-              total: total,
+              total: BuiltValueNullFieldError.checkNotNull(
+                  total, 'PageInfo', 'total'),
               records: records.build(),
-              querySize: querySize,
-              queryPage: queryPage,
-              queryType: queryType);
+              querySize: BuiltValueNullFieldError.checkNotNull(
+                  querySize, 'PageInfo', 'querySize'),
+              queryPage: BuiltValueNullFieldError.checkNotNull(
+                  queryPage, 'PageInfo', 'queryPage'),
+              queryType: BuiltValueNullFieldError.checkNotNull(
+                  queryType, 'PageInfo', 'queryType'));
     } catch (_) {
       String _$failedField;
       try {

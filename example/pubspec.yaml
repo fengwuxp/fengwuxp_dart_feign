@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  reflectable: ^2.2.9
   built_collection: ^5.0.0
   built_value: ^8.0.2
   fengwuxp_dart_basic:

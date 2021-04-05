@@ -1,3 +1,4 @@
+@TestOn('vm')
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
@@ -8,14 +9,14 @@ import 'package:logging/logging.dart';
 
 import '../built/serializers.dart';
 import '../feign/mock_feign_configuration.dart';
-import 'article_action_feign_client.dart';
-import 'article_action_feign_client_test.reflectable.dart';
 import 'enums/article_action_type.dart';
 import 'info/article_action_info.dart';
 import 'info/page_article_action_info.dart';
 import 'req/find_article_actions_req.dart';
 import 'resp/api_resp.dart';
 import 'resp/page_info.dart';
+import 'article_action_feign_client.dart';
+import 'article_action_feign_client_test.reflectable.dart';
 
 void main() {
   initializeReflectable();
