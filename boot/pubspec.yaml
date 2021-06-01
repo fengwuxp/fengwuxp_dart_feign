@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  reflectable: ^2.2.9
+  reflectable: ^3.0.2
   fengwuxp_dart_basic:
     git: git://github.com/fengwuxp/fengwuxp_dart_basic.git
   fengwuxp_dart_openfeign:
@@ -21,8 +21,8 @@ dev_dependencies:
     sdk: flutter
   quiver: ^3.0.0
   test: ^1.0.0
-  build_runner: any
-  build_test: any
+  build_runner: ^2.0.4
+  build_test: ^2.1.0
   # If you need to run web tests, you will also need this dependency.
   #  build_web_compilers: any
   built_value_generator: '>7.0.0'
