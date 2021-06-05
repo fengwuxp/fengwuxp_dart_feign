@@ -11,5 +11,10 @@ class RequestPart implements Named {
   /// The name of the part in the {@link HttpMediaType.MULTIPART_FORM_DATA} request to bind to.
   final String name;
 
-  const RequestPart(this.name);
+  /// 是否必须，默认true
+  final bool required;
+
+  const RequestPart({String name: "", bool required: true})
+      : this.name = name,
+        this.required = required;
 }

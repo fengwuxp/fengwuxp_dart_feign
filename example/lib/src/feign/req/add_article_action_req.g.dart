@@ -24,28 +24,32 @@ class _$AddArticleActionReqSerializer
       Serializers serializers, AddArticleActionReq object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[];
-    if (object.articleId != null) {
+    Object value;
+    value = object.articleId;
+    if (value != null) {
       result
         ..add('articleId')
-        ..add(serializers.serialize(object.articleId,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    if (object.actionType != null) {
+    value = object.actionType;
+    if (value != null) {
       result
         ..add('actionType')
-        ..add(serializers.serialize(object.actionType,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(ArticleActionType)));
     }
-    if (object.sourceCode != null) {
+    value = object.sourceCode;
+    if (value != null) {
       result
         ..add('sourceCode')
-        ..add(serializers.serialize(object.sourceCode,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.ip != null) {
+    value = object.ip;
+    if (value != null) {
       result
         ..add('ip')
-        ..add(serializers.serialize(object.ip,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
     return result;
@@ -61,7 +65,7 @@ class _$AddArticleActionReqSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'articleId':
           result.articleId = serializers.deserialize(value,
@@ -167,11 +171,12 @@ class AddArticleActionReqBuilder
   AddArticleActionReqBuilder();
 
   AddArticleActionReqBuilder get _$this {
-    if (_$v != null) {
-      _articleId = _$v.articleId;
-      _actionType = _$v.actionType;
-      _sourceCode = _$v.sourceCode;
-      _ip = _$v.ip;
+    final $v = _$v;
+    if ($v != null) {
+      _articleId = $v.articleId;
+      _actionType = $v.actionType;
+      _sourceCode = $v.sourceCode;
+      _ip = $v.ip;
       _$v = null;
     }
     return this;
@@ -179,9 +184,7 @@ class AddArticleActionReqBuilder
 
   @override
   void replace(AddArticleActionReq other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$AddArticleActionReq;
   }
 

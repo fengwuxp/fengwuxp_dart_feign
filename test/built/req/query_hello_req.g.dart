@@ -45,7 +45,7 @@ class _$QueryHelloReqSerializer implements StructuredSerializer<QueryHelloReq> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'id':
           result.id = serializers.deserialize(value,
@@ -91,21 +91,11 @@ class _$QueryHelloReq extends QueryHelloReq {
 
   _$QueryHelloReq._({this.id, this.date, this.dateGmt, this.type, this.link})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('QueryHelloReq', 'id');
-    }
-    if (date == null) {
-      throw new BuiltValueNullFieldError('QueryHelloReq', 'date');
-    }
-    if (dateGmt == null) {
-      throw new BuiltValueNullFieldError('QueryHelloReq', 'dateGmt');
-    }
-    if (type == null) {
-      throw new BuiltValueNullFieldError('QueryHelloReq', 'type');
-    }
-    if (link == null) {
-      throw new BuiltValueNullFieldError('QueryHelloReq', 'link');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'QueryHelloReq', 'id');
+    BuiltValueNullFieldError.checkNotNull(date, 'QueryHelloReq', 'date');
+    BuiltValueNullFieldError.checkNotNull(dateGmt, 'QueryHelloReq', 'dateGmt');
+    BuiltValueNullFieldError.checkNotNull(type, 'QueryHelloReq', 'type');
+    BuiltValueNullFieldError.checkNotNull(link, 'QueryHelloReq', 'link');
   }
 
   @override
@@ -173,12 +163,13 @@ class QueryHelloReqBuilder
   QueryHelloReqBuilder();
 
   QueryHelloReqBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _date = _$v.date;
-      _dateGmt = _$v.dateGmt;
-      _type = _$v.type;
-      _link = _$v.link;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _date = $v.date;
+      _dateGmt = $v.dateGmt;
+      _type = $v.type;
+      _link = $v.link;
       _$v = null;
     }
     return this;
@@ -186,9 +177,7 @@ class QueryHelloReqBuilder
 
   @override
   void replace(QueryHelloReq other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$QueryHelloReq;
   }
 
@@ -201,7 +190,16 @@ class QueryHelloReqBuilder
   _$QueryHelloReq build() {
     final _$result = _$v ??
         new _$QueryHelloReq._(
-            id: id, date: date, dateGmt: dateGmt, type: type, link: link);
+            id: BuiltValueNullFieldError.checkNotNull(
+                id, 'QueryHelloReq', 'id'),
+            date: BuiltValueNullFieldError.checkNotNull(
+                date, 'QueryHelloReq', 'date'),
+            dateGmt: BuiltValueNullFieldError.checkNotNull(
+                dateGmt, 'QueryHelloReq', 'dateGmt'),
+            type: BuiltValueNullFieldError.checkNotNull(
+                type, 'QueryHelloReq', 'type'),
+            link: BuiltValueNullFieldError.checkNotNull(
+                link, 'QueryHelloReq', 'link'));
     replace(_$result);
     return _$result;
   }

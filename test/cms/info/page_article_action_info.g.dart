@@ -38,11 +38,12 @@ class _$PageArticleActionInfoSerializer
       serializers.serialize(object.queryType,
           specifiedType: const FullType(String)),
     ];
-    if (object.total != null) {
+    Object value;
+    value = object.total;
+    if (value != null) {
       result
         ..add('total')
-        ..add(serializers.serialize(object.total,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
     return result;
   }
@@ -57,7 +58,7 @@ class _$PageArticleActionInfoSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'total':
           result.total = serializers.deserialize(value,
@@ -111,18 +112,14 @@ class _$PageArticleActionInfo extends PageArticleActionInfo {
       this.queryPage,
       this.queryType})
       : super._() {
-    if (records == null) {
-      throw new BuiltValueNullFieldError('PageArticleActionInfo', 'records');
-    }
-    if (querySize == null) {
-      throw new BuiltValueNullFieldError('PageArticleActionInfo', 'querySize');
-    }
-    if (queryPage == null) {
-      throw new BuiltValueNullFieldError('PageArticleActionInfo', 'queryPage');
-    }
-    if (queryType == null) {
-      throw new BuiltValueNullFieldError('PageArticleActionInfo', 'queryType');
-    }
+    BuiltValueNullFieldError.checkNotNull(
+        records, 'PageArticleActionInfo', 'records');
+    BuiltValueNullFieldError.checkNotNull(
+        querySize, 'PageArticleActionInfo', 'querySize');
+    BuiltValueNullFieldError.checkNotNull(
+        queryPage, 'PageArticleActionInfo', 'queryPage');
+    BuiltValueNullFieldError.checkNotNull(
+        queryType, 'PageArticleActionInfo', 'queryType');
   }
 
   @override
@@ -196,12 +193,13 @@ class PageArticleActionInfoBuilder
   PageArticleActionInfoBuilder();
 
   PageArticleActionInfoBuilder get _$this {
-    if (_$v != null) {
-      _total = _$v.total;
-      _records = _$v.records?.toBuilder();
-      _querySize = _$v.querySize;
-      _queryPage = _$v.queryPage;
-      _queryType = _$v.queryType;
+    final $v = _$v;
+    if ($v != null) {
+      _total = $v.total;
+      _records = $v.records.toBuilder();
+      _querySize = $v.querySize;
+      _queryPage = $v.queryPage;
+      _queryType = $v.queryType;
       _$v = null;
     }
     return this;
@@ -209,9 +207,7 @@ class PageArticleActionInfoBuilder
 
   @override
   void replace(PageArticleActionInfo other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$PageArticleActionInfo;
   }
 
@@ -228,9 +224,12 @@ class PageArticleActionInfoBuilder
           new _$PageArticleActionInfo._(
               total: total,
               records: records.build(),
-              querySize: querySize,
-              queryPage: queryPage,
-              queryType: queryType);
+              querySize: BuiltValueNullFieldError.checkNotNull(
+                  querySize, 'PageArticleActionInfo', 'querySize'),
+              queryPage: BuiltValueNullFieldError.checkNotNull(
+                  queryPage, 'PageArticleActionInfo', 'queryPage'),
+              queryType: BuiltValueNullFieldError.checkNotNull(
+                  queryType, 'PageArticleActionInfo', 'queryType'));
     } catch (_) {
       String _$failedField;
       try {

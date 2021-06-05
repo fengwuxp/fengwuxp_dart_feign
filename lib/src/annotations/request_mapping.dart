@@ -28,7 +28,10 @@ class RequestMapping {
   final String method;
 
   /// custom request header
-  final Map<String, String> headers;
+  final Map<String, dynamic> headers;
+
+  // default query params,examples {'a=1','b=2'}
+  final List<String> params;
 
   ///The data type returned by the request interface,example: application/json
   ///default @see [FeignConfiguration]
@@ -68,13 +71,16 @@ class RequestMapping {
       AuthenticationType authenticationType,
       Map<String, String> headers,
       List<String> consumes,
+      List<String> params,
       List<String> produces})
       : this.value = value,
         this.timeout = timeout,
         this.method = method,
-        this.authenticationType = authenticationType ?? AuthenticationType.FORCE,
+        this.authenticationType =
+            authenticationType ?? AuthenticationType.FORCE,
         this.headers = headers ?? const {},
         this.consumes = consumes ?? const [],
+        this.params = params ?? const [],
         this.produces = consumes ?? const [];
 }
 
@@ -84,6 +90,7 @@ class GetMapping extends RequestMapping {
       {String value,
       num timeout,
       Map<String, dynamic> headers,
+      List<String> params,
       List<String> consumes,
       List<String> produces,
       AuthenticationType authenticationType,
@@ -105,6 +112,7 @@ class PostMapping extends RequestMapping {
       {String value,
       num timeout,
       Map<String, dynamic> headers,
+      List<String> params,
       List<String> consumes,
       List<String> produces,
       AuthenticationType authenticationType,
@@ -126,6 +134,7 @@ class PutMapping extends RequestMapping {
       {String value,
       num timeout,
       Map<String, dynamic> headers,
+      List<String> params,
       List<String> consumes,
       List<String> produces,
       AuthenticationType authenticationType,
@@ -147,6 +156,7 @@ class DeleteMapping extends RequestMapping {
       {String value,
       num timeout,
       Map<String, dynamic> headers,
+      List<String> params,
       List<String> consumes,
       List<String> produces,
       AuthenticationType authenticationType,
@@ -168,6 +178,7 @@ class HeadMapping extends RequestMapping {
       {String value,
       num timeout,
       Map<String, dynamic> headers,
+      List<String> params,
       List<String> consumes,
       List<String> produces,
       AuthenticationType authenticationType,

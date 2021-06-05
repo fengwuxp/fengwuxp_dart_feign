@@ -24,7 +24,7 @@ findMetadata(metadata, Type metaType) {
 
 /// find [Signature]
 findSignature(List metadata) {
-  return metadata.firstWhere((meta) => meta is Signature, orElse: () => Signature(null));
+  return metadata.firstWhere((meta) => meta is Signature, orElse: () => Signature());
 }
 
 // find RequestMapping

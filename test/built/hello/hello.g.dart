@@ -49,7 +49,7 @@ class _$HelloSerializer implements StructuredSerializer<Hello> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'id':
           result.id = serializers.deserialize(value,
@@ -116,27 +116,13 @@ class _$Hello extends Hello {
       this.title,
       this.tags})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('Hello', 'id');
-    }
-    if (date == null) {
-      throw new BuiltValueNullFieldError('Hello', 'date');
-    }
-    if (dateGmt == null) {
-      throw new BuiltValueNullFieldError('Hello', 'dateGmt');
-    }
-    if (type == null) {
-      throw new BuiltValueNullFieldError('Hello', 'type');
-    }
-    if (link == null) {
-      throw new BuiltValueNullFieldError('Hello', 'link');
-    }
-    if (title == null) {
-      throw new BuiltValueNullFieldError('Hello', 'title');
-    }
-    if (tags == null) {
-      throw new BuiltValueNullFieldError('Hello', 'tags');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'Hello', 'id');
+    BuiltValueNullFieldError.checkNotNull(date, 'Hello', 'date');
+    BuiltValueNullFieldError.checkNotNull(dateGmt, 'Hello', 'dateGmt');
+    BuiltValueNullFieldError.checkNotNull(type, 'Hello', 'type');
+    BuiltValueNullFieldError.checkNotNull(link, 'Hello', 'link');
+    BuiltValueNullFieldError.checkNotNull(title, 'Hello', 'title');
+    BuiltValueNullFieldError.checkNotNull(tags, 'Hello', 'tags');
   }
 
   @override
@@ -221,14 +207,15 @@ class HelloBuilder implements Builder<Hello, HelloBuilder> {
   HelloBuilder();
 
   HelloBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _date = _$v.date;
-      _dateGmt = _$v.dateGmt;
-      _type = _$v.type;
-      _link = _$v.link;
-      _title = _$v.title?.toBuilder();
-      _tags = _$v.tags?.toBuilder();
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _date = $v.date;
+      _dateGmt = $v.dateGmt;
+      _type = $v.type;
+      _link = $v.link;
+      _title = $v.title.toBuilder();
+      _tags = $v.tags.toBuilder();
       _$v = null;
     }
     return this;
@@ -236,9 +223,7 @@ class HelloBuilder implements Builder<Hello, HelloBuilder> {
 
   @override
   void replace(Hello other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Hello;
   }
 
@@ -253,11 +238,15 @@ class HelloBuilder implements Builder<Hello, HelloBuilder> {
     try {
       _$result = _$v ??
           new _$Hello._(
-              id: id,
-              date: date,
-              dateGmt: dateGmt,
-              type: type,
-              link: link,
+              id: BuiltValueNullFieldError.checkNotNull(id, 'Hello', 'id'),
+              date:
+                  BuiltValueNullFieldError.checkNotNull(date, 'Hello', 'date'),
+              dateGmt: BuiltValueNullFieldError.checkNotNull(
+                  dateGmt, 'Hello', 'dateGmt'),
+              type:
+                  BuiltValueNullFieldError.checkNotNull(type, 'Hello', 'type'),
+              link:
+                  BuiltValueNullFieldError.checkNotNull(link, 'Hello', 'link'),
               title: title.build(),
               tags: tags.build());
     } catch (_) {

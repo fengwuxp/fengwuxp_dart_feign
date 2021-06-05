@@ -24,40 +24,45 @@ class _$EditArticleActionReqSerializer
       Serializers serializers, EditArticleActionReq object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[];
-    if (object.id != null) {
+    Object value;
+    value = object.id;
+    if (value != null) {
       result
         ..add('id')
-        ..add(serializers.serialize(object.id,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    if (object.articleId != null) {
+    value = object.articleId;
+    if (value != null) {
       result
         ..add('articleId')
-        ..add(serializers.serialize(object.articleId,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    if (object.actionType != null) {
+    value = object.actionType;
+    if (value != null) {
       result
         ..add('actionType')
-        ..add(serializers.serialize(object.actionType,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(ArticleActionType)));
     }
-    if (object.sourceCode != null) {
+    value = object.sourceCode;
+    if (value != null) {
       result
         ..add('sourceCode')
-        ..add(serializers.serialize(object.sourceCode,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.crateTime != null) {
+    value = object.crateTime;
+    if (value != null) {
       result
         ..add('crateTime')
-        ..add(serializers.serialize(object.crateTime,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(DateTime)));
     }
-    if (object.ip != null) {
+    value = object.ip;
+    if (value != null) {
       result
         ..add('ip')
-        ..add(serializers.serialize(object.ip,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
     return result;
@@ -73,7 +78,7 @@ class _$EditArticleActionReqSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'id':
           result.id = serializers.deserialize(value,
@@ -212,13 +217,14 @@ class EditArticleActionReqBuilder
   EditArticleActionReqBuilder();
 
   EditArticleActionReqBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _articleId = _$v.articleId;
-      _actionType = _$v.actionType;
-      _sourceCode = _$v.sourceCode;
-      _crateTime = _$v.crateTime;
-      _ip = _$v.ip;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _articleId = $v.articleId;
+      _actionType = $v.actionType;
+      _sourceCode = $v.sourceCode;
+      _crateTime = $v.crateTime;
+      _ip = $v.ip;
       _$v = null;
     }
     return this;
@@ -226,9 +232,7 @@ class EditArticleActionReqBuilder
 
   @override
   void replace(EditArticleActionReq other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$EditArticleActionReq;
   }
 

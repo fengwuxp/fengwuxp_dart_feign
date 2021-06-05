@@ -24,85 +24,95 @@ class _$QueryArticleActionReqSerializer
       Serializers serializers, QueryArticleActionReq object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[];
-    if (object.id != null) {
+    Object value;
+    value = object.id;
+    if (value != null) {
       result
         ..add('id')
-        ..add(serializers.serialize(object.id,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    if (object.articleId != null) {
+    value = object.articleId;
+    if (value != null) {
       result
         ..add('articleId')
-        ..add(serializers.serialize(object.articleId,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    if (object.actionType != null) {
+    value = object.actionType;
+    if (value != null) {
       result
         ..add('actionType')
-        ..add(serializers.serialize(object.actionType,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(ArticleActionType)));
     }
-    if (object.sourceCode != null) {
+    value = object.sourceCode;
+    if (value != null) {
       result
         ..add('sourceCode')
-        ..add(serializers.serialize(object.sourceCode,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.minCrateTime != null) {
+    value = object.minCrateTime;
+    if (value != null) {
       result
         ..add('minCrateTime')
-        ..add(serializers.serialize(object.minCrateTime,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(DateTime)));
     }
-    if (object.maxCrateTime != null) {
+    value = object.maxCrateTime;
+    if (value != null) {
       result
         ..add('maxCrateTime')
-        ..add(serializers.serialize(object.maxCrateTime,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(DateTime)));
     }
-    if (object.ip != null) {
+    value = object.ip;
+    if (value != null) {
       result
         ..add('ip')
-        ..add(serializers.serialize(object.ip,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.queryType != null) {
+    value = object.queryType;
+    if (value != null) {
       result
         ..add('queryType')
-        ..add(serializers.serialize(object.queryType,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(QueryType)));
     }
-    if (object.queryPage != null) {
+    value = object.queryPage;
+    if (value != null) {
       result
         ..add('queryPage')
-        ..add(serializers.serialize(object.queryPage,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    if (object.querySize != null) {
+    value = object.querySize;
+    if (value != null) {
       result
         ..add('querySize')
-        ..add(serializers.serialize(object.querySize,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    if (object.orderBy != null) {
+    value = object.orderBy;
+    if (value != null) {
       result
         ..add('orderBy')
-        ..add(serializers.serialize(object.orderBy,
+        ..add(serializers.serialize(value,
             specifiedType:
                 const FullType(BuiltList, const [const FullType(String)])));
     }
-    if (object.orderType != null) {
+    value = object.orderType;
+    if (value != null) {
       result
         ..add('orderType')
-        ..add(serializers.serialize(object.orderType,
+        ..add(serializers.serialize(value,
             specifiedType:
                 const FullType(BuiltList, const [const FullType(String)])));
     }
-    if (object.fromCache != null) {
+    value = object.fromCache;
+    if (value != null) {
       result
         ..add('fromCache')
-        ..add(serializers.serialize(object.fromCache,
-            specifiedType: const FullType(bool)));
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
     }
     return result;
   }
@@ -117,7 +127,7 @@ class _$QueryArticleActionReqSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'id':
           result.id = serializers.deserialize(value,
@@ -371,20 +381,21 @@ class QueryArticleActionReqBuilder
   QueryArticleActionReqBuilder();
 
   QueryArticleActionReqBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _articleId = _$v.articleId;
-      _actionType = _$v.actionType;
-      _sourceCode = _$v.sourceCode;
-      _minCrateTime = _$v.minCrateTime;
-      _maxCrateTime = _$v.maxCrateTime;
-      _ip = _$v.ip;
-      _queryType = _$v.queryType;
-      _queryPage = _$v.queryPage;
-      _querySize = _$v.querySize;
-      _orderBy = _$v.orderBy?.toBuilder();
-      _orderType = _$v.orderType?.toBuilder();
-      _fromCache = _$v.fromCache;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _articleId = $v.articleId;
+      _actionType = $v.actionType;
+      _sourceCode = $v.sourceCode;
+      _minCrateTime = $v.minCrateTime;
+      _maxCrateTime = $v.maxCrateTime;
+      _ip = $v.ip;
+      _queryType = $v.queryType;
+      _queryPage = $v.queryPage;
+      _querySize = $v.querySize;
+      _orderBy = $v.orderBy?.toBuilder();
+      _orderType = $v.orderType?.toBuilder();
+      _fromCache = $v.fromCache;
       _$v = null;
     }
     return this;
@@ -392,9 +403,7 @@ class QueryArticleActionReqBuilder
 
   @override
   void replace(QueryArticleActionReq other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$QueryArticleActionReq;
   }
 

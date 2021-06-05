@@ -49,7 +49,7 @@ class _$ArticleActionInfoSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'id':
           result.id = serializers.deserialize(value,
@@ -102,21 +102,15 @@ class _$ArticleActionInfo extends ArticleActionInfo {
       this.sourceCode,
       this.crateTime})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('ArticleActionInfo', 'id');
-    }
-    if (articleId == null) {
-      throw new BuiltValueNullFieldError('ArticleActionInfo', 'articleId');
-    }
-    if (actionType == null) {
-      throw new BuiltValueNullFieldError('ArticleActionInfo', 'actionType');
-    }
-    if (sourceCode == null) {
-      throw new BuiltValueNullFieldError('ArticleActionInfo', 'sourceCode');
-    }
-    if (crateTime == null) {
-      throw new BuiltValueNullFieldError('ArticleActionInfo', 'crateTime');
-    }
+    BuiltValueNullFieldError.checkNotNull(id, 'ArticleActionInfo', 'id');
+    BuiltValueNullFieldError.checkNotNull(
+        articleId, 'ArticleActionInfo', 'articleId');
+    BuiltValueNullFieldError.checkNotNull(
+        actionType, 'ArticleActionInfo', 'actionType');
+    BuiltValueNullFieldError.checkNotNull(
+        sourceCode, 'ArticleActionInfo', 'sourceCode');
+    BuiltValueNullFieldError.checkNotNull(
+        crateTime, 'ArticleActionInfo', 'crateTime');
   }
 
   @override
@@ -188,12 +182,13 @@ class ArticleActionInfoBuilder
   ArticleActionInfoBuilder();
 
   ArticleActionInfoBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _articleId = _$v.articleId;
-      _actionType = _$v.actionType;
-      _sourceCode = _$v.sourceCode;
-      _crateTime = _$v.crateTime;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _articleId = $v.articleId;
+      _actionType = $v.actionType;
+      _sourceCode = $v.sourceCode;
+      _crateTime = $v.crateTime;
       _$v = null;
     }
     return this;
@@ -201,9 +196,7 @@ class ArticleActionInfoBuilder
 
   @override
   void replace(ArticleActionInfo other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$ArticleActionInfo;
   }
 
@@ -216,11 +209,16 @@ class ArticleActionInfoBuilder
   _$ArticleActionInfo build() {
     final _$result = _$v ??
         new _$ArticleActionInfo._(
-            id: id,
-            articleId: articleId,
-            actionType: actionType,
-            sourceCode: sourceCode,
-            crateTime: crateTime);
+            id: BuiltValueNullFieldError.checkNotNull(
+                id, 'ArticleActionInfo', 'id'),
+            articleId: BuiltValueNullFieldError.checkNotNull(
+                articleId, 'ArticleActionInfo', 'articleId'),
+            actionType: BuiltValueNullFieldError.checkNotNull(
+                actionType, 'ArticleActionInfo', 'actionType'),
+            sourceCode: BuiltValueNullFieldError.checkNotNull(
+                sourceCode, 'ArticleActionInfo', 'sourceCode'),
+            crateTime: BuiltValueNullFieldError.checkNotNull(
+                crateTime, 'ArticleActionInfo', 'crateTime'));
     replace(_$result);
     return _$result;
   }

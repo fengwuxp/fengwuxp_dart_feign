@@ -55,7 +55,7 @@ class MockFeignConfiguration implements FeignConfiguration {
           body = data.body;
         }
         if (body == null) {
-          return null;
+          return data;
         }
         return ApiResp.formJsonBySerializer(body);
       }, (result) {
