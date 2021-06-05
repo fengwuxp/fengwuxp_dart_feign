@@ -13,7 +13,7 @@ dependencies:
   built_collection: ^5.0.0
   built_value: ^8.0.2
   fengwuxp_dart_basic:
-    git: git://github.com/fengwuxp/fengwuxp_dart_basic.git
+    git: https://github.com/fengwuxp/fengwuxp_dart_basic.git
   fengwuxp_openfeign_boot:
     path: ../boot/
   bot_toast: ^3.0.0
