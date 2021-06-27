@@ -36,9 +36,9 @@ void main() {
     print(formJson.toJson());
 
     var builtJsonSerializers = BuiltJsonSerializers(serializers);
-    var parseObject = builtJsonSerializers.parseObject(jsonText, serializer: Hello.serializer);
+    var parseObject = builtJsonSerializers.parseObject(jsonText, resultType: Hello);
     print("===> $parseObject");
-    var toJson = builtJsonSerializers.toJson(parseObject, serializer: Hello.serializer);
+    var toJson = builtJsonSerializers.toJson(parseObject);
     print("===> $toJson");
   });
 }

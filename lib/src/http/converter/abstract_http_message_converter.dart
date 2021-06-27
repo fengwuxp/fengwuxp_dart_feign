@@ -13,11 +13,11 @@ abstract class AbstractHttpMessageConverter<T> implements HttpMessageConverter<T
 
   AbstractHttpMessageConverter(this._supportedMediaTypes);
 
-  bool canRead(ContentType mediaType, {Serializer serializer}) {
+  bool canRead(ContentType mediaType, {Type serializeType}) {
     return _matchContentType(mediaType);
   }
 
-  bool canWrite(ContentType mediaType, {Serializer serializer}) {
+  bool canWrite(ContentType mediaType, {Type serializeType}) {
     return _matchContentType(mediaType);
   }
 
@@ -25,7 +25,7 @@ abstract class AbstractHttpMessageConverter<T> implements HttpMessageConverter<T
     return this._supportedMediaTypes;
   }
 
-  Future<E> read<E>(HttpInputMessage inputMessage, {Serializer<E> serializer, FullType specifiedType}) {}
+  Future<E> read<E>(HttpInputMessage inputMessage, {Type serializeType, FullType specifiedType}) {}
 
   Encoding getEncoding(ContentType contentType) {
     if (contentType == null || !contentType.parameters.containsKey('charset')) {

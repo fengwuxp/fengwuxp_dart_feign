@@ -32,7 +32,7 @@ class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter
     return new BuiltValueHttpMessageConverter(builtJsonSerializers, businessResponseExtractor);
   }
 
-  Future<E> read<E>(HttpInputMessage inputMessage, {Serializer<E> serializer, FullType specifiedType}) {
+  Future<E> read<E>(HttpInputMessage inputMessage, {Type serializeType, FullType specifiedType}) {
     return inputMessage.stream.bytesToString().catchError((e) {
       _log.finer("read data error ==> $e");
       return Future.error(e);
@@ -46,7 +46,7 @@ class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter
         }
       }
       return this._businessResponseExtractor(responseBody).then((value) {
-        return this._builtJsonSerializers.parseObject(value, serializer: serializer, specifiedType: specifiedType);
+        return this._builtJsonSerializers.parseObject(value, resultType: serializeType, specifiedType: specifiedType);
       });
     });
   }

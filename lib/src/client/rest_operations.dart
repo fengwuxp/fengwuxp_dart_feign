@@ -1,6 +1,3 @@
-
-
-import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/response_extractor.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,7 +15,7 @@ abstract class RestOperations {
   /// [pathVariables] String or num of List,  the variables to expand the template
   /// [queryParams]  Strong or num of Map value, the variables to expand the template
   /// return [T]
-  Future<T> getForObject<T>(String url, Serializer<T> responseType,
+  Future<T> getForObject<T>(String url, Type responseType,
       {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout});
 
   ///  Retrieve a representation by doing a GET on the URL .
@@ -28,7 +25,7 @@ abstract class RestOperations {
   /// [queryParams]  Strong or num of Map value, the variables to expand the template
   /// return [ClientHttpResponse]
   Future<ResponseEntity<T>> getForEntity<T>(String url,
-      {Serializer<T> responseType,
+      {Type responseType,
       Map<String, dynamic> queryParams,
       List<dynamic> pathVariables,
       Map<String, String> headers,
@@ -63,7 +60,7 @@ abstract class RestOperations {
   /// [pathVariables]  the variables to expand the template
   /// [queryParams]  the variables to expand the template
   /// return [T]
-  Future<T> postForObject<T>(String url, dynamic request, Serializer<T> responseType,
+  Future<T> postForObject<T>(String url, dynamic request, Type responseType,
       {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout});
 
   /// Create a new resource by POSTing the given object to the URI template,
@@ -83,7 +80,7 @@ abstract class RestOperations {
   /// [queryParams]  the variables to expand the template
   /// return [ClientHttpResponse]
   Future<ResponseEntity<T>> postForEntity<T>(String url, dynamic request,
-      {Serializer<T> responseType,
+      {Type responseType,
       Map<String, dynamic> queryParams,
       List<dynamic> pathVariables,
       Map<String, String> headers,
@@ -109,7 +106,7 @@ abstract class RestOperations {
   /// [pathVariables]  the variables to expand the template
   /// [queryParams]  the variables to expand the template
   /// return [T]
-  Future<T> patchForObject<T>(String url, dynamic request, Serializer<T> responseType,
+  Future<T> patchForObject<T>(String url, dynamic request, Type responseType,
       {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout});
 
   /// Delete the resources at the specified URI.
@@ -131,10 +128,7 @@ abstract class RestOperations {
   /// [pathVariables]  the variables to expand the template
   /// [queryParams]  the variables to expand the template
   /// [timeout]      request timeout
-  Future<T> execute<T>(
-      String url,
-      String method,
-      ResponseExtractor<T> responseExtractor,
+  Future<T> execute<T>(String url, String method, ResponseExtractor<T> responseExtractor,
       {dynamic request,
       Map<String, dynamic> queryParams,
       List<Object> pathVariables,

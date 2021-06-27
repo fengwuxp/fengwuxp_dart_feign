@@ -106,9 +106,9 @@ class UIOptions extends DataOptions {
             enabledGzip: enabledGzip);
 }
 
-class BuiltValueSerializable<T> {
-  final Serializer<T> serializer;
+class BuiltValueSerializable {
+  final Type serializeType;
   final FullType specifiedType;
 
-  const BuiltValueSerializable({this.serializer, this.specifiedType});
+  const BuiltValueSerializable({this.serializeType, this.specifiedType});
 }

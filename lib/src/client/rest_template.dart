@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/client_http_request_interceptor.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/default_url_template_handler.dart';
@@ -34,7 +33,7 @@ class RestTemplate implements RestOperations {
   }); // GET
 
   @override
-  Future<T> getForObject<T>(String url, Serializer<T> responseType,
+  Future<T> getForObject<T>(String url, Type responseType,
       {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout}) {
     return this.execute(url, HttpMethod.GET, this._httpMessageConverterExtractor<T>(responseType),
         queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout);
@@ -42,7 +41,7 @@ class RestTemplate implements RestOperations {
 
   @override
   Future<ResponseEntity<T>> getForEntity<T>(String url,
-      {Serializer<T> responseType,
+      {Type responseType,
       Map<String, dynamic> queryParams,
       List<dynamic> pathVariables,
       Map<String, String> headers,
@@ -63,7 +62,7 @@ class RestTemplate implements RestOperations {
   // POST
 
   @override
-  Future<T> postForObject<T>(String url, dynamic request, Serializer<T> responseType,
+  Future<T> postForObject<T>(String url, dynamic request, Type responseType,
       {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout}) {
     return this.execute(url, HttpMethod.POST, this._httpMessageConverterExtractor<T>(responseType),
         queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout);
@@ -71,7 +70,7 @@ class RestTemplate implements RestOperations {
 
   @override
   Future<ResponseEntity<T>> postForEntity<T>(String url, dynamic request,
-      {Serializer<T> responseType,
+      {Type responseType,
       Map<String, dynamic> queryParams,
       List<dynamic> pathVariables,
       Map<String, String> headers,
@@ -88,7 +87,7 @@ class RestTemplate implements RestOperations {
   }
 
   @override
-  Future<T> patchForObject<T>(String url, dynamic request, Serializer<T> responseType,
+  Future<T> patchForObject<T>(String url, dynamic request, Type responseType,
       {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout}) {
     return this.execute(url, HttpMethod.PATCH, this._httpMessageConverterExtractor(responseType),
         queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout);
@@ -162,11 +161,11 @@ class RestTemplate implements RestOperations {
     }
   }
 
-  HttpMessageConverterExtractor<T> _httpMessageConverterExtractor<T>(Serializer<T> responseType) {
+  HttpMessageConverterExtractor<T> _httpMessageConverterExtractor<T>(Type responseType) {
     return HttpMessageConverterExtractor<T>(this.messageConverters, responseType: responseType);
   }
 
-  ResponseEntityResponseExtractor<T> _responseEntityResponseExtractor<T>(Serializer<T> responseType) {
+  ResponseEntityResponseExtractor<T> _responseEntityResponseExtractor<T>(Type responseType) {
     return ResponseEntityResponseExtractor<T>(this.messageConverters, responseType);
   }
 

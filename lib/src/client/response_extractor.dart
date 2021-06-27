@@ -12,7 +12,7 @@ import 'package:fengwuxp_dart_openfeign/src/http/client_http_response.dart';
 /// [RestTemplate]
 abstract class ResponseExtractor<T> {
   /// Extract data from the given {@code [ClientHttpResponse]} and return it.
-  Future<T> extractData(ClientHttpResponse response, {Serializer serializer, FullType specifiedType});
+  Future<T> extractData(ClientHttpResponse response, {Type serializeType, FullType specifiedType});
 }
 
 /// Judge whether the business is successfully processed and capture the data results of business response

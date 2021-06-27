@@ -10,11 +10,11 @@ import 'package:fengwuxp_dart_openfeign/src/http/http_output_message.dart';
 import '../../built/serializers.dart';
 
 class JsonObjectHttpMessageConverter implements HttpMessageConverter<JsonSerializableObject> {
-  bool canRead(ContentType mediaType, {Serializer serializer}) {
+  bool canRead(ContentType mediaType, {Type serializeType}) {
     return true;
   }
 
-  bool canWrite(ContentType mediaType, {Serializer serializer}) {
+  bool canWrite(ContentType mediaType, {Type serializeType}) {
     return true;
   }
 
@@ -22,11 +22,12 @@ class JsonObjectHttpMessageConverter implements HttpMessageConverter<JsonSeriali
     return [];
   }
 
-  Future<E> read<E>(HttpInputMessage inputMessage, {Serializer<E> serializer, FullType specifiedType}) {
+  Future<E> read<E>(HttpInputMessage inputMessage, {Type serializeType, FullType specifiedType}) {
     var body = inputMessage.stream;
     return body.bytesToString().then((data) {
       var builtJsonSerializers = BuiltJsonSerializers(serializers);
-      var deserializeWith = builtJsonSerializers.parseObject(data, serializer: serializer, specifiedType: specifiedType);
+      var deserializeWith =
+          builtJsonSerializers.parseObject(data, resultType: serializeType, specifiedType: specifiedType);
       return deserializeWith;
     });
   }

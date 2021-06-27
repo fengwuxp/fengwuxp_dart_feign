@@ -46,7 +46,7 @@ void main() {
     var inputMessage = new InputStreamHttpInputMessage(Stream.value(codeUnits));
     JsonObjectHttpMessageConverter jsonObjectHttpMessageConverter = new JsonObjectHttpMessageConverter();
     if (jsonObjectHttpMessageConverter.canRead(ContentType.json)) {
-      var result = await jsonObjectHttpMessageConverter.read(inputMessage, serializer: Hello.serializer);
+      var result = await jsonObjectHttpMessageConverter.read(inputMessage, serializeType: Hello);
       print("===> $result");
     }
   });
@@ -56,7 +56,7 @@ void main() {
     var inputMessage = new InputStreamHttpInputMessage(Stream.value(codeUnits));
     var builtValueHttpMessageConverter = BuiltValueHttpMessageConverter(new BuiltJsonSerializers(serializers), null);
     if (builtValueHttpMessageConverter.canRead(ContentType.json)) {
-      Hello result = await builtValueHttpMessageConverter.read(inputMessage, serializer: Hello.serializer);
+      Hello result = await builtValueHttpMessageConverter.read(inputMessage, serializeType: Hello);
       print("==Hello=> $result");
     }
   });

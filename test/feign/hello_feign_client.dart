@@ -26,7 +26,7 @@ class HelloFeignClient extends FeignProxyClient {
       [UIOptions feignOptions]) {
     return this.delegateInvoke<Hello>("getHello", [name, id],
         feignOptions: feignOptions,
-        serializer: BuiltValueSerializable(serializer: Hello.serializer));
+        serializer: BuiltValueSerializable(serializeType: Hello));
   }
 
   /// 返回具体类型

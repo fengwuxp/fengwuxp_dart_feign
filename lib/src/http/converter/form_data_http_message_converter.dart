@@ -19,7 +19,7 @@ class FormDataHttpMessageConverter extends AbstractHttpMessageConverter {
   FormDataHttpMessageConverter() : super([_FORM_DATA, _MULTIPART_FORM_DATA]);
 
   @override
-  bool canRead(ContentType mediaType, {Serializer serializer}) {
+  bool canRead(ContentType mediaType, {Type serializeType}) {
     return false;
   }
 
