@@ -7,7 +7,7 @@ import 'req/find_article_actions_req.dart';
 import 'resp/page_info.dart';
 
 /// 查询文章交互
-//@Feign
+@Feign
 @FeignClient(value: "/article_action")
 class ArticleActionFeignClient extends FeignProxyClient {
   ArticleActionFeignClient._();
@@ -15,17 +15,15 @@ class ArticleActionFeignClient extends FeignProxyClient {
   @GetMapping(value: "/query")
   Future<PageArticleActionInfo> query(FindArticleActionsReq req, [UIOptions feignOptions]) {
     return this.delegateInvoke<PageArticleActionInfo>("query", [req],
-        feignOptions: feignOptions, serializer: BuiltValueSerializable(serializer: PageArticleActionInfo.serializer));
+        feignOptions: feignOptions, serializer: BuiltValueSerializable(serializeType: PageArticleActionInfo));
   }
 
   @GetMapping(value: "/query")
   Future<PageInfo<ArticleActionInfo>> query2(FindArticleActionsReq req, [UIOptions feignOptions]) {
-    return this
-        .delegateInvoke<PageInfo<ArticleActionInfo>>("query2", [req],
-            feignOptions: feignOptions,
-            serializer: BuiltValueSerializable(
-                serializer: PageInfo.serializer, specifiedType: FullType(PageInfo, [FullType(ArticleActionInfo)])));
-
+    return this.delegateInvoke<PageInfo<ArticleActionInfo>>("query2", [req],
+        feignOptions: feignOptions,
+        serializer: BuiltValueSerializable(
+            serializeType: PageInfo, specifiedType: FullType(PageInfo, [FullType(ArticleActionInfo)])));
   }
 }
 

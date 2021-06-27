@@ -9,14 +9,14 @@ import 'package:logging/logging.dart';
 
 import '../built/serializers.dart';
 import '../feign/mock_feign_configuration.dart';
+import 'article_action_feign_client.dart';
+import 'article_action_feign_client_test.reflectable.dart';
 import 'enums/article_action_type.dart';
 import 'info/article_action_info.dart';
 import 'info/page_article_action_info.dart';
 import 'req/find_article_actions_req.dart';
 import 'resp/api_resp.dart';
 import 'resp/page_info.dart';
-import 'article_action_feign_client.dart';
-import 'article_action_feign_client_test.reflectable.dart';
 
 void main() {
   initializeReflectable();
@@ -96,8 +96,7 @@ void main() {
     var specifiedType = FullType(PageInfo, [FullType(ArticleActionInfo)]);
     var serializer = PageInfo.serializer;
 
-    var result1 =
-        builtJsonSerializers.toJson(articleActions, serializer: PageInfo.serializer, specifiedType: specifiedType);
+    var result1 = builtJsonSerializers.toJson(articleActions, specifiedType: specifiedType);
     print("==result1==>$result1");
     var result2 =
         (serializer as StructuredSerializer).serialize(serializers, articleActions, specifiedType: specifiedType);
@@ -123,10 +122,9 @@ void main() {
 }
     
     ''';
-    var result4 =
-        builtJsonSerializers.parseObject(jsonText, serializer: PageInfo.serializer, specifiedType: specifiedType);
+    var result4 = builtJsonSerializers.parseObject(jsonText, resultType: PageInfo, specifiedType: specifiedType);
     print("==result4==>$result4");
-    var result5 = builtJsonSerializers.parseObject(jsonText, serializer: PageArticleActionInfo.serializer);
+    var result5 = builtJsonSerializers.parseObject(jsonText, resultType: PageArticleActionInfo);
     print("==去泛型 result5==>$result5");
 
     var jsonText2 = '''
@@ -145,7 +143,7 @@ void main() {
     
     ''';
     var result6 = builtJsonSerializers.parseObject(jsonText2,
-        serializer: PageInfo.serializer, specifiedType: FullType(PageInfo, [FullType(FindArticleActionsReq)]));
+        resultType: PageInfo, specifiedType: FullType(PageInfo, [FullType(FindArticleActionsReq)]));
     print("==result6==>$result6");
   });
 
