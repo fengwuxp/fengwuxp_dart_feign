@@ -25,7 +25,7 @@ abstract class FeignConfiguration extends CacheCapableSupport {
 
   RequestHeaderResolver get requestHeaderResolver;
 
-  List<HttpMessageConverter> get messageConverters;
+  List<HttpMessageConverter> get httpMessageConverters;
 
   ApiSignatureStrategy? get apiSignatureStrategy;
 

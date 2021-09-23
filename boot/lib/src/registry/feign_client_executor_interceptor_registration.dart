@@ -2,7 +2,7 @@ import 'package:fengwuxp_dart_openfeign/index.dart';
 
 import 'interceptor_registration.dart';
 
-class FeignClientExecutorInterceptorRegistration extends InterceptorRegistration {
+class FeignClientExecutorInterceptorRegistration extends InterceptorRegistration<FeignClientExecutorInterceptor> {
   FeignClientExecutorInterceptorRegistration(FeignClientExecutorInterceptor clientInterceptor)
       : super(clientInterceptor);
 

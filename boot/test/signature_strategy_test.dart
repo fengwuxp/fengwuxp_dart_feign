@@ -7,9 +7,8 @@ void main() {
   var apiSignatureStrategy = new Md5SignatureStrategy("appId", "appSecret", "channelCode");
 
   test("signature strategy", () async {
-    var request = FeignRequest(requestId: "1", queryParams: {}, body: {"name": "张三", "id": 1}, headers: {});
+    var request = FeignRequest(queryParams: {}, body: {"name": "张三", "id": 1}, headers: {});
     apiSignatureStrategy.sign(["name", "id"], request);
-
     print("$request");
   });
 }

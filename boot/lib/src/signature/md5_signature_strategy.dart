@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 import 'package:fengwuxp_dart_openfeign/index.dart';
@@ -9,7 +10,6 @@ const String _APP_SECRET_KEY = "appSecret";
 const String _CHANNEL_CODE_KEY = "channelCode";
 const String _NONCE_STR_KEY = "nonceStr";
 const String _TIME_STAMP_KEY = "timeStamp";
-const String _API_SIGNATURE_KEY = "apiSignature";
 
 const String _APP_ID_HEADER_KEY = "Api-App-Id";
 const String _NONCE_STR_HEADER_KEY = "Api-Nonce-Str";
@@ -34,7 +34,7 @@ class Md5SignatureStrategy extends ApiSignatureStrategy {
   @override
   void sign(List<String> fields, FeignBaseRequest feignRequest) {
     final timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-    final noneStr = "${feignRequest.requestId}_$timestamp";
+    final noneStr = "$timestamp";
     final appSignature = this._apiSign(fields, feignRequest, timestamp, noneStr);
 
     //加入请求头
@@ -63,7 +63,7 @@ class Md5SignatureStrategy extends ApiSignatureStrategy {
       values.addAll(fields.map((item) {
         var param = params[item];
         if (param == null) {
-          throw SignatureException(message: "参与签名的参数：$item 未传入或值无效!");
+          throw SignatureException("参与签名的参数：$item 未传入或值无效!", feignRequest);
         }
         return "$item=$param";
       }));

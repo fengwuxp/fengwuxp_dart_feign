@@ -1,7 +1,7 @@
 
 
 /// 拦截器注册器
-abstract class InterceptorRegistration {
+abstract class InterceptorRegistration<I> {
   List<String> _includePatterns = [];
 
   List<String> _excludePatterns = [];
@@ -14,7 +14,7 @@ abstract class InterceptorRegistration {
 
   List<List<String>> _excludeHeaders = [];
 
-  final Object interceptor;
+  final I interceptor;
 
   InterceptorRegistration(this.interceptor);
 

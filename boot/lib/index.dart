@@ -10,5 +10,4 @@ export 'src/registry/interceptor_registry.dart';
 export 'src/signature/md5_signature_strategy.dart';
 
 export 'src/feign_initializer.dart';
-export 'src/feign_configuration_boot.dart';
 export 'src/feign_configuration_registry.dart';

@@ -2,8 +2,7 @@ import 'package:fengwuxp_dart_openfeign/index.dart';
 
 import 'interceptor_registration.dart';
 
-class ClientHttpInterceptorRegistration extends InterceptorRegistration {
-
+class ClientHttpInterceptorRegistration extends InterceptorRegistration<ClientHttpRequestInterceptor> {
   ClientHttpInterceptorRegistration(ClientHttpRequestInterceptor clientInterceptor) : super(clientInterceptor);
 
   MappedClientHttpRequestInterceptor getInterceptor() {
