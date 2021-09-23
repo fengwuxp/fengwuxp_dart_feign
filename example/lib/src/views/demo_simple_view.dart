@@ -2,7 +2,7 @@ import 'package:fengwuxp_openfeign_example/src/helpers/color_helpers.dart';
 import 'package:flutter/material.dart';
 
 class DemoSimpleView extends StatelessWidget {
-  DemoSimpleView({String message = "Testing", Color color = const Color(0xFFFFFFFF), String result})
+  DemoSimpleView({String message = "Testing", Color color = const Color(0xFFFFFFFF), String result = ""})
       : this.message = message,
         this.color = color,
         this.result = result;

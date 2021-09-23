@@ -26,9 +26,6 @@ class _$ApiRespSerializer implements StructuredSerializer<ApiResp<Object?>> {
     final result = <Object?>[
       'code',
       serializers.serialize(object.code, specifiedType: const FullType(int)),
-      'success',
-      serializers.serialize(object.success,
-          specifiedType: const FullType(bool)),
     ];
     Object? value;
     value = object.data;
@@ -79,10 +76,6 @@ class _$ApiRespSerializer implements StructuredSerializer<ApiResp<Object?>> {
           result.code = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
-        case 'success':
-          result.success = serializers.deserialize(value,
-              specifiedType: const FullType(bool)) as bool;
-          break;
       }
     }
 
@@ -97,17 +90,12 @@ class _$ApiResp<T> extends ApiResp<T> {
   final String? message;
   @override
   final int code;
-  @override
-  final bool success;
 
   factory _$ApiResp([void Function(ApiRespBuilder<T>)? updates]) =>
       (new ApiRespBuilder<T>()..update(updates)).build();
 
-  _$ApiResp._(
-      {this.data, this.message, required this.code, required this.success})
-      : super._() {
+  _$ApiResp._({this.data, this.message, required this.code}) : super._() {
     BuiltValueNullFieldError.checkNotNull(code, 'ApiResp', 'code');
-    BuiltValueNullFieldError.checkNotNull(success, 'ApiResp', 'success');
     if (T == dynamic) {
       throw new BuiltValueMissingGenericsError('ApiResp', 'T');
     }
@@ -126,15 +114,13 @@ class _$ApiResp<T> extends ApiResp<T> {
     return other is ApiResp &&
         data == other.data &&
         message == other.message &&
-        code == other.code &&
-        success == other.success;
+        code == other.code;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc($jc($jc(0, data.hashCode), message.hashCode), code.hashCode),
-        success.hashCode));
+    return $jf(
+        $jc($jc($jc(0, data.hashCode), message.hashCode), code.hashCode));
   }
 
   @override
@@ -142,8 +128,7 @@ class _$ApiResp<T> extends ApiResp<T> {
     return (newBuiltValueToStringHelper('ApiResp')
           ..add('data', data)
           ..add('message', message)
-          ..add('code', code)
-          ..add('success', success))
+          ..add('code', code))
         .toString();
   }
 }
@@ -163,10 +148,6 @@ class ApiRespBuilder<T> implements Builder<ApiResp<T>, ApiRespBuilder<T>> {
   int? get code => _$this._code;
   set code(int? code) => _$this._code = code;
 
-  bool? _success;
-  bool? get success => _$this._success;
-  set success(bool? success) => _$this._success = success;
-
   ApiRespBuilder();
 
   ApiRespBuilder<T> get _$this {
@@ -175,7 +156,6 @@ class ApiRespBuilder<T> implements Builder<ApiResp<T>, ApiRespBuilder<T>> {
       _data = $v.data;
       _message = $v.message;
       _code = $v.code;
-      _success = $v.success;
       _$v = null;
     }
     return this;
@@ -199,9 +179,7 @@ class ApiRespBuilder<T> implements Builder<ApiResp<T>, ApiRespBuilder<T>> {
             data: data,
             message: message,
             code:
-                BuiltValueNullFieldError.checkNotNull(code, 'ApiResp', 'code'),
-            success: BuiltValueNullFieldError.checkNotNull(
-                success, 'ApiResp', 'success'));
+                BuiltValueNullFieldError.checkNotNull(code, 'ApiResp', 'code'));
     replace(_$result);
     return _$result;
   }

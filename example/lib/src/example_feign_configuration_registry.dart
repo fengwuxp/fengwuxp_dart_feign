@@ -40,14 +40,14 @@ class ExampleFeignConfigurationRegistry extends FeignConfigurationRegistry {
   @override
   void registryClientHttpRequestInterceptors(ClientHttpInterceptorRegistry registry) {
 //    registry.addInterceptor(NetworkClientHttpRequestInterceptor(networkFailBack: SimpleNoneNetworkFailBack()));
-    registry.addInterceptor(RoutingClientHttpRequestInterceptor("http://localhost:8090/api/"));
+    registry.addInterceptor(RoutingClientHttpRequestInterceptor("http://localhost:8080/api/"));
     registry.addInterceptor(AuthenticationClientHttpRequestInterceptor(new ExampleAuthenticationStrategy()));
   }
 
   @override
   void registryFeignClientExecutorInterceptors(FeignClientInterceptorRegistry registry) {
-    registry.addInterceptor(ProcessBarExecutorInterceptor(ExampleRequestProgressBar()));
-    registry.addInterceptor(new UnifiedFailureToastExecutorInterceptor((data, BuiltValueSerializable serializer) {
+    // registry.addInterceptor(ProcessBarExecutorInterceptor(ExampleRequestProgressBar()));
+    registry.addInterceptor(new UnifiedFailureToastExecutorInterceptor((data, BuiltValueSerializable? serializer) {
       var body = data;
       if (data is ResponseEntity) {
         body = data.body;
@@ -63,10 +63,10 @@ class ExampleFeignConfigurationRegistry extends FeignConfigurationRegistry {
 }
 
 class ExampleRequestProgressBar implements RequestProgressBar {
-  CancelFunc _cancelFunc;
+  CancelFunc? _cancelFunc;
 
   @override
-  void showProgressBar([ProgressBarOptions barOptions]) {
+  void showProgressBar(ProgressBarOptions? barOptions) {
     this._cancelFunc = BotToast.showCustomLoading(
         wrapAnimation: loadingAnimation,
         align: Alignment.center,
@@ -80,7 +80,7 @@ class ExampleRequestProgressBar implements RequestProgressBar {
   @override
   void hideProgressBar() {
     if (this._cancelFunc != null) {
-      this._cancelFunc();
+      this._cancelFunc!();
       this._cancelFunc = null;
     }
   }

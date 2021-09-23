@@ -41,15 +41,14 @@ class ArticleActionFeignClient extends FeignProxyClient {
   @GetMapping(
     value: '/query',
   )
-  Future<PageInfo<ArticleActionInfo>> query(QueryArticleActionReq req, [UIOptions feignOptions]) {
+  Future<PageInfo<ArticleActionInfo>> query(QueryArticleActionReq req, [UIOptions? feignOptions]) {
     return this.delegateInvoke<PageInfo<ArticleActionInfo>>(
         "query",
         [
           req,
         ],
         feignOptions: feignOptions,
-        serializer: BuiltValueSerializable(
-            serializer: PageInfo.serializer, specifiedType: FullType(PageInfo, [FullType(ArticleActionInfo)])));
+        serializer: BuiltValueSerializable(specifiedType: FullType(PageInfo, [FullType(ArticleActionInfo)])));
   }
 
   /// 1:接口方法：POST
@@ -59,7 +58,7 @@ class ArticleActionFeignClient extends FeignProxyClient {
   @PostMapping(
     value: '/create',
   )
-  Future<int> create(AddArticleActionReq req, [UIOptions feignOptions]) {
+  Future<int> create(AddArticleActionReq req, [UIOptions? feignOptions]) {
     return this.delegateInvoke<int>(
       "create",
       [
@@ -76,16 +75,14 @@ class ArticleActionFeignClient extends FeignProxyClient {
   @GetMapping(
     value: '/{id}',
   )
-  Future<ArticleActionInfo> detail(@PathVariable() int id, [UIOptions feignOptions]) {
+  Future<ArticleActionInfo> detail(@PathVariable() int id, [UIOptions? feignOptions]) {
     return this.delegateInvoke<ArticleActionInfo>(
         "detail",
         [
           id,
         ],
         feignOptions: feignOptions,
-        serializer: BuiltValueSerializable(
-          serializer: ArticleActionInfo.serializer,
-        ));
+        serializer: BuiltValueSerializable(serializeType: ArticleActionInfo,));
   }
 
   /// 1:接口方法：PUT
@@ -95,7 +92,7 @@ class ArticleActionFeignClient extends FeignProxyClient {
   @PutMapping(
     value: '/edit',
   )
-  Future<void> edit(EditArticleActionReq req, [UIOptions feignOptions]) {
+  Future<void> edit(EditArticleActionReq req, [UIOptions? feignOptions]) {
     return this.delegateInvoke<void>(
       "edit",
       [
@@ -112,7 +109,7 @@ class ArticleActionFeignClient extends FeignProxyClient {
   @GetMapping(
     value: '/delete',
   )
-  Future<void> delete(DeleteArticleActionReq req, [UIOptions feignOptions]) {
+  Future<void> delete(DeleteArticleActionReq req, [UIOptions? feignOptions]) {
     return this.delegateInvoke<void>(
       "delete",
       [

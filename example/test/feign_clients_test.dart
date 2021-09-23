@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_openfeign_boot/index.dart';
 import 'package:fengwuxp_openfeign_example/src/example_feign_configuration_registry.dart';
@@ -13,9 +15,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:logging/logging.dart';
 
 void main() {
-  var md5signatureStrategy = Md5SignatureStrategy("app", "2aecdd9db7d816462e2232632c90f8fa", "mock");
-  feignInitializer(new ExampleFeignConfigurationRegistry(), BuiltJsonSerializers(serializers),
-      apiSignatureStrategy: md5signatureStrategy);
+  final md5signatureStrategy = Md5SignatureStrategy("app", "5a5c8218a3146f63be322e171cdd26cc", "web");
+  FeignInitializer.form(new ExampleFeignConfigurationRegistry(), BuiltJsonSerializers(serializers))
+      .businessResponseExtractor((responseBody) {
+        final resp = jsonDecode(responseBody);
+        if (resp["code"] != 0) {
+          return Future.error(resp);
+        }
+        return Future.value(resp);
+      })
+      .apiSignatureStrategy(md5signatureStrategy)
+      .initialize();
 
   /// 日志打印
   Logger.root.level = Level.ALL;

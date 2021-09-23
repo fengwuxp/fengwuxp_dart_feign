@@ -9,6 +9,7 @@ part of serializers;
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(AddArticleActionReq.serializer)
       ..add(ApiBaseQueryReq.serializer)
+      ..add(ApiResp.serializer)
       ..add(ArticleActionInfo.serializer)
       ..add(ArticleActionType.serializer)
       ..add(DeleteArticleActionReq.serializer)

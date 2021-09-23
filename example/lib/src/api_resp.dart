@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
+import 'package:fengwuxp_openfeign_example/src/feign/serializers.dart';
 
-import './feign/serializers.dart';
 
 part 'api_resp.g.dart';
 
@@ -24,20 +24,19 @@ abstract class ApiResp<T> implements Built<ApiResp<T>, ApiRespBuilder<T>>, JsonS
   @BuiltValueField(wireName: 'code')
   int get code;
 
-  @BuiltValueField(wireName: 'success')
-  bool get success;
+  bool get success => code == 0;
 
   static ApiResp<T> formJson<T>(Map map, FullType specifiedType) {
-    return serializers.deserialize(map, specifiedType: FullType(ApiResp, [specifiedType]));
+    return serializers.deserialize(map, specifiedType: FullType(ApiResp, [specifiedType])) as ApiResp<T>;
   }
 
   static ApiResp formJsonBySerializer(Map map) {
-    return serializers.deserializeWith(ApiResp.serializer, map);
+    return serializers.deserializeWith(ApiResp.serializer, map) as ApiResp;
   }
 
   @override
   Map<String, dynamic> toMap() {
-    return serializers.serializeWith(ApiResp.serializer, this);
+    return serializers.serializeWith(ApiResp.serializer, this) as Map<String, dynamic>;
   }
 
   @override
