@@ -35,7 +35,7 @@ class MockFeignConfiguration implements FeignConfiguration {
 
   List<FeignClientExecutorInterceptor> feignClientExecutorInterceptors;
 
-  List<HttpMessageConverter> messageConverters;
+  List<HttpMessageConverter> httpMessageConverters;
 
   ApiSignatureStrategy? apiSignatureStrategy;
 
@@ -48,7 +48,7 @@ class MockFeignConfiguration implements FeignConfiguration {
         this.requestURLResolver = RestfulRequestURLResolver(),
         this.requestHeaderResolver = DefaultRequestHeaderResolver(),
         this.requestParamsResolver = DefaultRequestParamsResolver(),
-        this.messageConverters = [
+        this.httpMessageConverters = [
           new BuiltValueHttpMessageConverter(new BuiltJsonSerializers(serializers), (responseBody) {
             final resp = jsonDecode(responseBody);
             if (resp["code"] != 0) {
@@ -75,5 +75,5 @@ class MockFeignConfiguration implements FeignConfiguration {
         ],
         this.restTemplate = new RestTemplate(
             messageConverters: [new BuiltValueHttpMessageConverter(new BuiltJsonSerializers(serializers), null)],
-            interceptors: [RoutingClientHttpRequestInterceptor('http://test.migustord.com/api/')]);
+            interceptors: [RoutingClientHttpRequestInterceptor('http://localhost:8080/api/')]);
 }

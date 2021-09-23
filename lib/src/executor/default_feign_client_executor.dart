@@ -209,9 +209,9 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
       return HeadResponseExtractor();
     }
     if (specifiedType.root == ResponseEntity) {
-      return ResponseEntityResponseExtractor(feignConfiguration.messageConverters, serializeType);
+      return ResponseEntityResponseExtractor(feignConfiguration.httpMessageConverters, serializeType);
     } else {
-      return HttpMessageConverterExtractor(feignConfiguration.messageConverters,
+      return HttpMessageConverterExtractor(feignConfiguration.httpMessageConverters,
           responseType: serializeType, specifiedType: specifiedType);
     }
   }
