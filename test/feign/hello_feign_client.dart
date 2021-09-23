@@ -23,7 +23,7 @@ class HelloFeignClient extends FeignProxyClient {
   /// 为了能够返回具体类型 骗过 dart运行时泛型匹配使用如下方式调用
   @GetMapping(value: "/", authenticationType: AuthenticationType.NONE)
   Future<Hello> getHello(@RequestHeader() String name, @RequestParam() num id,
-      [UIOptions feignOptions]) {
+      [UIOptions? feignOptions]) {
     return this.delegateInvoke<Hello>("getHello", [name, id],
         feignOptions: feignOptions,
         serializer: BuiltValueSerializable(serializeType: Hello));
@@ -34,7 +34,7 @@ class HelloFeignClient extends FeignProxyClient {
   @GetMapping(value: "/test")
   Future<String> getTest(@RequestHeader() String name,
       @RequestParam(name: "id", required: false) BuiltList<num> id,
-      [UIOptions feignOptions]) {
+      [UIOptions? feignOptions]) {
     return this.delegateInvoke<String>("getTest", [name, id],
         feignOptions: feignOptions);
   }

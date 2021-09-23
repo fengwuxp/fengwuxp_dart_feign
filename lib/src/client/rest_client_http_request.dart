@@ -1,83 +1,80 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:fengwuxp_dart_openfeign/index.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/client/streamed_request.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/client_http_request.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/client_http_response.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/converter/http_message_converter.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/http_client_exception.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/http_request_context.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/streamed_client_http_response.dart';
 import 'package:fengwuxp_dart_openfeign/src/utils/metadata_utils.dart';
+import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
-class RestClientHttpRequest implements ClientHttpRequest {
+class RestClientHttpRequest extends AbstractHttpRequestContext implements ClientHttpRequest {
   static const String _TAG = "RestClientHttpRequest";
-  static var _log = Logger(_TAG);
 
-  Uri _url;
+  static final _log = Logger(_TAG);
 
-  String _method;
+  Uri url;
 
-  Map<String, String> _headers;
+  final String method;
 
-  List<HttpMessageConverter> _messageConverters;
+  final int timeout;
 
-  dynamic _requestBody;
+  final dynamic requestBody;
 
-  int _timeout;
+  final Map<String, String> headers;
 
-  RestClientHttpRequest(
-    Uri url,
-    String method,
-    List<HttpMessageConverter> messageConverters, {
-    int timeout,
-    dynamic requestBody,
-    Map<String, String> headers = const {},
-  }) {
-    this._url = url;
-    this._method = method;
-    this._timeout = timeout ?? -1;
-    this._messageConverters = messageConverters == null ? [] : messageConverters;
-    this._requestBody = requestBody;
-    this._headers = headers;
-  }
+  final List<HttpMessageConverter> messageConverters;
+
+  /// The controller for [sink], from which [BaseRequest] will read data for
+  /// [finalize].
+  final StreamController<List<int>> _controller;
+
+  RestClientHttpRequest(Uri url, String method, int? timeout, dynamic? requestBody, Map<String, String>? headers,
+      List<HttpMessageConverter>? messageConverters,
+      {Map<String, dynamic>? attributes})
+      : this.url = url,
+        this.method = method,
+        this.timeout = timeout ?? 10000,
+        this.requestBody = requestBody,
+        this.headers = headers ?? {},
+        this.messageConverters = messageConverters ?? [],
+        this._controller = StreamController<List<int>>(sync: true),
+        super(attributes);
 
   @override
   Future<ClientHttpResponse> send() async {
-    var request = StreamedRequest(method: method, url: url);
-    if (headers != null) {
-      request.headers.addAll(headers);
+    if (_log.isLoggable(Level.FINER)) {
+      _log.finer("请求方法：${this.method} 请求url:${this.url} 请求头：${this.headers} 请求体：${this.requestBody}");
     }
-    _log.finer("请求方法：${request.method} 请求url:${request.url} 请求体：${request.body} 请求头：${request.headers}");
-    if (supportRequestBody(request.method)) {
-      final contentType = ContentType.parse(request.headers[HttpHeaders.contentTypeHeader]);
-      for (HttpMessageConverter messageConverter in this._messageConverters) {
+    final request = Request(method, url);
+    request.headers.addAll(headers);
+    if (supportRequestBody(this.method)) {
+      this.body.stream.listen((event) {
+        request.contentLength = request.contentLength + event.length;
+        request.bodyBytes.addAll(event);
+      });
+      final contentType = ContentType.parse(this.headers[HttpHeaders.contentTypeHeader] as String);
+      for (HttpMessageConverter messageConverter in this.messageConverters) {
         if (messageConverter.canWrite(contentType)) {
-          await messageConverter.write(_requestBody, contentType, request);
+          await messageConverter.write(requestBody, contentType, this);
         }
       }
     }
-    // 移除掉请求id
-    removeRequestId(request.headers);
 
-    request.body.close();
-    return request.send();
+    return request.send().then((response) => new StreamedClientHttpResponse(response)).onError((error, stackTrace) {
+      return Future.error(new HttpClientException(error.toString(), this, error), stackTrace);
+    });
   }
 
   @override
   void uri(Uri uri) {
-    this._url = uri;
+    this.url = uri;
   }
 
   @override
-  Uri get url => _url;
-
-  @override
-  // TODO: implement timeout
-  int get timeout => this._timeout;
-
-  @override
-  // TODO: implement method
-  String get method => _method;
-
-  @override
-  Map<String, String> get headers => _headers;
+  StreamController<List<int>> get body => _controller;
 }

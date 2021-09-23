@@ -12,8 +12,7 @@ class RequestHeader implements Named {
   /// 默认值
   final String defaultValue;
 
-  const RequestHeader(
-      {String name: "", bool required: true, String defaultValue})
+  const RequestHeader({String name: "", bool required: true, String defaultValue: ""})
       : this.name = name,
         this.required = required,
         this.defaultValue = defaultValue;

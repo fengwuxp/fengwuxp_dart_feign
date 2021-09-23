@@ -7,31 +7,30 @@ class MappedFeignClientExecutorInterceptor extends MappedInterceptor implements 
   FeignClientExecutorInterceptor _feignClientExecutorInterceptor;
 
   MappedFeignClientExecutorInterceptor(FeignClientExecutorInterceptor feignClientExecutorInterceptor,
-      {List<String> includePatterns,
-      List<String> excludePatterns,
-      List<String> includeMethods,
-      List<String> excludeMethods,
-      List<List<String>> includeHeaders,
-      List<List<String>> excludeHeaders})
-      : super(
+      {List<String> includePatterns = const [],
+      List<String> excludePatterns = const [],
+      List<String> includeMethods = const [],
+      List<String> excludeMethods = const [],
+      List<List<String>> includeHeaders = const [],
+      List<List<String>> excludeHeaders = const []})
+      : this._feignClientExecutorInterceptor = feignClientExecutorInterceptor,
+        super(
             includePatterns: includePatterns,
             excludePatterns: excludePatterns,
             includeMethods: includeMethods,
             excludeMethods: excludeMethods,
             includeHeaders: includeHeaders,
-            excludeHeaders: excludeHeaders) {
-    this._feignClientExecutorInterceptor = feignClientExecutorInterceptor;
-  }
+            excludeHeaders: excludeHeaders);
 
   preHandle(FeignBaseRequest request, UIOptions uiOptions) {
     return this._feignClientExecutorInterceptor.preHandle(request, uiOptions);
   }
 
-  postHandle<E>(FeignBaseRequest request, UIOptions uiOptions, response,{BuiltValueSerializable serializer}) {
-    return this._feignClientExecutorInterceptor.postHandle<E>(request, uiOptions, response,serializer: serializer);
+  postHandle<E>(FeignBaseRequest request, UIOptions uiOptions, response, {BuiltValueSerializable? serializer}) {
+    return this._feignClientExecutorInterceptor.postHandle<E>(request, uiOptions, response, serializer: serializer);
   }
 
-  postError<E>(FeignBaseRequest request, UIOptions uiOptions, response,{BuiltValueSerializable serializer}) {
-    return this._feignClientExecutorInterceptor.postError<E>(request, uiOptions, response,serializer: serializer);
+  postError<E>(FeignBaseRequest request, UIOptions uiOptions, response, {BuiltValueSerializable? serializer}) {
+    return this._feignClientExecutorInterceptor.postError<E>(request, uiOptions, response, serializer: serializer);
   }
 }

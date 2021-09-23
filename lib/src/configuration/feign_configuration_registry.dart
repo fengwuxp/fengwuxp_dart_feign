@@ -9,9 +9,9 @@ final Map<Type, FeignConfiguration> _CONFIGURATION_CACHE = {};
 /// if [feignType] is null return default
 FeignConfiguration getFeignConfiguration([Type feignType = FeignClient]) {
   // TODO 合并配置信息
-  var configuration = _CONFIGURATION_CACHE[feignType];
+  final configuration = _CONFIGURATION_CACHE[feignType];
   if (configuration == null) {
-    configuration = _CONFIGURATION_CACHE[FeignClient];
+    return _CONFIGURATION_CACHE[FeignClient] as FeignConfiguration;
   }
   return configuration;
 }

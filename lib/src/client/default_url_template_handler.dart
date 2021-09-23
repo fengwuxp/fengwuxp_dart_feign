@@ -5,7 +5,7 @@ class DefaultUriTemplateHandler implements UriTemplateHandler {
   const DefaultUriTemplateHandler();
 
   @override
-  Uri expand(String uriTemplate, {Map<String, dynamic> queryParams, List<Object> pathVariables}) {
+  Uri expand(String uriTemplate, {Map<String, dynamic>? queryParams, List<dynamic>? pathVariables}) {
     if (pathVariables != null && pathVariables.length > 0) {
       uriTemplate = replacePathVariableValue(uriTemplate, pathVariables);
     }

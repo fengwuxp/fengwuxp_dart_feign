@@ -9,10 +9,10 @@ class RequestParam implements Named {
   final bool required;
 
   // 默认值
-  final defaultValue;
+  final String? defaultValue;
 
   const RequestParam(
-      {String name: "", bool required: true, String defaultValue})
+      {String name: "", bool required: true, String? defaultValue})
       : this.name = name,
         this.required = required,
         this.defaultValue = defaultValue;

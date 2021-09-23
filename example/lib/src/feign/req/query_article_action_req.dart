@@ -11,115 +11,96 @@ import '../serializers.dart';
 
 part 'query_article_action_req.g.dart';
 
-     /// 查询ArticleAction
+/// 查询ArticleAction
 
+abstract class QueryArticleActionReq
+    implements Built<QueryArticleActionReq, QueryArticleActionReqBuilder>, JsonSerializableObject {
+  QueryArticleActionReq._();
 
+  factory QueryArticleActionReq([Function(QueryArticleActionReqBuilder) updates]) = _$QueryArticleActionReq;
 
+  /// ID
+  /// 在java中的类型为：Long
+  @BuiltValueField(wireName: 'id')
+  int? get id;
 
-abstract class QueryArticleActionReq implements Built<QueryArticleActionReq, QueryArticleActionReqBuilder>, JsonSerializableObject {
+  /// 文章ID
+  /// 在java中的类型为：Long
+  @BuiltValueField(wireName: 'articleId')
+  int? get articleId;
 
-       QueryArticleActionReq._();
+  /// 互动类型
+  /// 在java中的类型为：ArticleActionType
+  @BuiltValueField(wireName: 'actionType')
+  ArticleActionType? get actionType;
 
-      factory QueryArticleActionReq([Function(QueryArticleActionReqBuilder) updates]) = _$QueryArticleActionReq;
+  /// 关联来源
+  @BuiltValueField(wireName: 'sourceCode')
+  String? get sourceCode;
 
+  /// 最小创建日期
+  /// 在java中的类型为：Date
+  @BuiltValueField(wireName: 'minCrateTime')
+  DateTime? get minCrateTime;
 
-                    /// ID
-                    /// 在java中的类型为：Long
-                @nullable
-                @BuiltValueField(wireName: 'id')
-                int get id;
+  /// 最大创建日期
+  /// 在java中的类型为：Date
+  @BuiltValueField(wireName: 'maxCrateTime')
+  DateTime? get maxCrateTime;
 
-                    /// 文章ID
-                    /// 在java中的类型为：Long
-                @nullable
-                @BuiltValueField(wireName: 'articleId')
-                int get articleId;
+  /// 访问的客户端ip
+  /// 在java中的类型为：String
+  @BuiltValueField(wireName: 'ip')
+  String? get ip;
 
-                    /// 互动类型
-                    /// 在java中的类型为：ArticleActionType
-                @nullable
-                @BuiltValueField(wireName: 'actionType')
-                ArticleActionType get actionType;
+  /// 查询类型,默认查询结果集
+  /// 属性：queryType为必填项，不能为空
+  /// 在java中的类型为：QueryType
+  @BuiltValueField(wireName: 'queryType')
+  QueryType? get queryType;
 
-                    /// 关联来源
-                    /// 在java中的类型为：String
-                @nullable
-                @BuiltValueField(wireName: 'sourceCode')
-                String get sourceCode;
+  /// 查询页码，从1开始
+  /// 属性：queryPage为必填项，不能为空
+  /// 在java中的类型为：Integer
+  @BuiltValueField(wireName: 'queryPage')
+  int? get queryPage;
 
-                    /// 最小创建日期
-                    /// 在java中的类型为：Date
-                @nullable
-                @BuiltValueField(wireName: 'minCrateTime')
-                DateTime get minCrateTime;
+  /// 查询大小，默认20
+  /// 属性：querySize为必填项，不能为空
+  /// 在java中的类型为：Integer
+  @BuiltValueField(wireName: 'querySize')
+  int? get querySize;
 
-                    /// 最大创建日期
-                    /// 在java中的类型为：Date
-                @nullable
-                @BuiltValueField(wireName: 'maxCrateTime')
-                DateTime get maxCrateTime;
+  /// 排序字段
+  /// 在java中的类型为：数组
+  /// 在java中的类型为：String
+  @BuiltValueField(wireName: 'orderBy')
+  BuiltList<String>? get orderBy;
 
-                    /// 访问的客户端ip
-                    /// 在java中的类型为：String
-                @nullable
-                @BuiltValueField(wireName: 'ip')
-                String get ip;
+  /// 排序类型，"asc"升序，"desc"降序，必须与orderBy一一对应
+  /// 在java中的类型为：数组
+  /// 在java中的类型为：String
+  @BuiltValueField(wireName: 'orderType')
+  BuiltList<String>? get orderType;
 
-                    /// 查询类型,默认查询结果集
-                    /// 属性：queryType为必填项，不能为空
-                    /// 在java中的类型为：QueryType
-                @nullable
-                @BuiltValueField(wireName: 'queryType')
-                QueryType get queryType;
+  /// 是否使用缓存
+  /// 在java中的类型为：Boolean
+  @BuiltValueField(wireName: 'fromCache')
+  bool? get fromCache;
 
-                    /// 查询页码，从1开始
-                    /// 属性：queryPage为必填项，不能为空
-                    /// 在java中的类型为：Integer
-                @nullable
-                @BuiltValueField(wireName: 'queryPage')
-                int get queryPage;
+  @override
+  Map<String, dynamic> toMap() {
+    return serializers.serializeWith(QueryArticleActionReq.serializer, this) as Map<String, dynamic>;
+  }
 
-                    /// 查询大小，默认20
-                    /// 属性：querySize为必填项，不能为空
-                    /// 在java中的类型为：Integer
-                @nullable
-                @BuiltValueField(wireName: 'querySize')
-                int get querySize;
+  @override
+  String toJson() {
+    return json.encode(toMap());
+  }
 
-                    /// 排序字段
-                    /// 在java中的类型为：数组
-                    /// 在java中的类型为：String
-                @nullable
-                @BuiltValueField(wireName: 'orderBy')
-                BuiltList<String> get orderBy;
+  static Serializer<QueryArticleActionReq> get serializer => _$queryArticleActionReqSerializer;
 
-                    /// 排序类型，"asc"升序，"desc"降序，必须与orderBy一一对应
-                    /// 在java中的类型为：数组
-                    /// 在java中的类型为：String
-                @nullable
-                @BuiltValueField(wireName: 'orderType')
-                BuiltList<String> get orderType;
-
-                    /// 是否使用缓存
-                    /// 在java中的类型为：Boolean
-                @nullable
-                @BuiltValueField(wireName: 'fromCache')
-                bool get fromCache;
-
-        @override
-        Map<String, dynamic> toMap() {
-            return serializers.serializeWith(QueryArticleActionReq.serializer, this);
-        }
-
-        @override
-        String toJson() {
-           return json.encode(toMap());
-        }
-
-        static Serializer<QueryArticleActionReq> get serializer => _$queryArticleActionReqSerializer;
-
-        static QueryArticleActionReq formJson(String json) {
-             return serializers.deserializeWith(QueryArticleActionReq.serializer, jsonDecode(json));
-        }
-
+  static QueryArticleActionReq formJson(String json) {
+    return serializers.deserializeWith(QueryArticleActionReq.serializer, jsonDecode(json)) as QueryArticleActionReq;
+  }
 }

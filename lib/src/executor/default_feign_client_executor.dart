@@ -33,30 +33,32 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
 
   FeignClient _feignClient;
 
-  DefaultFeignClientExecutor(this.classMirror, this.targetType, this.feignConfiguration) {
-    this._initFeignClient();
-  }
+  DefaultFeignClientExecutor(this.classMirror, this.targetType, this.feignConfiguration)
+      : this._feignClient = findMetadata(classMirror.metadata, FeignClient);
 
   @override
-  Future invoke(String methodName, List<Object> positionalArguments, [Map<Symbol, dynamic> namedArguments]) async {
-    _log.finer("proxy invoke $methodName");
+  Future invoke(String methodName, List<dynamic> positionalArguments,
+      [Map<Symbol, dynamic> namedArguments = const {}]) async {
+    if (_log.isLoggable(Level.FINER)) {
+      _log.finer("proxy invoke $methodName");
+    }
 
     final feignConfiguration = this.feignConfiguration;
-    //获取声明列表
+    // 获取声明列表
     final classMirror = this.classMirror;
     final Map<String, DeclarationMirror> declarations = classMirror.declarations;
-    final MethodMirror methodMirror = declarations[methodName];
+    final MethodMirror methodMirror = declarations[methodName] as MethodMirror;
     final methodMetadata = methodMirror.metadata;
     final requestMapping = findRequestMapping(methodMetadata) as RequestMapping;
     final parameters = methodMirror.parameters;
 
     /// 解析参数
     final requestParamsResolver = feignConfiguration.requestParamsResolver;
-    var uiOptions = namedArguments[FEIGN_OPTIONS_PARAMETER_NAME] as UIOptions;
+    var uiOptions = namedArguments[FEIGN_OPTIONS_PARAMETER_NAME];
     if (uiOptions == null) {
       uiOptions = UIOptions();
     }
-    FeignRequest feignRequest =
+    FeignRequest request =
         requestParamsResolver.resolve(positionalArguments, parameters, requestMapping.method, options: uiOptions);
 
     /// 解析url
@@ -65,43 +67,40 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
         requestURLResolver.resolve(this._feignClient, requestMapping, classMirror.simpleName, methodName);
 
     /// 解析请求头
-    var requestHeaderResolver = feignConfiguration.requestHeaderResolver;
-    requestHeaderResolver.resolve(requestMapping, feignRequest.headers, feignRequest.queryParams);
-    var requestSupportRequestBody = supportRequestBody(requestMapping.method);
-    if (requestSupportRequestBody == null) {
-      requestHeaderResolver.resolve(requestMapping, feignRequest.headers, feignRequest.body);
+    final requestHeaderResolver = feignConfiguration.requestHeaderResolver;
+    requestHeaderResolver.resolve(requestMapping, request.headers, request.queryParams);
+    final requestSupportRequestBody = supportRequestBody(requestMapping.method);
+    if (requestSupportRequestBody) {
+      requestHeaderResolver.resolve(requestMapping, request.headers, request.body);
     }
 
-    /// TODO 解析cookie
-
+    /// TODO 解析 cookie
     var responseExtractor = uiOptions.responseExtractor;
-    var serializer = namedArguments[Symbol(FEIGN_SERIALIZER_PARAMETER_NAME)] as BuiltValueSerializable;
+    final serializer = namedArguments[Symbol(FEIGN_SERIALIZER_PARAMETER_NAME)];
     if (responseExtractor == null) {
       // get response extractor
-      responseExtractor = this
-          ._responseExtractor(requestMapping.method, serializer?.serializeType, specifiedType: serializer?.specifiedType);
+      responseExtractor = this._responseExtractor(requestMapping.method, serializer?.serializeType,
+          specifiedType: serializer?.specifiedType ?? FullType.unspecified);
     }
 
-    ///  设置请求上下文ID
-    final requestId = appendRequestContextId(feignRequest);
-    setRequestContext(requestId, methodMirror);
+    setFeignMethodMirror(request, methodMirror);
 
     /// 处理签名
     final apiSignatureStrategy = feignConfiguration.apiSignatureStrategy;
     if (apiSignatureStrategy != null) {
       final signature = findSignature(methodMetadata) as Signature;
       // handle api signature
-      apiSignatureStrategy.sign(signature?.fields, feignRequest);
+      apiSignatureStrategy.sign(signature.fields, request);
     }
 
     /// 执行拦截器
-    feignRequest = await this._preHandle(feignRequest, uiOptions, requestUrl, requestMapping);
+    request = await this._preHandle(request, uiOptions, requestUrl, requestMapping);
 
     final defaultQueryParams = requestMapping.params;
     if (requestMapping.params.isNotEmpty) {
       //  处理默认的查询参数
       defaultQueryParams.forEach((queryString) {
-        feignRequest.queryParams.addAll(QueryStringParser.parse(queryString));
+        request.queryParams.addAll(QueryStringParser.parse(queryString));
       });
     }
 
@@ -109,20 +108,26 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
     final restTemplate = feignConfiguration.restTemplate;
     var response;
     try {
-      _log.finer("send http request ==> $requestUrl");
+      if (_log.isLoggable(Level.FINER)) {
+        _log.finer("send http request ==> $requestUrl");
+      }
       response = await restTemplate.execute(requestUrl, requestMapping.method, responseExtractor,
-          request: feignRequest.body,
-          queryParams: feignRequest.queryParams,
-          pathVariables: feignRequest.pathVariables,
-          headers: feignRequest.headers,
-          timeout: uiOptions.timeout);
+          request: request.body,
+          queryParams: request.queryParams,
+          pathVariables: request.pathVariables,
+          headers: request.headers,
+          timeout: uiOptions.timeout,
+          context: request);
     } catch (error) {
       // 请求失败或异常
-      var result = await this._postHandleError(feignRequest, uiOptions, requestUrl, requestMapping, error, serializer);
+      final result = await this._postHandleError(request, uiOptions, requestUrl, requestMapping, error, serializer);
+      if (error is Error) {
+        return Future.error(result, error.stackTrace);
+      }
       return Future.error(result);
     }
 
-    return this._postHandle(feignRequest, uiOptions, requestUrl, requestMapping, response, serializer);
+    return this._postHandle(request, uiOptions, requestUrl, requestMapping, response, serializer);
   }
 
   /// 前置拦截器
@@ -136,7 +141,7 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
 
   /// 拦截器后置处理
   Future<dynamic> _postHandle(FeignRequest request, UIOptions uiOptions, String url, RequestMapping requestMapping,
-      response, BuiltValueSerializable serializer) async {
+      response, BuiltValueSerializable? serializer) async {
     return this._executeInterceptor<FeignBaseRequest, dynamic>(request, uiOptions, url, requestMapping, response,
         (FeignClientExecutorInterceptor<FeignBaseRequest> interceptor) {
       return interceptor.postHandle(request, uiOptions, response, serializer: serializer);
@@ -145,9 +150,9 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
 
   /// 拦截器后置错误处理
   Future _postHandleError(FeignBaseRequest request, UIOptions uiOptions, String url, RequestMapping requestMapping,
-      error, BuiltValueSerializable serializer) async {
+      error, BuiltValueSerializable? serializer) async {
     return this._executeInterceptor<FeignBaseRequest, Object>(request, uiOptions, url, requestMapping, error, (
-        [FeignClientExecutorInterceptor<FeignBaseRequest> interceptor]) {
+        [FeignClientExecutorInterceptor<FeignBaseRequest>? interceptor]) {
       if (interceptor == null) {
         return Future.error(error);
       }
@@ -155,8 +160,8 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
     }, true);
   }
 
-  Future _executeInterceptor<T extends FeignBaseRequest, R>(FeignBaseRequest request, UIOptions uiOptions, String url,
-      RequestMapping requestMapping, R defaultValue, ExecuteInterceptor<T> execute,
+  Future<dynamic> _executeInterceptor<T extends FeignBaseRequest, R>(FeignBaseRequest request, UIOptions uiOptions,
+      String url, RequestMapping requestMapping, R defaultValue, ExecuteInterceptor<T> execute,
       [bool needTry = false]) async {
     final feignClientExecutorInterceptors = this.feignConfiguration.feignClientExecutorInterceptors;
     if (feignClientExecutorInterceptors == null) {
@@ -165,16 +170,17 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
     var result = defaultValue, len = feignClientExecutorInterceptors.length, index = 0;
     while (index < len) {
       var feignClientExecutorInterceptor = feignClientExecutorInterceptors[index];
-      var interceptor = this._getInterceptor(feignClientExecutorInterceptor, url, request.headers, requestMapping);
+      FeignClientExecutorInterceptor? interceptor =
+          this._getInterceptor(feignClientExecutorInterceptor, url, request.headers, requestMapping);
       if (interceptor != null) {
         if (needTry) {
           try {
-            result = await execute(interceptor);
-          } catch (e) {
-            result = e;
+            result = await execute(interceptor as FeignClientExecutorInterceptor<T>);
+          } catch (error) {
+            return error;
           }
         } else {
-          result = await execute(interceptor);
+          result = await execute(interceptor as FeignClientExecutorInterceptor<T>);
         }
       }
       index++;
@@ -182,41 +188,31 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
     return result;
   }
 
-  FeignClientExecutorInterceptor _getInterceptor(FeignClientExecutorInterceptor feignClientExecutorInterceptor,
+  FeignClientExecutorInterceptor? _getInterceptor(FeignClientExecutorInterceptor feignClientExecutorInterceptor,
       String url, Map<String, String> headers, RequestMapping requestMapping) {
     if (feignClientExecutorInterceptor is MappedFeignClientExecutorInterceptor) {
-      var isMatch =
-          feignClientExecutorInterceptor.matches(url: url, httpMethod: requestMapping.method, headers: headers);
-      if (!isMatch) {
-        return null;
+      if (feignClientExecutorInterceptor.matches(url, requestMapping.method, headers: headers)) {
+        return feignClientExecutorInterceptor;
       }
-      return feignClientExecutorInterceptor;
+      return null;
     }
     return feignClientExecutorInterceptor;
   }
 
   // build [ResponseExtractor]
-  ResponseExtractor _responseExtractor<T>(String httpMethod, Type serializeType, {FullType specifiedType}) {
+  ResponseExtractor _responseExtractor<T>(String httpMethod, Type? serializeType,
+      {FullType specifiedType = FullType.unspecified}) {
     if (httpMethod == HttpMethod.OPTIONS) {
       return OptionsForAllowResponseExtractor();
     }
     if (httpMethod == HttpMethod.HEAD) {
       return HeadResponseExtractor();
     }
-    // if (serializeType == null) {
-    //   throw new ArgumentError("argument serializeType must not null");
-    // }
-    if (specifiedType != null && specifiedType.root == ResponseEntity) {
+    if (specifiedType.root == ResponseEntity) {
       return ResponseEntityResponseExtractor(feignConfiguration.messageConverters, serializeType);
     } else {
       return HttpMessageConverterExtractor(feignConfiguration.messageConverters,
           responseType: serializeType, specifiedType: specifiedType);
     }
-  }
-
-  /// 初始化
-  void _initFeignClient() {
-    var feignClientMeta = findMetadata(this.classMirror.metadata, FeignClient);
-    this._feignClient = feignClientMeta;
   }
 }

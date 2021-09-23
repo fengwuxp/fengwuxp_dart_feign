@@ -2,21 +2,20 @@ import 'dart:io';
 
 import 'package:fengwuxp_dart_openfeign/index.dart';
 
-/// http header content type name
-//const CONTENT_TYPE_NAME = HttpHeaders.contentTypeHeader;
-
 /// feign options 命名参数的名称
 const FEIGN_OPTIONS_PARAMETER_NAME = "feignOptions";
 
 const FEIGN_SERIALIZER_PARAMETER_NAME = "serializer";
 
 /// request id header name
-const REQUEST_ID_HEADER_NAME = 'Dart-Feign-Request-Id';
+const REQUEST_ID_HEADER_NAME = 'Dart-Feign-Client-Request-Id';
 
 ///  mock unauthorized response
-final UNAUTHORIZED_RESPONSE = ResponseEntity(HttpStatus.unauthorized, {}, null, null);
+final UNAUTHORIZED_RESPONSE = ResponseEntity(HttpStatus.unauthorized, {}, null, "unauthorized");
 
 /// mock gatewayTimeout response
-final GATEWAY_TIME_RESPONSE = ResponseEntity(HttpStatus.gatewayTimeout, {}, null, null);
+final GATEWAY_TIME_RESPONSE = ResponseEntity(HttpStatus.gatewayTimeout, {}, null, "gateway timeout");
 
-const NETWORK_NONE="network none";
+const NETWORK_NONE = "network none";
+
+

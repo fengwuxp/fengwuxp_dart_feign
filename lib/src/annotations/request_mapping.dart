@@ -44,7 +44,7 @@ class RequestMapping {
   /// timeout
   /// default @see [FeignConfiguration]
   /// ms
-  final num timeout;
+  final num? timeout;
 
   /// need authentication information
   /// default @see [FeignConfiguration]
@@ -65,19 +65,18 @@ class RequestMapping {
 //  final ResultTransformer resultTransformer;
 
   const RequestMapping(
-      {String value,
-      String method,
-      num timeout,
-      AuthenticationType authenticationType,
-      Map<String, String> headers,
-      List<String> consumes,
-      List<String> params,
-      List<String> produces})
+      {String value: "",
+      String method: "GET",
+      num? timeout,
+      AuthenticationType? authenticationType,
+      Map<String, dynamic>? headers,
+      List<String>? consumes,
+      List<String>? params,
+      List<String>? produces})
       : this.value = value,
         this.timeout = timeout,
         this.method = method,
-        this.authenticationType =
-            authenticationType ?? AuthenticationType.FORCE,
+        this.authenticationType = authenticationType ?? AuthenticationType.FORCE,
         this.headers = headers ?? const {},
         this.consumes = consumes ?? const [],
         this.params = params ?? const [],
@@ -87,15 +86,15 @@ class RequestMapping {
 /// [GetMapping]
 class GetMapping extends RequestMapping {
   const GetMapping(
-      {String value,
-      num timeout,
-      Map<String, dynamic> headers,
-      List<String> params,
-      List<String> consumes,
-      List<String> produces,
-      AuthenticationType authenticationType,
-      Serializer serializer,
-      ResultTransformer resultTransformer})
+      {String value: "",
+      num? timeout,
+      Map<String, dynamic>? headers,
+      List<String>? params,
+      List<String>? consumes,
+      List<String>? produces,
+      AuthenticationType? authenticationType,
+      Serializer? serializer,
+      ResultTransformer? resultTransformer})
       : super(
             value: value,
             timeout: timeout,
@@ -109,15 +108,15 @@ class GetMapping extends RequestMapping {
 /// [PostMapping]
 class PostMapping extends RequestMapping {
   const PostMapping(
-      {String value,
-      num timeout,
-      Map<String, dynamic> headers,
-      List<String> params,
-      List<String> consumes,
-      List<String> produces,
-      AuthenticationType authenticationType,
-      Serializer serializer,
-      ResultTransformer resultTransformer})
+      {String value: "",
+      num? timeout,
+      Map<String, dynamic>? headers,
+      List<String>? params,
+      List<String>? consumes,
+      List<String>? produces,
+      AuthenticationType? authenticationType,
+      Serializer? serializer,
+      ResultTransformer? resultTransformer})
       : super(
             value: value,
             timeout: timeout,
@@ -131,15 +130,15 @@ class PostMapping extends RequestMapping {
 /// [PutMapping]
 class PutMapping extends RequestMapping {
   const PutMapping(
-      {String value,
-      num timeout,
-      Map<String, dynamic> headers,
-      List<String> params,
-      List<String> consumes,
-      List<String> produces,
-      AuthenticationType authenticationType,
-      Serializer serializer,
-      ResultTransformer resultTransformer})
+      {String value: "",
+      num? timeout,
+      Map<String, dynamic>? headers,
+      List<String>? params,
+      List<String>? consumes,
+      List<String>? produces,
+      AuthenticationType? authenticationType,
+      Serializer? serializer,
+      ResultTransformer? resultTransformer})
       : super(
             value: value,
             timeout: timeout,
@@ -153,15 +152,15 @@ class PutMapping extends RequestMapping {
 /// [DeleteMapping]
 class DeleteMapping extends RequestMapping {
   const DeleteMapping(
-      {String value,
-      num timeout,
-      Map<String, dynamic> headers,
-      List<String> params,
-      List<String> consumes,
-      List<String> produces,
-      AuthenticationType authenticationType,
-      Serializer serializer,
-      ResultTransformer resultTransformer})
+      {String value: "",
+      num? timeout,
+      Map<String, dynamic>? headers,
+      List<String>? params,
+      List<String>? consumes,
+      List<String>? produces,
+      AuthenticationType? authenticationType,
+      Serializer? serializer,
+      ResultTransformer? resultTransformer})
       : super(
             value: value,
             timeout: timeout,
@@ -175,15 +174,15 @@ class DeleteMapping extends RequestMapping {
 /// [HeadMapping]
 class HeadMapping extends RequestMapping {
   const HeadMapping(
-      {String value,
-      num timeout,
-      Map<String, dynamic> headers,
-      List<String> params,
-      List<String> consumes,
-      List<String> produces,
-      AuthenticationType authenticationType,
-      Serializer serializer,
-      ResultTransformer resultTransformer})
+      {String value: "",
+      num? timeout,
+      Map<String, dynamic>? headers,
+      List<String>? params,
+      List<String>? consumes,
+      List<String>? produces,
+      AuthenticationType? authenticationType,
+      Serializer? serializer,
+      ResultTransformer? resultTransformer})
       : super(
             value: value,
             timeout: timeout,
@@ -197,14 +196,15 @@ class HeadMapping extends RequestMapping {
 /// PatchMapping
 class PatchMapping extends RequestMapping {
   const PatchMapping(
-      {String value,
-      num timeout,
-      Map<String, dynamic> headers,
-      List<String> consumes,
-      List<String> produces,
-      AuthenticationType authenticationType,
-      Serializer serializer,
-      ResultTransformer resultTransformer})
+      {String value: "",
+      num? timeout,
+      Map<String, dynamic>? headers,
+      List<String>? params,
+      List<String>? consumes,
+      List<String>? produces,
+      AuthenticationType? authenticationType,
+      Serializer? serializer,
+      ResultTransformer? resultTransformer})
       : super(
             value: value,
             timeout: timeout,

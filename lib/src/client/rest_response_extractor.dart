@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:built_value/serializer.dart';
@@ -9,7 +10,6 @@ import 'package:fengwuxp_dart_openfeign/src/http/converter/http_message_converte
 import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 
 class HttpMessageConverterExtractor<T> implements ResponseExtractor<T> {
-
   List<HttpMessageConverter> _messageConverters;
 
   Type _responseType;
@@ -18,29 +18,30 @@ class HttpMessageConverterExtractor<T> implements ResponseExtractor<T> {
 
   HttpMessageConverterExtractor._(this._messageConverters, this._responseType, this._specifiedType);
 
-  factory HttpMessageConverterExtractor(List<HttpMessageConverter> messageConverters, {Type responseType, FullType specifiedType}) {
+  factory HttpMessageConverterExtractor(List<HttpMessageConverter> messageConverters,
+      {Type? responseType, FullType specifiedType = FullType.unspecified}) {
     return HttpMessageConverterExtractor._(
-        messageConverters ?? [], responseType, specifiedType ?? FullType.unspecified);
+        messageConverters, responseType ?? HttpMessageConverterExtractor, specifiedType);
   }
 
-  Future<T> extractData(ClientHttpResponse response, {Type serializeType, FullType specifiedType}) async {
-    var responseWrapper = MessageBodyClientHttpResponseWrapper(response);
-    if (!responseWrapper.hasMessageBody() || responseWrapper.hasEmptyMessageBody()) {
-      return Future.value(null);
+  Future<T?> extractData(ClientHttpResponse response,
+      {Type? serializeType, FullType specifiedType = FullType.unspecified}) async {
+    final responseWrapper = MessageBodyClientHttpResponseWrapper(response);
+    if (!responseWrapper.hasMessageBody()) {
+      return Future.value();
     }
 
-    final contentType = ContentType.parse(response.headers[HttpHeaders.contentTypeHeader]);
+    final contentType = ContentType.parse(response.headers[HttpHeaders.contentTypeHeader] as String);
     for (HttpMessageConverter messageConverter in this._messageConverters) {
-      if (this._responseType != null) {
+      if (this._responseType != HttpMessageConverterExtractor) {
         if (messageConverter.canRead(contentType, serializeType: this._responseType)) {
           return messageConverter.read<T>(response,
-              serializeType: this._responseType, specifiedType: this._specifiedType ?? specifiedType);
+              serializeType: this._responseType, specifiedType: this._specifiedType);
         }
       }
       if (messageConverter is GenericHttpMessageConverter) {
         if (messageConverter.canRead(contentType, serializeType: serializeType)) {
-          return messageConverter.read<T>(response,
-              serializeType: serializeType, specifiedType: this._specifiedType ?? specifiedType);
+          return messageConverter.read<T>(response, serializeType: serializeType, specifiedType: this._specifiedType);
         }
       }
     }
@@ -48,26 +49,21 @@ class HttpMessageConverterExtractor<T> implements ResponseExtractor<T> {
 }
 
 class ResponseEntityResponseExtractor<T> implements ResponseExtractor<ResponseEntity<T>> {
-  HttpMessageConverterExtractor<T> _delegate;
+  final HttpMessageConverterExtractor<T> _delegate;
 
-  ResponseEntityResponseExtractor(List<HttpMessageConverter> messageConverters, Type responseType,
-      [FullType specifiedType]) {
-    this._delegate =
-        HttpMessageConverterExtractor(messageConverters, responseType: responseType, specifiedType: specifiedType);
-  }
+  ResponseEntityResponseExtractor(List<HttpMessageConverter> messageConverters, Type? responseType,
+      [FullType specifiedType = FullType.unspecified])
+      : this._delegate =
+            HttpMessageConverterExtractor(messageConverters, responseType: responseType, specifiedType: specifiedType);
 
-  factory([List<HttpMessageConverter> messageConverters, Type responseType]) {
-    return new ResponseEntityResponseExtractor(messageConverters, responseType);
+  factory([List<HttpMessageConverter>? messageConverters, Type? responseType]) {
+    return new ResponseEntityResponseExtractor(messageConverters ?? [], responseType);
   }
 
   Future<ResponseEntity<T>> extractData(ClientHttpResponse response,
-      {Type serializeType, FullType specifiedType}) async {
-    if (this._delegate != null) {
-      T body = await this._delegate.extractData(response);
-      return ResponseEntity<T>(response.statusCode, response.headers, body, response.reasonPhrase);
-    } else {
-      return ResponseEntity<T>(response.statusCode, response.headers, null, response.reasonPhrase);
-    }
+      {Type? serializeType, FullType specifiedType = FullType.unspecified}) async {
+    T? body = await this._delegate.extractData(response);
+    return ResponseEntity<T>(response.statusCode, response.headers, body as T, response.reasonPhrase);
   }
 }
 
@@ -75,7 +71,8 @@ class HeadResponseExtractor implements ResponseExtractor<Map<String, String>> {
   const HeadResponseExtractor();
 
   /// Extract data from the given {@code ClientHttpResponse} and return it.
-  Future<Map<String, String>> extractData(ClientHttpResponse response, {Type serializeType, FullType specifiedType}) {
+  Future<Map<String, String>> extractData(ClientHttpResponse response,
+      {Type? serializeType, FullType specifiedType = FullType.unspecified}) {
     return Future.value(response.headers);
   }
 }
@@ -88,16 +85,30 @@ class OptionsForAllowResponseExtractor implements ResponseExtractor<Set<String>>
   }
 
   @override
-  Future<Set<String>> extractData(ClientHttpResponse response, {Type serializeType, FullType specifiedType}) async {
-    var headers = await this._headResponseExtractor.extractData(response, serializeType: serializeType);
-    if (headers == null) {
-      return Future.value(Set.from([]));
-    }
+  Future<Set<String>> extractData(ClientHttpResponse response,
+      {Type? serializeType, FullType specifiedType = FullType.unspecified}) async {
+    final headers = await this._headResponseExtractor.extractData(response, serializeType: serializeType);
     // "Access-Control-Allow-Methods"
-    var header = headers["Access-Control-Allow-Methods"];
+    final header = headers["Access-Control-Allow-Methods"] as String;
     if (!StringUtils.hasText(header)) {
       return Future.value(Set.from([]));
     }
     return Future.value(Set.from(header.split(",")));
   }
 }
+
+class NoneResponseExtractor implements ResponseExtractor<ClientHttpResponse> {
+  @override
+  Future<ClientHttpResponse?> extractData(ClientHttpResponse response,
+      {Type? serializeType, specifiedType = FullType.unspecified}) {
+    return Future.value(response);
+  }
+}
+
+class VoidResponseExtractor implements ResponseExtractor<Void> {
+  @override
+  Future<Void?> extractData(ClientHttpResponse response, {Type? serializeType, specifiedType = FullType.unspecified}) {
+    return Future.value();
+  }
+}
+

@@ -16,8 +16,7 @@ abstract class PageArticleActionInfo implements Built<PageArticleActionInfo, Pag
   factory PageArticleActionInfo([Function(PageArticleActionInfoBuilder) updates]) = _$PageArticleActionInfo;
 
   @BuiltValueField(wireName: 'total')
-  @nullable
-  int get total;
+  int? get total;
 
   @BuiltValueField(wireName: 'records')
   BuiltList<ArticleActionInfo> get records;
@@ -34,12 +33,12 @@ abstract class PageArticleActionInfo implements Built<PageArticleActionInfo, Pag
   static Serializer<PageArticleActionInfo> get serializer => _$pageArticleActionInfoSerializer;
 
   static PageArticleActionInfo formJson(String json) {
-    return serializers.deserializeWith(PageArticleActionInfo.serializer, jsonDecode(json));
+    return serializers.deserializeWith(PageArticleActionInfo.serializer, jsonDecode(json)) as PageArticleActionInfo;
   }
 
   @override
   Map<String, dynamic> toMap() {
-    return serializers.serializeWith(PageArticleActionInfo.serializer, this);
+    return serializers.serializeWith(PageArticleActionInfo.serializer, this) as  Map<String, dynamic>;
   }
 
   @override

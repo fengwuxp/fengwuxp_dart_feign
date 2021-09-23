@@ -6,16 +6,16 @@ part of 'page_info.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<PageInfo<Object>> _$pageInfoSerializer = new _$PageInfoSerializer();
+Serializer<PageInfo<Object?>> _$pageInfoSerializer = new _$PageInfoSerializer();
 
-class _$PageInfoSerializer implements StructuredSerializer<PageInfo<Object>> {
+class _$PageInfoSerializer implements StructuredSerializer<PageInfo<Object?>> {
   @override
   final Iterable<Type> types = const [PageInfo, _$PageInfo];
   @override
   final String wireName = 'PageInfo';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, PageInfo<Object> object,
+  Iterable<Object?> serialize(Serializers serializers, PageInfo<Object?> object,
       {FullType specifiedType = FullType.unspecified}) {
     final isUnderspecified =
         specifiedType.isUnspecified || specifiedType.parameters.isEmpty;
@@ -23,8 +23,8 @@ class _$PageInfoSerializer implements StructuredSerializer<PageInfo<Object>> {
     final parameterT =
         isUnderspecified ? FullType.object : specifiedType.parameters[0];
 
-    final result = <Object>[];
-    Object value;
+    final result = <Object?>[];
+    Object? value;
     value = object.total;
     if (value != null) {
       result
@@ -68,8 +68,8 @@ class _$PageInfoSerializer implements StructuredSerializer<PageInfo<Object>> {
   }
 
   @override
-  PageInfo<Object> deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+  PageInfo<Object?> deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final isUnderspecified =
         specifiedType.isUnspecified || specifiedType.parameters.isEmpty;
@@ -78,39 +78,39 @@ class _$PageInfoSerializer implements StructuredSerializer<PageInfo<Object>> {
         isUnderspecified ? FullType.object : specifiedType.parameters[0];
 
     final result = isUnderspecified
-        ? new PageInfoBuilder<Object>()
-        : serializers.newBuilder(specifiedType) as PageInfoBuilder<Object>;
+        ? new PageInfoBuilder<Object?>()
+        : serializers.newBuilder(specifiedType) as PageInfoBuilder<Object?>;
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'total':
           result.total = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'queryType':
           result.queryType = serializers.deserialize(value,
-              specifiedType: const FullType(QueryType)) as QueryType;
+              specifiedType: const FullType(QueryType)) as QueryType?;
           break;
         case 'records':
           result.records.replace(serializers.deserialize(value,
-                  specifiedType: new FullType(BuiltList, [parameterT]))
-              as BuiltList<Object>);
+                  specifiedType: new FullType(BuiltList, [parameterT]))!
+              as BuiltList<Object?>);
           break;
         case 'queryPage':
           result.queryPage = serializers.deserialize(value,
-              specifiedType: const FullType(num)) as num;
+              specifiedType: const FullType(num)) as num?;
           break;
         case 'querySize':
           result.querySize = serializers.deserialize(value,
-              specifiedType: const FullType(num)) as num;
+              specifiedType: const FullType(num)) as num?;
           break;
         case 'empty':
           result.empty = serializers.deserialize(value,
-              specifiedType: const FullType(bool)) as bool;
+              specifiedType: const FullType(bool)) as bool?;
           break;
       }
     }
@@ -121,19 +121,19 @@ class _$PageInfoSerializer implements StructuredSerializer<PageInfo<Object>> {
 
 class _$PageInfo<T> extends PageInfo<T> {
   @override
-  final int total;
+  final int? total;
   @override
-  final QueryType queryType;
+  final QueryType? queryType;
   @override
-  final BuiltList<T> records;
+  final BuiltList<T>? records;
   @override
-  final num queryPage;
+  final num? queryPage;
   @override
-  final num querySize;
+  final num? querySize;
   @override
-  final bool empty;
+  final bool? empty;
 
-  factory _$PageInfo([void Function(PageInfoBuilder<T>) updates]) =>
+  factory _$PageInfo([void Function(PageInfoBuilder<T>)? updates]) =>
       (new PageInfoBuilder<T>()..update(updates)).build();
 
   _$PageInfo._(
@@ -194,31 +194,31 @@ class _$PageInfo<T> extends PageInfo<T> {
 }
 
 class PageInfoBuilder<T> implements Builder<PageInfo<T>, PageInfoBuilder<T>> {
-  _$PageInfo<T> _$v;
+  _$PageInfo<T>? _$v;
 
-  int _total;
-  int get total => _$this._total;
-  set total(int total) => _$this._total = total;
+  int? _total;
+  int? get total => _$this._total;
+  set total(int? total) => _$this._total = total;
 
-  QueryType _queryType;
-  QueryType get queryType => _$this._queryType;
-  set queryType(QueryType queryType) => _$this._queryType = queryType;
+  QueryType? _queryType;
+  QueryType? get queryType => _$this._queryType;
+  set queryType(QueryType? queryType) => _$this._queryType = queryType;
 
-  ListBuilder<T> _records;
+  ListBuilder<T>? _records;
   ListBuilder<T> get records => _$this._records ??= new ListBuilder<T>();
-  set records(ListBuilder<T> records) => _$this._records = records;
+  set records(ListBuilder<T>? records) => _$this._records = records;
 
-  num _queryPage;
-  num get queryPage => _$this._queryPage;
-  set queryPage(num queryPage) => _$this._queryPage = queryPage;
+  num? _queryPage;
+  num? get queryPage => _$this._queryPage;
+  set queryPage(num? queryPage) => _$this._queryPage = queryPage;
 
-  num _querySize;
-  num get querySize => _$this._querySize;
-  set querySize(num querySize) => _$this._querySize = querySize;
+  num? _querySize;
+  num? get querySize => _$this._querySize;
+  set querySize(num? querySize) => _$this._querySize = querySize;
 
-  bool _empty;
-  bool get empty => _$this._empty;
-  set empty(bool empty) => _$this._empty = empty;
+  bool? _empty;
+  bool? get empty => _$this._empty;
+  set empty(bool? empty) => _$this._empty = empty;
 
   PageInfoBuilder();
 
@@ -243,7 +243,7 @@ class PageInfoBuilder<T> implements Builder<PageInfo<T>, PageInfoBuilder<T>> {
   }
 
   @override
-  void update(void Function(PageInfoBuilder<T>) updates) {
+  void update(void Function(PageInfoBuilder<T>)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -260,7 +260,7 @@ class PageInfoBuilder<T> implements Builder<PageInfo<T>, PageInfoBuilder<T>> {
               querySize: querySize,
               empty: empty);
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'records';
         _records?.build();
@@ -275,4 +275,4 @@ class PageInfoBuilder<T> implements Builder<PageInfo<T>, PageInfoBuilder<T>> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

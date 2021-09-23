@@ -14,7 +14,7 @@ typedef Future FeignToastHandle(error);
 /// 转换统一返回的错误数据的函数
 /// [data]
 /// [serializer]
-typedef T TransformerResponseData<T>(data, BuiltValueSerializable serializer);
+typedef T TransformerResponseData<T>(data, BuiltValueSerializable? serializer);
 
 //  unified transform failure toast
 class UnifiedFailureToastExecutorInterceptor<T extends FeignBaseRequest> implements FeignClientExecutorInterceptor<T> {
@@ -30,14 +30,14 @@ class UnifiedFailureToastExecutorInterceptor<T extends FeignBaseRequest> impleme
   /// in request after invoke
   /// [options]
   /// [response]
-  Future postHandle<E>(T request, UIOptions uiOptions, E response, {BuiltValueSerializable serializer}) async {
+  Future postHandle<E>(T request, UIOptions uiOptions, E response, {BuiltValueSerializable? serializer}) async {
     return response;
   }
 
   /// in request failure invoke
   /// [options]
   /// [exception]
-  Future postError<E>(T options, UIOptions uiOptions, error, {BuiltValueSerializable serializer}) {
+  Future postError<E>(T options, UIOptions uiOptions, error, {BuiltValueSerializable? serializer}) {
     var result;
     if (error is Exception) {
       // TODO 是否将异常做转换以及日志输出

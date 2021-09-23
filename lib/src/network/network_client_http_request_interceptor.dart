@@ -25,15 +25,15 @@ class NetworkClientHttpRequestInterceptor implements ClientHttpRequestIntercepto
   // Maximum number of milliseconds for spin wait
   final int spinWaitMaxTimes;
 
-  NetworkStatus _currentStatus = null;
+  NetworkStatus _currentStatus = new NetworkStatus(false, ConnectivityResult.none);
 
   NetworkClientHttpRequestInterceptor(
-      {NetworkStatusListener networkStatusListener,
-      NoneNetworkFailBack networkFailBack,
-      int tryWaitNetworkCount,
-      int spinWaitMaxTimes})
+      {NetworkStatusListener? networkStatusListener,
+      NoneNetworkFailBack? networkFailBack,
+      int? tryWaitNetworkCount,
+      int? spinWaitMaxTimes})
       : this.networkStatusListener = networkStatusListener ?? DefaultNetworkStatusListener(),
-        this.networkFailBack = networkFailBack,
+        this.networkFailBack = networkFailBack ?? new DefaultNoneNetworkFailBack(),
         this.tryWaitNetworkCount = tryWaitNetworkCount ?? 3,
         this.spinWaitMaxTimes = spinWaitMaxTimes ?? 500 {
     this._initNetwork();
@@ -55,12 +55,13 @@ class NetworkClientHttpRequestInterceptor implements ClientHttpRequestIntercepto
     });
   }
 
-  Future<void> interceptor(ClientHttpRequest request) async {
+  Future<ClientHttpRequest> interceptor(ClientHttpRequest request) async {
     var currentStatus = this._currentStatus;
     var noneNetwork = currentStatus == null || !currentStatus.isConnected;
     if (noneNetwork) {
-      return this._trySpinWait(request).catchError(this._handleFailBack);
+      return this._trySpinWait(request).then((value) => request).catchError(this._handleFailBack);
     }
+    return Future.value(request);
   }
 
   /// try spin wait network
@@ -78,7 +79,8 @@ class NetworkClientHttpRequestInterceptor implements ClientHttpRequestIntercepto
         times = 120;
       }
       await sleep(times);
-      await this._initNetwork();
+      this._initNetwork();
+      return Future.value();
     }
   }
 

@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:built_value/built_value.dart';
@@ -9,7 +8,7 @@ import '../serializers.dart';
 
 part 'query_hello_req.g.dart';
 
-abstract class QueryHelloReq implements Built<QueryHelloReq, QueryHelloReqBuilder>,JsonSerializableObject {
+abstract class QueryHelloReq implements Built<QueryHelloReq, QueryHelloReqBuilder>, JsonSerializableObject {
   static Serializer<QueryHelloReq> get serializer => _$queryHelloReqSerializer;
 
   QueryHelloReq._();
@@ -33,7 +32,7 @@ abstract class QueryHelloReq implements Built<QueryHelloReq, QueryHelloReqBuilde
 
   @override
   Map<String, dynamic> toMap() {
-    return serializers.serializeWith(QueryHelloReq.serializer, this);
+    return serializers.serializeWith(QueryHelloReq.serializer, this) as Map<String, dynamic>;
   }
 
   @override

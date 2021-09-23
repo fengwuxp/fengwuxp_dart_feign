@@ -7,7 +7,8 @@ import '../http/client_http_request.dart';
 /// example url='@memberModule/find_member  routeMapping = {memberModule:"http://test.a.b.com/member"}
 /// ==> 'http://test.a.b.com/member/find_member'
 class RoutingClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {
-  Map<String, String> _routeMapping;
+
+  Map<String, String> _routeMapping={};
 
   RoutingClientHttpRequestInterceptor(routeMapping) {
     if (routeMapping is String) {
@@ -22,8 +23,8 @@ class RoutingClientHttpRequestInterceptor implements ClientHttpRequestIntercepto
     return new RoutingClientHttpRequestInterceptor(routeMapping);
   }
 
-  Future<void> interceptor(ClientHttpRequest request) {
+  Future<ClientHttpRequest> interceptor(ClientHttpRequest request) {
     request.uri(routing(request.url, this._routeMapping));
-    return Future.value();
+    return Future.value(request);
   }
 }

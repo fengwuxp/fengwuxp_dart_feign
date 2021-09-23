@@ -11,9 +11,9 @@ class UploadClientExecutorInterceptor implements FeignClientExecutorInterceptor<
   FileUploadStrategy _fileUploadStrategy;
 
   // parallel upload file
-  bool _parallel = true;
+  final bool _parallel;
 
-  UploadClientExecutorInterceptor(this._fileUploadStrategy, [bool parallel]) : this._parallel = parallel;
+  UploadClientExecutorInterceptor(this._fileUploadStrategy, [bool parallel = true]) : this._parallel = parallel;
 
   @override
   Future<FeignRequest> preHandle(FeignRequest request, UIOptions uiOptions) async {
@@ -65,13 +65,13 @@ class UploadClientExecutorInterceptor implements FeignClientExecutorInterceptor<
   }
 
   @override
-  Future postError<E>(FeignRequest request, UIOptions uiOptions, error, {BuiltValueSerializable serializer}) async {
+  Future postError<E>(FeignRequest request, UIOptions uiOptions, error, {BuiltValueSerializable? serializer}) async {
     return error;
   }
 
   @override
   Future postHandle<E>(FeignRequest request, UIOptions uiOptions, E response,
-      {BuiltValueSerializable serializer}) async {
+      {BuiltValueSerializable? serializer}) async {
     return response;
   }
 

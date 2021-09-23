@@ -12,12 +12,12 @@ import 'package:fengwuxp_dart_openfeign/src/network/simple_none_network_failback
 
 class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {
   // Refresh tokens 5 minutes in advance by default
-  int _aheadOfTimes;
+  int _aheadOfTimes = 0;
 
   // blocking 'authorization' refresh
-  bool _blockingRefreshAuthorization;
+  bool _blockingRefreshAuthorization = true;
 
-  AuthenticationStrategy _authenticationStrategy;
+  AuthenticationStrategy? _authenticationStrategy;
 
   // is refreshing status
   bool _refreshing = false;
@@ -26,14 +26,14 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
   List<WaitHttpRequest<ClientHttpRequest>> _syncQueue = [];
 
   AuthenticationClientHttpRequestInterceptor(AuthenticationStrategy authenticationStrategy,
-      {int aheadOfTimes, bool blockingRefreshAuthorization}) {
+      {int? aheadOfTimes, bool? blockingRefreshAuthorization}) {
     this._authenticationStrategy = authenticationStrategy;
     this._aheadOfTimes = aheadOfTimes ?? 5 * 60 * 1000;
     this._blockingRefreshAuthorization = blockingRefreshAuthorization ?? true;
   }
 
   @override
-  Future<void> interceptor(ClientHttpRequest request) async {
+  Future<ClientHttpRequest> interceptor(ClientHttpRequest request) async {
     var requestMapping = getRequestMappingByRequest(request);
     var isTryAuthentication = false;
     if (requestMapping != null) {
@@ -53,9 +53,9 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
     final aheadOfTimes = this._aheadOfTimes,
         blockingRefreshAuthorization = this._blockingRefreshAuthorization,
         authenticationStrategy = this._authenticationStrategy;
-    AuthenticationToken authorization;
+    AuthenticationToken? authorization;
     try {
-      authorization = await authenticationStrategy.getAuthorization(request.url, request.headers, request.method);
+      authorization = await authenticationStrategy?.getAuthorization(request.url, request.headers, request.method);
     } catch (e) {
       if (isTryAuthentication) {
         return request;
@@ -95,7 +95,7 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
     if (!blockingRefreshAuthorization) {
       // Concurrent refresh
       try {
-        authorization = await authenticationStrategy.refreshAuthorization(
+        authorization = await authenticationStrategy?.refreshAuthorization(
             authorization, request.url, request.headers, request.method);
       } catch (e) {
         return Future.error(UNAUTHORIZED_RESPONSE);
@@ -103,14 +103,14 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
     } else {
       if (this._refreshing) {
         // join wait queue
-        return this._addWaitItem(request).future;
+        return this._addWaitItem(request).future.then((value) => request);
       } else {
         // Synchronous refresh
         this._refreshing = true;
         // need refresh token
         var error;
         try {
-          authorization = await authenticationStrategy.refreshAuthorization(
+          authorization = await authenticationStrategy?.refreshAuthorization(
               authorization, request.url, request.headers, request.method);
         } catch (e) {
           // refresh authorization error
@@ -149,14 +149,14 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
   /// append authorization header
   /// @param authorization
   /// @param headers
-  void _appendAuthorizationHeader(AuthenticationToken authorization, Map<String, String> headers) {
-    this._authenticationStrategy.appendAuthorizationHeader(authorization, headers);
+  void _appendAuthorizationHeader(AuthenticationToken? authorization, Map<String, String> headers) {
+    this._authenticationStrategy?.appendAuthorizationHeader(authorization as AuthenticationToken, headers);
   }
 
   /// need append authorization header
   /// [headers]
   bool _needAppendAuthorizationHeader(Map<String, String> headers) {
-    final headerNames = this._authenticationStrategy.getAuthorizationHeaderNames() ?? ["Authorization"];
+    final headerNames = this._authenticationStrategy?.getAuthorizationHeaderNames() ?? ["Authorization"];
     return headerNames.map((name) => headers[name] != null ? 1 : 0).reduce((i1, i2) => i1 + i2) != headerNames.length;
   }
 

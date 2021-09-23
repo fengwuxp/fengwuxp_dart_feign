@@ -20,11 +20,11 @@ class _$QueryArticleActionReqSerializer
   final String wireName = 'QueryArticleActionReq';
 
   @override
-  Iterable<Object> serialize(
+  Iterable<Object?> serialize(
       Serializers serializers, QueryArticleActionReq object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[];
-    Object value;
+    final result = <Object?>[];
+    Object? value;
     value = object.id;
     if (value != null) {
       result
@@ -119,7 +119,7 @@ class _$QueryArticleActionReqSerializer
 
   @override
   QueryArticleActionReq deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new QueryArticleActionReqBuilder();
 
@@ -127,64 +127,64 @@ class _$QueryArticleActionReqSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'id':
           result.id = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'articleId':
           result.articleId = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'actionType':
           result.actionType = serializers.deserialize(value,
                   specifiedType: const FullType(ArticleActionType))
-              as ArticleActionType;
+              as ArticleActionType?;
           break;
         case 'sourceCode':
           result.sourceCode = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'minCrateTime':
           result.minCrateTime = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime)) as DateTime;
+              specifiedType: const FullType(DateTime)) as DateTime?;
           break;
         case 'maxCrateTime':
           result.maxCrateTime = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime)) as DateTime;
+              specifiedType: const FullType(DateTime)) as DateTime?;
           break;
         case 'ip':
           result.ip = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'queryType':
           result.queryType = serializers.deserialize(value,
-              specifiedType: const FullType(QueryType)) as QueryType;
+              specifiedType: const FullType(QueryType)) as QueryType?;
           break;
         case 'queryPage':
           result.queryPage = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'querySize':
           result.querySize = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'orderBy':
           result.orderBy.replace(serializers.deserialize(value,
-                  specifiedType:
-                      const FullType(BuiltList, const [const FullType(String)]))
-              as BuiltList<Object>);
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(String)]))!
+              as BuiltList<Object?>);
           break;
         case 'orderType':
           result.orderType.replace(serializers.deserialize(value,
-                  specifiedType:
-                      const FullType(BuiltList, const [const FullType(String)]))
-              as BuiltList<Object>);
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(String)]))!
+              as BuiltList<Object?>);
           break;
         case 'fromCache':
           result.fromCache = serializers.deserialize(value,
-              specifiedType: const FullType(bool)) as bool;
+              specifiedType: const FullType(bool)) as bool?;
           break;
       }
     }
@@ -195,34 +195,34 @@ class _$QueryArticleActionReqSerializer
 
 class _$QueryArticleActionReq extends QueryArticleActionReq {
   @override
-  final int id;
+  final int? id;
   @override
-  final int articleId;
+  final int? articleId;
   @override
-  final ArticleActionType actionType;
+  final ArticleActionType? actionType;
   @override
-  final String sourceCode;
+  final String? sourceCode;
   @override
-  final DateTime minCrateTime;
+  final DateTime? minCrateTime;
   @override
-  final DateTime maxCrateTime;
+  final DateTime? maxCrateTime;
   @override
-  final String ip;
+  final String? ip;
   @override
-  final QueryType queryType;
+  final QueryType? queryType;
   @override
-  final int queryPage;
+  final int? queryPage;
   @override
-  final int querySize;
+  final int? querySize;
   @override
-  final BuiltList<String> orderBy;
+  final BuiltList<String>? orderBy;
   @override
-  final BuiltList<String> orderType;
+  final BuiltList<String>? orderType;
   @override
-  final bool fromCache;
+  final bool? fromCache;
 
   factory _$QueryArticleActionReq(
-          [void Function(QueryArticleActionReqBuilder) updates]) =>
+          [void Function(QueryArticleActionReqBuilder)? updates]) =>
       (new QueryArticleActionReqBuilder()..update(updates)).build();
 
   _$QueryArticleActionReq._(
@@ -319,64 +319,65 @@ class _$QueryArticleActionReq extends QueryArticleActionReq {
 
 class QueryArticleActionReqBuilder
     implements Builder<QueryArticleActionReq, QueryArticleActionReqBuilder> {
-  _$QueryArticleActionReq _$v;
+  _$QueryArticleActionReq? _$v;
 
-  int _id;
-  int get id => _$this._id;
-  set id(int id) => _$this._id = id;
+  int? _id;
+  int? get id => _$this._id;
+  set id(int? id) => _$this._id = id;
 
-  int _articleId;
-  int get articleId => _$this._articleId;
-  set articleId(int articleId) => _$this._articleId = articleId;
+  int? _articleId;
+  int? get articleId => _$this._articleId;
+  set articleId(int? articleId) => _$this._articleId = articleId;
 
-  ArticleActionType _actionType;
-  ArticleActionType get actionType => _$this._actionType;
-  set actionType(ArticleActionType actionType) =>
+  ArticleActionType? _actionType;
+  ArticleActionType? get actionType => _$this._actionType;
+  set actionType(ArticleActionType? actionType) =>
       _$this._actionType = actionType;
 
-  String _sourceCode;
-  String get sourceCode => _$this._sourceCode;
-  set sourceCode(String sourceCode) => _$this._sourceCode = sourceCode;
+  String? _sourceCode;
+  String? get sourceCode => _$this._sourceCode;
+  set sourceCode(String? sourceCode) => _$this._sourceCode = sourceCode;
 
-  DateTime _minCrateTime;
-  DateTime get minCrateTime => _$this._minCrateTime;
-  set minCrateTime(DateTime minCrateTime) =>
+  DateTime? _minCrateTime;
+  DateTime? get minCrateTime => _$this._minCrateTime;
+  set minCrateTime(DateTime? minCrateTime) =>
       _$this._minCrateTime = minCrateTime;
 
-  DateTime _maxCrateTime;
-  DateTime get maxCrateTime => _$this._maxCrateTime;
-  set maxCrateTime(DateTime maxCrateTime) =>
+  DateTime? _maxCrateTime;
+  DateTime? get maxCrateTime => _$this._maxCrateTime;
+  set maxCrateTime(DateTime? maxCrateTime) =>
       _$this._maxCrateTime = maxCrateTime;
 
-  String _ip;
-  String get ip => _$this._ip;
-  set ip(String ip) => _$this._ip = ip;
+  String? _ip;
+  String? get ip => _$this._ip;
+  set ip(String? ip) => _$this._ip = ip;
 
-  QueryType _queryType;
-  QueryType get queryType => _$this._queryType;
-  set queryType(QueryType queryType) => _$this._queryType = queryType;
+  QueryType? _queryType;
+  QueryType? get queryType => _$this._queryType;
+  set queryType(QueryType? queryType) => _$this._queryType = queryType;
 
-  int _queryPage;
-  int get queryPage => _$this._queryPage;
-  set queryPage(int queryPage) => _$this._queryPage = queryPage;
+  int? _queryPage;
+  int? get queryPage => _$this._queryPage;
+  set queryPage(int? queryPage) => _$this._queryPage = queryPage;
 
-  int _querySize;
-  int get querySize => _$this._querySize;
-  set querySize(int querySize) => _$this._querySize = querySize;
+  int? _querySize;
+  int? get querySize => _$this._querySize;
+  set querySize(int? querySize) => _$this._querySize = querySize;
 
-  ListBuilder<String> _orderBy;
+  ListBuilder<String>? _orderBy;
   ListBuilder<String> get orderBy =>
       _$this._orderBy ??= new ListBuilder<String>();
-  set orderBy(ListBuilder<String> orderBy) => _$this._orderBy = orderBy;
+  set orderBy(ListBuilder<String>? orderBy) => _$this._orderBy = orderBy;
 
-  ListBuilder<String> _orderType;
+  ListBuilder<String>? _orderType;
   ListBuilder<String> get orderType =>
       _$this._orderType ??= new ListBuilder<String>();
-  set orderType(ListBuilder<String> orderType) => _$this._orderType = orderType;
+  set orderType(ListBuilder<String>? orderType) =>
+      _$this._orderType = orderType;
 
-  bool _fromCache;
-  bool get fromCache => _$this._fromCache;
-  set fromCache(bool fromCache) => _$this._fromCache = fromCache;
+  bool? _fromCache;
+  bool? get fromCache => _$this._fromCache;
+  set fromCache(bool? fromCache) => _$this._fromCache = fromCache;
 
   QueryArticleActionReqBuilder();
 
@@ -408,7 +409,7 @@ class QueryArticleActionReqBuilder
   }
 
   @override
-  void update(void Function(QueryArticleActionReqBuilder) updates) {
+  void update(void Function(QueryArticleActionReqBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -432,7 +433,7 @@ class QueryArticleActionReqBuilder
               orderType: _orderType?.build(),
               fromCache: fromCache);
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'orderBy';
         _orderBy?.build();
@@ -449,4 +450,4 @@ class QueryArticleActionReqBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

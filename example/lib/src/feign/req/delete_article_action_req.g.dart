@@ -20,11 +20,11 @@ class _$DeleteArticleActionReqSerializer
   final String wireName = 'DeleteArticleActionReq';
 
   @override
-  Iterable<Object> serialize(
+  Iterable<Object?> serialize(
       Serializers serializers, DeleteArticleActionReq object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[];
-    Object value;
+    final result = <Object?>[];
+    Object? value;
     value = object.id;
     if (value != null) {
       result
@@ -44,7 +44,7 @@ class _$DeleteArticleActionReqSerializer
 
   @override
   DeleteArticleActionReq deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new DeleteArticleActionReqBuilder();
 
@@ -52,17 +52,17 @@ class _$DeleteArticleActionReqSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'id':
           result.id = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'ids':
           result.ids.replace(serializers.deserialize(value,
                   specifiedType:
-                      const FullType(BuiltList, const [const FullType(int)]))
-              as BuiltList<Object>);
+                      const FullType(BuiltList, const [const FullType(int)]))!
+              as BuiltList<Object?>);
           break;
       }
     }
@@ -73,12 +73,12 @@ class _$DeleteArticleActionReqSerializer
 
 class _$DeleteArticleActionReq extends DeleteArticleActionReq {
   @override
-  final int id;
+  final int? id;
   @override
-  final BuiltList<int> ids;
+  final BuiltList<int>? ids;
 
   factory _$DeleteArticleActionReq(
-          [void Function(DeleteArticleActionReqBuilder) updates]) =>
+          [void Function(DeleteArticleActionReqBuilder)? updates]) =>
       (new DeleteArticleActionReqBuilder()..update(updates)).build();
 
   _$DeleteArticleActionReq._({this.id, this.ids}) : super._();
@@ -116,15 +116,15 @@ class _$DeleteArticleActionReq extends DeleteArticleActionReq {
 
 class DeleteArticleActionReqBuilder
     implements Builder<DeleteArticleActionReq, DeleteArticleActionReqBuilder> {
-  _$DeleteArticleActionReq _$v;
+  _$DeleteArticleActionReq? _$v;
 
-  int _id;
-  int get id => _$this._id;
-  set id(int id) => _$this._id = id;
+  int? _id;
+  int? get id => _$this._id;
+  set id(int? id) => _$this._id = id;
 
-  ListBuilder<int> _ids;
+  ListBuilder<int>? _ids;
   ListBuilder<int> get ids => _$this._ids ??= new ListBuilder<int>();
-  set ids(ListBuilder<int> ids) => _$this._ids = ids;
+  set ids(ListBuilder<int>? ids) => _$this._ids = ids;
 
   DeleteArticleActionReqBuilder();
 
@@ -145,7 +145,7 @@ class DeleteArticleActionReqBuilder
   }
 
   @override
-  void update(void Function(DeleteArticleActionReqBuilder) updates) {
+  void update(void Function(DeleteArticleActionReqBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -156,7 +156,7 @@ class DeleteArticleActionReqBuilder
       _$result =
           _$v ?? new _$DeleteArticleActionReq._(id: id, ids: _ids?.build());
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'ids';
         _ids?.build();
@@ -171,4 +171,4 @@ class DeleteArticleActionReqBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

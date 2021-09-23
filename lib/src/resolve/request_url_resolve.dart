@@ -28,10 +28,10 @@ String _getApiUriByFeignClient(
 ) {
   final url = feignClient.url;
   if (StringUtils.hasText(url)) {
-    return url;
+    return url as String;
   }
   final apiModule = feignClient.apiModule;
-  final value = StringUtils.hasText(feignClient.value) ? feignClient.value : className;
+  final value = (StringUtils.hasText(feignClient.value) ? feignClient.value : className) as String;
   return "@${apiModule}${value.startsWith("/") ? value : "/" + value}";
 }
 

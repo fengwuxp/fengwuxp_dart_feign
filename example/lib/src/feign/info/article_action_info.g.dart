@@ -17,10 +17,10 @@ class _$ArticleActionInfoSerializer
   final String wireName = 'ArticleActionInfo';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, ArticleActionInfo object,
+  Iterable<Object?> serialize(Serializers serializers, ArticleActionInfo object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[];
-    Object value;
+    final result = <Object?>[];
+    Object? value;
     value = object.id;
     if (value != null) {
       result
@@ -66,7 +66,7 @@ class _$ArticleActionInfoSerializer
 
   @override
   ArticleActionInfo deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ArticleActionInfoBuilder();
 
@@ -74,32 +74,32 @@ class _$ArticleActionInfoSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'id':
           result.id = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'articleId':
           result.articleId = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'actionType':
           result.actionType = serializers.deserialize(value,
                   specifiedType: const FullType(ArticleActionType))
-              as ArticleActionType;
+              as ArticleActionType?;
           break;
         case 'sourceCode':
           result.sourceCode = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'crateTime':
           result.crateTime = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime)) as DateTime;
+              specifiedType: const FullType(DateTime)) as DateTime?;
           break;
         case 'ip':
           result.ip = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+              specifiedType: const FullType(String)) as String?;
           break;
       }
     }
@@ -110,20 +110,20 @@ class _$ArticleActionInfoSerializer
 
 class _$ArticleActionInfo extends ArticleActionInfo {
   @override
-  final int id;
+  final int? id;
   @override
-  final int articleId;
+  final int? articleId;
   @override
-  final ArticleActionType actionType;
+  final ArticleActionType? actionType;
   @override
-  final String sourceCode;
+  final String? sourceCode;
   @override
-  final DateTime crateTime;
+  final DateTime? crateTime;
   @override
-  final String ip;
+  final String? ip;
 
   factory _$ArticleActionInfo(
-          [void Function(ArticleActionInfoBuilder) updates]) =>
+          [void Function(ArticleActionInfoBuilder)? updates]) =>
       (new ArticleActionInfoBuilder()..update(updates)).build();
 
   _$ArticleActionInfo._(
@@ -182,32 +182,32 @@ class _$ArticleActionInfo extends ArticleActionInfo {
 
 class ArticleActionInfoBuilder
     implements Builder<ArticleActionInfo, ArticleActionInfoBuilder> {
-  _$ArticleActionInfo _$v;
+  _$ArticleActionInfo? _$v;
 
-  int _id;
-  int get id => _$this._id;
-  set id(int id) => _$this._id = id;
+  int? _id;
+  int? get id => _$this._id;
+  set id(int? id) => _$this._id = id;
 
-  int _articleId;
-  int get articleId => _$this._articleId;
-  set articleId(int articleId) => _$this._articleId = articleId;
+  int? _articleId;
+  int? get articleId => _$this._articleId;
+  set articleId(int? articleId) => _$this._articleId = articleId;
 
-  ArticleActionType _actionType;
-  ArticleActionType get actionType => _$this._actionType;
-  set actionType(ArticleActionType actionType) =>
+  ArticleActionType? _actionType;
+  ArticleActionType? get actionType => _$this._actionType;
+  set actionType(ArticleActionType? actionType) =>
       _$this._actionType = actionType;
 
-  String _sourceCode;
-  String get sourceCode => _$this._sourceCode;
-  set sourceCode(String sourceCode) => _$this._sourceCode = sourceCode;
+  String? _sourceCode;
+  String? get sourceCode => _$this._sourceCode;
+  set sourceCode(String? sourceCode) => _$this._sourceCode = sourceCode;
 
-  DateTime _crateTime;
-  DateTime get crateTime => _$this._crateTime;
-  set crateTime(DateTime crateTime) => _$this._crateTime = crateTime;
+  DateTime? _crateTime;
+  DateTime? get crateTime => _$this._crateTime;
+  set crateTime(DateTime? crateTime) => _$this._crateTime = crateTime;
 
-  String _ip;
-  String get ip => _$this._ip;
-  set ip(String ip) => _$this._ip = ip;
+  String? _ip;
+  String? get ip => _$this._ip;
+  set ip(String? ip) => _$this._ip = ip;
 
   ArticleActionInfoBuilder();
 
@@ -232,7 +232,7 @@ class ArticleActionInfoBuilder
   }
 
   @override
-  void update(void Function(ArticleActionInfoBuilder) updates) {
+  void update(void Function(ArticleActionInfoBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -251,4 +251,4 @@ class ArticleActionInfoBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

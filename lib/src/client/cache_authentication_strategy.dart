@@ -6,7 +6,7 @@ import 'package:fengwuxp_dart_openfeign/src/client/authentication_strategy.dart'
 class CacheAuthenticationStrategy<T extends AuthenticationToken> implements AuthenticationStrategy<T> {
   AuthenticationStrategy<T> _authenticationStrategy;
 
-  T _cacheAuthenticationToken;
+  T? _cacheAuthenticationToken;
 
   CacheAuthenticationStrategy(this._authenticationStrategy);
 
@@ -20,11 +20,11 @@ class CacheAuthenticationStrategy<T extends AuthenticationToken> implements Auth
     if (this._cacheAuthenticationToken == null) {
       this._cacheAuthenticationToken = await this._authenticationStrategy.getAuthorization(uri, headers, method);
     }
-    return this._cacheAuthenticationToken;
+    return this._cacheAuthenticationToken as T;
   }
 
   @override
-  Map<String, String> appendAuthorizationHeader(AuthenticationToken authorization, Map<String, String> headers) {
+  Map<String, String> appendAuthorizationHeader(T authorization, Map<String, String> headers) {
     return this._authenticationStrategy.appendAuthorizationHeader(authorization, headers);
   }
 

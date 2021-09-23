@@ -12,12 +12,12 @@ abstract class HttpMessageConverter<T> {
   /// Indicates whether the given class can be read by this converter.
   /// [mediaType] the [HttpMediaType] media type to read (can be {@code null} if not specified);
   /// typically the value of a {@code Content-Type} header.
-  bool canRead(ContentType mediaType, {Type serializeType});
+  bool canRead(ContentType mediaType, {Type? serializeType});
 
   /// Indicates whether the given class can be written by this converter.
   /// [mediaType] the [HttpMediaType] media type to read (can be {@code null} if not specified);
   /// typically the value of a {@code Content-Type} header.
-  bool canWrite(ContentType mediaType, {Type serializeType});
+  bool canWrite(ContentType mediaType, {Type? serializeType});
 
   /// Return the list of {@link [HttpMediaType]} objects supported by this converter.
   /// @return the list of supported media types, potentially an immutable copy
@@ -30,7 +30,8 @@ abstract class HttpMessageConverter<T> {
   /// @return the converted object
   /// @throws IOException in case of I/O errors
   /// @throws HttpMessageNotReadableException in case of conversion errors
-  Future<E> read<E>(HttpInputMessage inputMessage, {Type serializeType, FullType specifiedType});
+  Future<E> read<E>(HttpInputMessage inputMessage,
+      {Type? serializeType, FullType specifiedType = FullType.unspecified});
 
   /// Write an given object to the given output message.
   /// @param t the object to write to the output message. The type of this object must have previously been
@@ -42,7 +43,7 @@ abstract class HttpMessageConverter<T> {
   /// @param outputMessage the message to write to
   /// @throws IOException in case of I/O errors
   /// @throws HttpMessageNotWritableException in case of conversion errors
-  Future write(T data, ContentType mediaType, HttpOutputMessage outputMessage);
+  Future<void> write(T data, ContentType mediaType, HttpOutputMessage outputMessage);
 }
 
 /// A specialization of {@link [HttpMessageConverter]} that can convert an HTTP request

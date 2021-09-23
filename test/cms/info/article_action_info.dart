@@ -38,12 +38,12 @@ abstract class ArticleActionInfo implements Built<ArticleActionInfo, ArticleActi
   static Serializer<ArticleActionInfo> get serializer => _$articleActionInfoSerializer;
 
   static ArticleActionInfo formJson(String json) {
-    return serializers.deserializeWith(ArticleActionInfo.serializer, jsonDecode(json));
+    return serializers.deserializeWith(ArticleActionInfo.serializer, jsonDecode(json)) as ArticleActionInfo;
   }
 
   @override
   Map<String, dynamic> toMap() {
-    return serializers.serializeWith(ArticleActionInfo.serializer, this);
+    return serializers.serializeWith(ArticleActionInfo.serializer, this) as  Map<String, dynamic>;
   }
 
   @override

@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:built_value/serializer.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/client/utils.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/http_input_message.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/http_output_message.dart';
+import 'package:http/src/utils.dart';
 
 import 'http_message_converter.dart';
 
@@ -13,11 +11,11 @@ abstract class AbstractHttpMessageConverter<T> implements HttpMessageConverter<T
 
   AbstractHttpMessageConverter(this._supportedMediaTypes);
 
-  bool canRead(ContentType mediaType, {Type serializeType}) {
+  bool canRead(ContentType mediaType, {Type? serializeType}) {
     return _matchContentType(mediaType);
   }
 
-  bool canWrite(ContentType mediaType, {Type serializeType}) {
+  bool canWrite(ContentType mediaType, {Type? serializeType}) {
     return _matchContentType(mediaType);
   }
 
@@ -25,22 +23,17 @@ abstract class AbstractHttpMessageConverter<T> implements HttpMessageConverter<T
     return this._supportedMediaTypes;
   }
 
-  Future<E> read<E>(HttpInputMessage inputMessage, {Type serializeType, FullType specifiedType}) {}
-
   Encoding getEncoding(ContentType contentType) {
-    if (contentType == null || !contentType.parameters.containsKey('charset')) {
-      return utf8;
-    }
-    return requiredEncodingForCharset(contentType.parameters["charset"]);
+    final charset = contentType.parameters["charset"] ?? "utf-8";
+    return requiredEncodingForCharset(charset);
   }
 
-  void writeBody(String value, ContentType mediaType, HttpOutputMessage outputMessage) {
+  void writeBody(String? value, ContentType mediaType, HttpOutputMessage outputMessage) {
     if (value == null) {
       return;
     }
     var bytes = this.getEncoding(mediaType).encode(value);
     outputMessage.body.add(bytes);
-    outputMessage.addContentLength(bytes.length);
   }
 
   bool _matchContentType(ContentType mediaType) {
@@ -48,6 +41,15 @@ abstract class AbstractHttpMessageConverter<T> implements HttpMessageConverter<T
       return item.value == mediaType.value;
     });
   }
+
+  /// Returns the [Encoding] that corresponds to [charset].
+  ///
+  /// Throws a [FormatException] if no [Encoding] was found that corresponds to
+  /// [charset].
+  ///
+  /// [charset] may not be null.
+// Encoding requiredEncodingForCharset(String charset) => Encoding.getByName(charset) ??
+//         (throw FormatException('Unsupported encoding "$charset".'));
 }
 
 abstract class AbstractGenericHttpMessageConverter<T> extends AbstractHttpMessageConverter<T>
