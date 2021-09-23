@@ -33,22 +33,14 @@ abstract class PageInfo<T> implements Built<PageInfo<T>, PageInfoBuilder<T>>, Js
 
   static Serializer<PageInfo> get serializer => _$pageInfoSerializer;
 
-  static PageInfo formJson(String json, [Serializer genericSerializer]) {
-    final Map map = jsonDecode(json);
-
-//    var records = (map["records"] as List);
-//    records.setRange(0, records.length, records.map((item) {
-//      return serializers.deserializeWith(genericSerializer, item);
-//    }));
-//    map.remove("records");
-
-    var pageInfo = serializers.deserializeWith(PageInfo.serializer, map);
-    return pageInfo;
+  static PageInfo formJson(String json, [Serializer? genericSerializer]) {
+    return serializers.deserializeWith(PageInfo.serializer, jsonDecode(json)) as PageInfo;
+    ;
   }
 
   @override
   Map<String, dynamic> toMap() {
-    return serializers.serializeWith(PageInfo.serializer, this);
+    return serializers.serializeWith(PageInfo.serializer, this) as Map<String, dynamic>;
   }
 
   @override

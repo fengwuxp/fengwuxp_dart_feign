@@ -27,7 +27,7 @@ void main() {
 
     var hello = serializers.deserializeWith(Hello.serializer, jsonDecode(jsonText));
 
-    print("==>${hello.id}");
+    print("==>${hello?.id}");
 //    Map<String,dynamic> _h= serializers.serializeWith(Hello.serializer,hello);
     var _h = serializers.serializeWith(Hello.serializer, hello);
     print(json.encode(_h));

@@ -20,8 +20,7 @@ import '../feign_request_options.dart';
 //    {FeignRequestOptions options});
 
 abstract class RequestParamsResolver {
-  FeignRequest resolve(List positionalArguments,
-      List<ParameterMirror> parametersMetadata, String httpMethod,
+  FeignRequest resolve(List positionalArguments, List<ParameterMirror> parametersMetadata, String httpMethod,
       {UIOptions options});
 }
 
@@ -29,29 +28,27 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
   const DefaultRequestParamsResolver();
 
   @override
-  FeignRequest resolve(List positionalArguments,
-      List<ParameterMirror> parametersMetadata, String httpMethod,
-      {UIOptions options}) {
-    var feignRequest =
-        FeignRequest(queryParams: {}, body: {}, headers: {}, pathVariables: []);
-    var _supportRequestBody = supportRequestBody(httpMethod);
-    var length = positionalArguments.length;
+  FeignRequest resolve(List positionalArguments, List<ParameterMirror> parametersMetadata, String httpMethod,
+      {UIOptions? options}) {
+    final feignRequest = FeignRequest();
+    final _supportRequestBody = supportRequestBody(httpMethod);
+    final length = positionalArguments.length;
 
     for (var i = 0; i < length; i++) {
-      var parameter = parametersMetadata[i];
-      var metadata = parameter.metadata;
+      final parameter = parametersMetadata[i];
+      final metadata = parameter.metadata;
       var simpleName = parameter.simpleName;
       var required = false;
       var argument = positionalArguments[i];
 
-      if (metadata == null || metadata.isEmpty) {
+      if (metadata.isEmpty) {
         if (_supportRequestBody) {
-          _margeData(feignRequest.body, simpleName, metadata, argument);
+          _margeData(feignRequest.body, simpleName, data: argument);
         } else {
-          _margeData(feignRequest.queryParams, simpleName, metadata, argument);
+          _margeData(feignRequest.queryParams, simpleName, data: argument);
         }
       } else {
-        var meta = metadata[0];
+        final meta = metadata[0];
         if (meta is Named) {
           // 使用命名对象中的名称
           simpleName = meta.name ?? simpleName;
@@ -66,22 +63,15 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
         var useRequestBody = isRequestBody(meta);
         if (isRequestParam(meta) && !_supportRequestBody) {
           // 是查询参数 且不支持RequestBody(Get 请求)
-          _margeData(feignRequest.queryParams, simpleName, metadata, argument,
-              defaultValue: (meta as RequestParam).defaultValue,
-              required: required);
+          _margeData(feignRequest.queryParams, simpleName,
+              data: argument ?? (meta as RequestParam).defaultValue, required: required);
         } else if (isQueryMap(meta)) {
           // 查询参数对象
-          _margeData(feignRequest.queryParams, simpleName, metadata, argument);
+          _margeData(feignRequest.queryParams, simpleName, data: argument);
         } else if (meta is RequestHeader) {
           feignRequest.headers[simpleName] = argument ?? meta.defaultValue;
         } else if (isRequestPart(meta) || isFile) {
           // TODO 文件处理
-//          if (argument is String) {
-//            // 文件路径
-//            feignReques.files[simpleName] = MultipartFile.fromPath(simpleName, argument);
-//          } else if (isFile) {
-//            feignReques.files[simpleName] = MultipartFile.fromBytes(simpleName, argument.readAsBytesSync());
-//          }
           feignRequest.files[simpleName] = argument;
         } else if (isCookieValue(meta)) {
           // TODO 提交cookie
@@ -89,23 +79,19 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
           feignRequest.pathVariables.add(argument);
         } else if (useRequestBody || useFormData) {
           /// 支持 request body，如果是被 [RequestParam] 标记过的参数，优先使用 body 传递
-          _margeData(feignRequest.body, simpleName, metadata, argument,
-              required: required);
+          _margeData(feignRequest.body, simpleName, data: argument, required: required);
           if (useRequestBody) {
             // 有[RequestBody]注解，则默认使用json传递数据
-            feignRequest.headers[HttpHeaders.contentTypeHeader] =
-                HttpMediaType.APPLICATION_JSON_UTF8;
+            feignRequest.headers[HttpHeaders.contentTypeHeader] = HttpMediaType.APPLICATION_JSON_UTF8;
           }
         } else {
           // TODO 其他情况
-          _margeData(feignRequest.body, simpleName, metadata, argument);
+          _margeData(feignRequest.body, simpleName, data: argument);
         }
 
-        if (useFormData &&
-            feignRequest.headers[HttpHeaders.contentTypeHeader] == null) {
+        if (useFormData && feignRequest.headers[HttpHeaders.contentTypeHeader] == null) {
           // 使用表单提交数据
-          feignRequest.headers[HttpHeaders.contentTypeHeader] =
-              HttpMediaType.FORM_DATA;
+          feignRequest.headers[HttpHeaders.contentTypeHeader] = HttpMediaType.FORM_DATA;
         }
       }
     }
@@ -115,13 +101,9 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
 
   /// [target]     请求体
   /// [propName]   在请求体属性名称
-  /// [metadata]   描述元数据对象
   /// [data]       提交的数据内容
-  /// [defaultValue]       默认值
   /// [required]       是否必填
-  void _margeData(Map<String, dynamic> target, String propName, metadata, data,
-      {defaultValue, bool required: false}) {
-    data = data ?? defaultValue;
+  void _margeData(Map<String, dynamic> target, String propName, {dynamic data, bool required: false}) {
     if (data == null) {
       if (required) {
         throw new ArgumentError("参数：$propName，不能为null");
@@ -136,7 +118,9 @@ class DefaultRequestParamsResolver implements RequestParamsResolver {
       }
       target[propName] = data;
     } else if (data is Map) {
-      target.addAll(data);
+      data.forEach((key, value) {
+        target[key] = value;
+      });
     } else if (data is JsonSerializableObject) {
       target.addAll(data.toMap());
     }

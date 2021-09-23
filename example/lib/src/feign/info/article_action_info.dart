@@ -9,68 +9,56 @@ import '../serializers.dart';
 
 part 'article_action_info.g.dart';
 
-     /// ArticleAction
-
-
-
+/// ArticleAction
 
 abstract class ArticleActionInfo implements Built<ArticleActionInfo, ArticleActionInfoBuilder>, JsonSerializableObject {
+  ArticleActionInfo._();
 
-       ArticleActionInfo._();
+  factory ArticleActionInfo([Function(ArticleActionInfoBuilder) updates]) = _$ArticleActionInfo;
 
-      factory ArticleActionInfo([Function(ArticleActionInfoBuilder) updates]) = _$ArticleActionInfo;
+  /// ID
+  /// 在java中的类型为：Long
+  @BuiltValueField(wireName: 'id')
+  int? get id;
 
+  /// 文章ID
+  /// 在java中的类型为：Long
+  @BuiltValueField(wireName: 'articleId')
+  int? get articleId;
 
-                    /// ID
-                    /// 在java中的类型为：Long
-                @nullable
-                @BuiltValueField(wireName: 'id')
-                int get id;
+  /// 互动类型
+  /// 在java中的类型为：ArticleActionType
+  @BuiltValueField(wireName: 'actionType')
+  ArticleActionType? get actionType;
 
-                    /// 文章ID
-                    /// 在java中的类型为：Long
-                @nullable
-                @BuiltValueField(wireName: 'articleId')
-                int get articleId;
+  /// 关联来源
+  /// 在java中的类型为：String
+  @BuiltValueField(wireName: 'sourceCode')
+  String? get sourceCode;
 
-                    /// 互动类型
-                    /// 在java中的类型为：ArticleActionType
-                @nullable
-                @BuiltValueField(wireName: 'actionType')
-                ArticleActionType get actionType;
+  /// 创建日期
+  /// 在java中的类型为：Date
+  @BuiltValueField(wireName: 'crateTime')
+  DateTime ?get crateTime;
 
-                    /// 关联来源
-                    /// 在java中的类型为：String
-                @nullable
-                @BuiltValueField(wireName: 'sourceCode')
-                String get sourceCode;
+  /// 访问的客户端ip
+  /// 在java中的类型为：String
+  @BuiltValueField(wireName: 'ip')
+  String? get ip;
 
-                    /// 创建日期
-                    /// 在java中的类型为：Date
-                @nullable
-                @BuiltValueField(wireName: 'crateTime')
-                DateTime get crateTime;
+  @override
+  Map<String, dynamic> toMap() {
+    return serializers.serializeWith(ArticleActionInfo.serializer, this) as   Map<String, dynamic> ;
+  }
 
-                    /// 访问的客户端ip
-                    /// 在java中的类型为：String
-                @nullable
-                @BuiltValueField(wireName: 'ip')
-                String get ip;
+  @override
+  String toJson() {
+    return json.encode(toMap());
+  }
 
-        @override
-        Map<String, dynamic> toMap() {
-            return serializers.serializeWith(ArticleActionInfo.serializer, this);
-        }
+  static Serializer<ArticleActionInfo> get serializer => _$articleActionInfoSerializer;
 
-        @override
-        String toJson() {
-           return json.encode(toMap());
-        }
-
-        static Serializer<ArticleActionInfo> get serializer => _$articleActionInfoSerializer;
-
-        static ArticleActionInfo formJson(String json) {
-             return serializers.deserializeWith(ArticleActionInfo.serializer, jsonDecode(json));
-        }
-
+  static ArticleActionInfo formJson(String json) {
+    return serializers.deserializeWith(ArticleActionInfo.serializer, jsonDecode(json)) as ArticleActionInfo;
+  }
 }

@@ -15,33 +15,40 @@ import '../http_output_message.dart';
 /// 用于写入和读取 Content-Type 为[ContentType.json]的数据
 class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter {
   static const String _TAG = "BuiltValueHttpMessageConverter";
-  static var _log = Logger(_TAG);
 
-  BuiltJsonSerializers _builtJsonSerializers;
+  // TODO 兼容个别服务器
+  @deprecated
+  static final ContentType _text_json = new ContentType("text", "json", charset: "utf-8");
 
-  BusinessResponseExtractor _businessResponseExtractor;
+  static final _log = Logger(_TAG);
+
+  final BuiltJsonSerializers _builtJsonSerializers;
+
+  final BusinessResponseExtractor _businessResponseExtractor;
 
   BuiltValueHttpMessageConverter(
-      BuiltJsonSerializers builtJsonSerializers, BusinessResponseExtractor businessResponseExtractor)
-      : super([ContentType.json]) {
-    this._builtJsonSerializers = builtJsonSerializers;
-    this._businessResponseExtractor = businessResponseExtractor ?? noneBusinessResponseExtractor;
-  }
+      BuiltJsonSerializers builtJsonSerializers, BusinessResponseExtractor? businessResponseExtractor)
+      : this._builtJsonSerializers = builtJsonSerializers,
+        this._businessResponseExtractor = businessResponseExtractor ?? noneBusinessResponseExtractor,
+        super([ContentType.json, _text_json]);
 
-  factory(BuiltJsonSerializers builtJsonSerializers, {BusinessResponseExtractor businessResponseExtractor}) {
+  factory(BuiltJsonSerializers builtJsonSerializers, {BusinessResponseExtractor? businessResponseExtractor}) {
     return new BuiltValueHttpMessageConverter(builtJsonSerializers, businessResponseExtractor);
   }
 
-  Future<E> read<E>(HttpInputMessage inputMessage, {Type serializeType, FullType specifiedType}) {
-    return inputMessage.stream.bytesToString().catchError((e) {
-      _log.finer("read data error ==> $e");
-      return Future.error(e);
+  Future<E> read<E>(HttpInputMessage inputMessage,
+      {Type? serializeType, FullType specifiedType = FullType.unspecified}) {
+    return inputMessage.body.bytesToString().catchError((error) {
+      if (_log.isLoggable(Level.FINER)) {
+        _log.finer("read data error ==> $error");
+      }
+      return Future.error(error, (error as Error).stackTrace);
     }).then((responseBody) {
-      _log.finer("read http response body ==> $responseBody");
+      if (_log.isLoggable(Level.FINER)) {
+        _log.finer("read http response body ==> $responseBody");
+      }
       if (inputMessage is ClientHttpResponse) {
         if (!inputMessage.ok) {
-          // http error
-//          return Future.error(responseBody);
           return responseBody as dynamic;
         }
       }
@@ -52,9 +59,12 @@ class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter
   }
 
   @override
-  Future write(data, ContentType mediaType, HttpOutputMessage outputMessage) {
+  Future<void> write(data, ContentType mediaType, HttpOutputMessage outputMessage) {
     final text = this._builtJsonSerializers.toJson(data);
-    _log.finer("write data ==> $text");
+    if (_log.isLoggable(Level.FINER)) {
+      _log.finer("write data ==> $text");
+    }
     super.writeBody(text, ContentType.json, outputMessage);
+    return Future.value();
   }
 }

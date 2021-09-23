@@ -17,10 +17,10 @@ class _$ApiBaseQueryReqSerializer
   final String wireName = 'ApiBaseQueryReq';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, ApiBaseQueryReq object,
+  Iterable<Object?> serialize(Serializers serializers, ApiBaseQueryReq object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[];
-    Object value;
+    final result = <Object?>[];
+    Object? value;
     value = object.queryType;
     if (value != null) {
       result
@@ -83,7 +83,7 @@ class _$ApiBaseQueryReqSerializer
 
   @override
   ApiBaseQueryReq deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ApiBaseQueryReqBuilder();
 
@@ -91,45 +91,45 @@ class _$ApiBaseQueryReqSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'queryType':
           result.queryType = serializers.deserialize(value,
-              specifiedType: const FullType(QueryType)) as QueryType;
+              specifiedType: const FullType(QueryType)) as QueryType?;
           break;
         case 'queryPage':
           result.queryPage = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'querySize':
           result.querySize = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'orderBy':
           result.orderBy.replace(serializers.deserialize(value,
-                  specifiedType:
-                      const FullType(BuiltList, const [const FullType(String)]))
-              as BuiltList<Object>);
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(String)]))!
+              as BuiltList<Object?>);
           break;
         case 'orderType':
           result.orderType.replace(serializers.deserialize(value,
-                  specifiedType:
-                      const FullType(BuiltList, const [const FullType(String)]))
-              as BuiltList<Object>);
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(String)]))!
+              as BuiltList<Object?>);
           break;
         case 'fromCache':
           result.fromCache = serializers.deserialize(value,
-              specifiedType: const FullType(bool)) as bool;
+              specifiedType: const FullType(bool)) as bool?;
           break;
         case 'orderByArr':
           result.orderByArr.replace(serializers.deserialize(value,
-                  specifiedType:
-                      const FullType(BuiltList, const [const FullType(String)]))
-              as BuiltList<Object>);
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(String)]))!
+              as BuiltList<Object?>);
           break;
         case 'join':
           result.join = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+              specifiedType: const FullType(String)) as String?;
           break;
       }
     }
@@ -140,23 +140,23 @@ class _$ApiBaseQueryReqSerializer
 
 class _$ApiBaseQueryReq extends ApiBaseQueryReq {
   @override
-  final QueryType queryType;
+  final QueryType? queryType;
   @override
-  final int queryPage;
+  final int? queryPage;
   @override
-  final int querySize;
+  final int? querySize;
   @override
-  final BuiltList<String> orderBy;
+  final BuiltList<String>? orderBy;
   @override
-  final BuiltList<String> orderType;
+  final BuiltList<String>? orderType;
   @override
-  final bool fromCache;
+  final bool? fromCache;
   @override
-  final BuiltList<String> orderByArr;
+  final BuiltList<String>? orderByArr;
   @override
-  final String join;
+  final String? join;
 
-  factory _$ApiBaseQueryReq([void Function(ApiBaseQueryReqBuilder) updates]) =>
+  factory _$ApiBaseQueryReq([void Function(ApiBaseQueryReqBuilder)? updates]) =>
       (new ApiBaseQueryReqBuilder()..update(updates)).build();
 
   _$ApiBaseQueryReq._(
@@ -225,43 +225,44 @@ class _$ApiBaseQueryReq extends ApiBaseQueryReq {
 
 class ApiBaseQueryReqBuilder
     implements Builder<ApiBaseQueryReq, ApiBaseQueryReqBuilder> {
-  _$ApiBaseQueryReq _$v;
+  _$ApiBaseQueryReq? _$v;
 
-  QueryType _queryType;
-  QueryType get queryType => _$this._queryType;
-  set queryType(QueryType queryType) => _$this._queryType = queryType;
+  QueryType? _queryType;
+  QueryType? get queryType => _$this._queryType;
+  set queryType(QueryType? queryType) => _$this._queryType = queryType;
 
-  int _queryPage;
-  int get queryPage => _$this._queryPage;
-  set queryPage(int queryPage) => _$this._queryPage = queryPage;
+  int? _queryPage;
+  int? get queryPage => _$this._queryPage;
+  set queryPage(int? queryPage) => _$this._queryPage = queryPage;
 
-  int _querySize;
-  int get querySize => _$this._querySize;
-  set querySize(int querySize) => _$this._querySize = querySize;
+  int? _querySize;
+  int? get querySize => _$this._querySize;
+  set querySize(int? querySize) => _$this._querySize = querySize;
 
-  ListBuilder<String> _orderBy;
+  ListBuilder<String>? _orderBy;
   ListBuilder<String> get orderBy =>
       _$this._orderBy ??= new ListBuilder<String>();
-  set orderBy(ListBuilder<String> orderBy) => _$this._orderBy = orderBy;
+  set orderBy(ListBuilder<String>? orderBy) => _$this._orderBy = orderBy;
 
-  ListBuilder<String> _orderType;
+  ListBuilder<String>? _orderType;
   ListBuilder<String> get orderType =>
       _$this._orderType ??= new ListBuilder<String>();
-  set orderType(ListBuilder<String> orderType) => _$this._orderType = orderType;
+  set orderType(ListBuilder<String>? orderType) =>
+      _$this._orderType = orderType;
 
-  bool _fromCache;
-  bool get fromCache => _$this._fromCache;
-  set fromCache(bool fromCache) => _$this._fromCache = fromCache;
+  bool? _fromCache;
+  bool? get fromCache => _$this._fromCache;
+  set fromCache(bool? fromCache) => _$this._fromCache = fromCache;
 
-  ListBuilder<String> _orderByArr;
+  ListBuilder<String>? _orderByArr;
   ListBuilder<String> get orderByArr =>
       _$this._orderByArr ??= new ListBuilder<String>();
-  set orderByArr(ListBuilder<String> orderByArr) =>
+  set orderByArr(ListBuilder<String>? orderByArr) =>
       _$this._orderByArr = orderByArr;
 
-  String _join;
-  String get join => _$this._join;
-  set join(String join) => _$this._join = join;
+  String? _join;
+  String? get join => _$this._join;
+  set join(String? join) => _$this._join = join;
 
   ApiBaseQueryReqBuilder();
 
@@ -288,7 +289,7 @@ class ApiBaseQueryReqBuilder
   }
 
   @override
-  void update(void Function(ApiBaseQueryReqBuilder) updates) {
+  void update(void Function(ApiBaseQueryReqBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -307,7 +308,7 @@ class ApiBaseQueryReqBuilder
               orderByArr: _orderByArr?.build(),
               join: join);
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'orderBy';
         _orderBy?.build();
@@ -327,4 +328,4 @@ class ApiBaseQueryReqBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

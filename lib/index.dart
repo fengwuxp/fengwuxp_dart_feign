@@ -19,7 +19,6 @@ export 'src/client/debounce_authentication_broadcaster.dart';
 export 'src/client/default_url_template_handler.dart';
 export 'src/client/message_body_client_http_response_wrapper.dart';
 export 'src/client/response_extractor.dart';
-export 'src/client/rest_client_exception.dart';
 export 'src/client/rest_client_http_request.dart';
 export 'src/client/rest_operations.dart';
 export 'src/client/rest_template.dart';

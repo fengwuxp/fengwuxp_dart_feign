@@ -20,11 +20,11 @@ class _$AddArticleActionReqSerializer
   final String wireName = 'AddArticleActionReq';
 
   @override
-  Iterable<Object> serialize(
+  Iterable<Object?> serialize(
       Serializers serializers, AddArticleActionReq object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[];
-    Object value;
+    final result = <Object?>[];
+    Object? value;
     value = object.articleId;
     if (value != null) {
       result
@@ -57,7 +57,7 @@ class _$AddArticleActionReqSerializer
 
   @override
   AddArticleActionReq deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new AddArticleActionReqBuilder();
 
@@ -65,24 +65,24 @@ class _$AddArticleActionReqSerializer
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'articleId':
           result.articleId = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'actionType':
           result.actionType = serializers.deserialize(value,
                   specifiedType: const FullType(ArticleActionType))
-              as ArticleActionType;
+              as ArticleActionType?;
           break;
         case 'sourceCode':
           result.sourceCode = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'ip':
           result.ip = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+              specifiedType: const FullType(String)) as String?;
           break;
       }
     }
@@ -93,16 +93,16 @@ class _$AddArticleActionReqSerializer
 
 class _$AddArticleActionReq extends AddArticleActionReq {
   @override
-  final int articleId;
+  final int? articleId;
   @override
-  final ArticleActionType actionType;
+  final ArticleActionType? actionType;
   @override
-  final String sourceCode;
+  final String? sourceCode;
   @override
-  final String ip;
+  final String? ip;
 
   factory _$AddArticleActionReq(
-          [void Function(AddArticleActionReqBuilder) updates]) =>
+          [void Function(AddArticleActionReqBuilder)? updates]) =>
       (new AddArticleActionReqBuilder()..update(updates)).build();
 
   _$AddArticleActionReq._(
@@ -149,24 +149,24 @@ class _$AddArticleActionReq extends AddArticleActionReq {
 
 class AddArticleActionReqBuilder
     implements Builder<AddArticleActionReq, AddArticleActionReqBuilder> {
-  _$AddArticleActionReq _$v;
+  _$AddArticleActionReq? _$v;
 
-  int _articleId;
-  int get articleId => _$this._articleId;
-  set articleId(int articleId) => _$this._articleId = articleId;
+  int? _articleId;
+  int? get articleId => _$this._articleId;
+  set articleId(int? articleId) => _$this._articleId = articleId;
 
-  ArticleActionType _actionType;
-  ArticleActionType get actionType => _$this._actionType;
-  set actionType(ArticleActionType actionType) =>
+  ArticleActionType? _actionType;
+  ArticleActionType? get actionType => _$this._actionType;
+  set actionType(ArticleActionType? actionType) =>
       _$this._actionType = actionType;
 
-  String _sourceCode;
-  String get sourceCode => _$this._sourceCode;
-  set sourceCode(String sourceCode) => _$this._sourceCode = sourceCode;
+  String? _sourceCode;
+  String? get sourceCode => _$this._sourceCode;
+  set sourceCode(String? sourceCode) => _$this._sourceCode = sourceCode;
 
-  String _ip;
-  String get ip => _$this._ip;
-  set ip(String ip) => _$this._ip = ip;
+  String? _ip;
+  String? get ip => _$this._ip;
+  set ip(String? ip) => _$this._ip = ip;
 
   AddArticleActionReqBuilder();
 
@@ -189,7 +189,7 @@ class AddArticleActionReqBuilder
   }
 
   @override
-  void update(void Function(AddArticleActionReqBuilder) updates) {
+  void update(void Function(AddArticleActionReqBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -206,4 +206,4 @@ class AddArticleActionReqBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

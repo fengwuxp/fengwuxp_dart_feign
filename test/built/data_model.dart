@@ -25,16 +25,20 @@ abstract class Chat implements Built<Chat, ChatBuilder>, Command {
   BuiltSet<String> get targets;
 
   factory Chat([Function(ChatBuilder) updates]) = _$Chat;
+
   Chat._();
 }
 
 /// Logs in.
 abstract class Login implements Built<Login, LoginBuilder>, Command {
   static Serializer<Login> get serializer => _$loginSerializer;
+
   String get username;
+
   String get password;
 
   factory Login([Function(LoginBuilder) updates]) = _$Login;
+
   Login._();
 }
 
@@ -43,10 +47,13 @@ abstract class Login implements Built<Login, LoginBuilder>, Command {
 /// Sent as a command, sets the current user status.
 abstract class Status implements Built<Status, StatusBuilder>, Command {
   static Serializer<Status> get serializer => _$statusSerializer;
+
   String get message;
+
   StatusType get type;
 
   factory Status([Function(StatusBuilder) updates]) = _$Status;
+
   Status._();
 }
 
@@ -61,18 +68,19 @@ class StatusType extends EnumClass {
   const StatusType._(String name) : super(name);
 
   static BuiltSet<StatusType> get values => _$stValues;
+
   static StatusType valueOf(String name) => _$stValueOf(name);
 }
 
 /// Lists users, filtered by status.
-abstract class ListUsers
-    implements Built<ListUsers, ListUsersBuilder>, Command {
+abstract class ListUsers implements Built<ListUsers, ListUsersBuilder>, Command {
   static Serializer<ListUsers> get serializer => _$listUsersSerializer;
 
   /// Set of statuses to filter by.
   BuiltSet<StatusType> get statusTypes;
 
   factory ListUsers([Function(ListUsersBuilder) updates]) = _$ListUsers;
+
   ListUsers._();
 }
 
@@ -91,6 +99,7 @@ class LoginResponse extends EnumClass implements Response {
   const LoginResponse._(String name) : super(name);
 
   static BuiltSet<LoginResponse> get values => _$lrValues;
+
   static LoginResponse valueOf(String name) => _$lrValueOf(name);
 
   @override
@@ -122,6 +131,7 @@ abstract class ShowChat implements Built<ShowChat, ShowChatBuilder>, Response {
   String get text;
 
   factory ShowChat([Function(ShowChatBuilder) updates]) = _$ShowChat;
+
   ShowChat._();
 
   @override
@@ -136,24 +146,22 @@ abstract class Welcome implements Built<Welcome, WelcomeBuilder>, Response {
   String get message;
 
   factory Welcome([Function(WelcomeBuilder) updates]) = _$Welcome;
+
   Welcome._();
 
   @override
-  String render() =>
-      log.map((response) => response.render()).join('\n') + '\n' + message;
+  String render() => log.map((response) => response.render()).join('\n') + '\n' + message;
 }
 
 /// Displays a list of users and their status messages.
-abstract class ListUsersResponse
-    implements Built<ListUsersResponse, ListUsersResponseBuilder>, Response {
-  static Serializer<ListUsersResponse> get serializer =>
-      _$listUsersResponseSerializer;
+abstract class ListUsersResponse implements Built<ListUsersResponse, ListUsersResponseBuilder>, Response {
+  static Serializer<ListUsersResponse> get serializer => _$listUsersResponseSerializer;
 
   /// Map from username to status.
   BuiltMap<String, Status> get statuses;
 
-  factory ListUsersResponse([Function(ListUsersResponseBuilder) updates]) =
-      _$ListUsersResponse;
+  factory ListUsersResponse([Function(ListUsersResponseBuilder) updates]) = _$ListUsersResponse;
+
   ListUsersResponse._();
 
   @override
@@ -161,8 +169,7 @@ abstract class ListUsersResponse
     final result = StringBuffer('The following users are online:\n\n');
     for (final username in statuses.keys) {
       final status = statuses[username];
-      result.write(
-          status.message.isEmpty ? username : '$username ${status.message}');
+      result.write(status?.message ?? username);
       result.write('\n');
     }
     return result.toString();

@@ -29,12 +29,12 @@ abstract class FindArticleActionsReq implements Built<FindArticleActionsReq, Fin
   static Serializer<FindArticleActionsReq> get serializer => _$findArticleActionsReqSerializer;
 
   static FindArticleActionsReq formJson(String json) {
-    return serializers.deserializeWith(FindArticleActionsReq.serializer, jsonDecode(json));
+    return serializers.deserializeWith(FindArticleActionsReq.serializer, jsonDecode(json)) as FindArticleActionsReq;
   }
 
   @override
   Map<String, dynamic> toMap() {
-    return serializers.serializeWith(FindArticleActionsReq.serializer, this);
+    return serializers.serializeWith(FindArticleActionsReq.serializer, this) as Map<String, dynamic>;
   }
 
   @override

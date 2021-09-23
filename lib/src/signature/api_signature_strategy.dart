@@ -9,17 +9,15 @@ abstract class ApiSignatureStrategy {
 }
 
 /// 签名异常
-class SignatureException implements Exception{
-
+class SignatureException implements Exception {
   /// error message
   final String message;
 
   ///  request object
   final FeignBaseRequest request;
 
-   SignatureException({this.message, this.request});
+  SignatureException(this.message, this.request);
 
   @override
   String toString() => message;
-
 }

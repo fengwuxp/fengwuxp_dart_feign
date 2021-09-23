@@ -3,26 +3,26 @@ import 'package:fengwuxp_dart_openfeign/src/http/client_http_request.dart';
 import 'package:fengwuxp_dart_openfeign/src/interceptor/mapped_interceptor.dart';
 
 class MappedClientHttpRequestInterceptor extends MappedInterceptor implements ClientHttpRequestInterceptor {
-  ClientHttpRequestInterceptor _clientInterceptor;
+  final ClientHttpRequestInterceptor _clientInterceptor;
 
   MappedClientHttpRequestInterceptor(ClientHttpRequestInterceptor clientHttpRequestInterceptor,
-      {List<String> includePatterns,
-      List<String> excludePatterns,
-      List<String> includeMethods,
-      List<String> excludeMethods,
-      List<List<String>> includeHeaders,
-      List<List<String>> excludeHeaders})
-      : super(
+      {List<String> includePatterns = const [],
+      List<String> excludePatterns = const [],
+      List<String> includeMethods = const [],
+      List<String> excludeMethods = const [],
+      List<List<String>> includeHeaders = const [],
+      List<List<String>> excludeHeaders = const []})
+      : this._clientInterceptor = clientHttpRequestInterceptor,
+        super(
             includePatterns: includePatterns,
             excludePatterns: excludePatterns,
             includeMethods: includeMethods,
             excludeMethods: excludeMethods,
             includeHeaders: includeHeaders,
-            excludeHeaders: excludeHeaders) {
-    this._clientInterceptor = clientHttpRequestInterceptor;
-  }
+            excludeHeaders: excludeHeaders);
 
-  Future<void> interceptor(ClientHttpRequest request) {
+  @override
+  Future<ClientHttpRequest> interceptor(ClientHttpRequest request) {
     return this._clientInterceptor.interceptor(request);
   }
 }

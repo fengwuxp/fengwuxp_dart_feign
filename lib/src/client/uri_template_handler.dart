@@ -3,7 +3,7 @@
 abstract class UriTemplateHandler {
   /// Expand the given URI template with a map of URI variables.
   /// [uriTemplate]
-  Uri expand(String uriTemplate, {Map<String, dynamic> queryParams, List<Object> pathVariables});
+  Uri expand(String uriTemplate, {Map<String, dynamic>? queryParams, List<dynamic>? pathVariables});
 }
 
 /// grab shaped like example '1{abc}2ll3{efg}' string  ==> {abc}, {efg}
@@ -16,10 +16,10 @@ String replacePathVariableValue(String uriTemplate, pathVariables) {
   if (pathVariables == null) {
     return uriTemplate;
   }
-  num index = 0;
+  int index = 0;
   return uriTemplate.replaceAllMapped(grabUrlPathVariable, (Match match) {
     var text;
-    num i = 0;
+    var i = 0;
     while ((text = match.group(i)) != null) {
       String replaceText;
       if (pathVariables is List) {

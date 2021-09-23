@@ -27,13 +27,12 @@ abstract class FeignConfiguration extends CacheCapableSupport {
 
   List<HttpMessageConverter> get messageConverters;
 
-  ApiSignatureStrategy get apiSignatureStrategy;
+  ApiSignatureStrategy? get apiSignatureStrategy;
 
   List<ClientHttpRequestInterceptor> get clientHttpRequestInterceptors;
 
   List<FeignClientExecutorInterceptor> get feignClientExecutorInterceptors;
 
-  AuthenticationBroadcaster get authenticationBroadcaster;
+  AuthenticationBroadcaster? get authenticationBroadcaster;
 
-//  FeignToastHandle get feignToastHandle;
 }

@@ -18,7 +18,7 @@ class ProcessBarExecutorInterceptor<T extends FeignBaseRequest> implements Feign
   int _count = 0;
 
   // timer
-  Timer _timer;
+  Timer? _timer;
 
   ProcessBarExecutorInterceptor(RequestProgressBar progressBar,
       {ProgressBarOptions progressBarOptions = const ProgressBarOptions()})
@@ -51,7 +51,7 @@ class ProcessBarExecutorInterceptor<T extends FeignBaseRequest> implements Feign
     return request;
   }
 
-  Future postHandle<E>(T request, UIOptions uiOptions, E response, {BuiltValueSerializable serializer}) async {
+  Future postHandle<E>(T request, UIOptions uiOptions, E response, {BuiltValueSerializable? serializer}) async {
     if (!this._needShowProcessBar(uiOptions)) {
       //不使用进度条
       return response;
@@ -60,7 +60,7 @@ class ProcessBarExecutorInterceptor<T extends FeignBaseRequest> implements Feign
     return response;
   }
 
-  Future postError<E>(T options, UIOptions uiOptions, error, {BuiltValueSerializable serializer}) {
+  Future postError<E>(T options, UIOptions uiOptions, error, {BuiltValueSerializable? serializer}) {
     if (!this._needShowProcessBar(uiOptions)) {
       // 不使用进度条
       return Future.error(error);
@@ -83,9 +83,7 @@ class ProcessBarExecutorInterceptor<T extends FeignBaseRequest> implements Feign
     this._count--;
     if (this._count == 0) {
       //清除定时器
-      if (this._timer != null) {
-        this._timer.cancel();
-      }
+      this._timer?.cancel();
       //隐藏加载进度条
       progressBar.hideProgressBar();
     }

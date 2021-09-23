@@ -6,14 +6,11 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:async/async.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/client/base_client.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/client/base_request.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/client/base_response.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/client/client.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/client/streamed_request.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/client/streamed_response.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/client_http_request.dart';
+import 'package:http/http.dart';
 import 'package:pedantic/pedantic.dart';
 
+/// TODO 基于 [ClientHttpRequest] 重新实现 retry
 /// An HTTP client wrapper that automatically retries failing requests.
 class RetryClient extends BaseClient {
   /// The wrapped client.
@@ -32,7 +29,7 @@ class RetryClient extends BaseClient {
   final Duration Function(int) _delay;
 
   /// The callback to call to indicate that a request is being retried.
-  final void Function(BaseRequest, BaseResponse, int) _onRetry;
+  final void Function(int, BaseRequest, BaseResponse?) _onRetry;
 
   /// Creates a client wrapping [_inner] that retries HTTP requests.
   ///
@@ -55,16 +52,16 @@ class RetryClient extends BaseClient {
   /// error for which [whenError] returned `true`.
   RetryClient(
     this._inner, {
-    int retries,
-    bool Function(BaseResponse) when,
-    bool Function(Object, StackTrace) whenError,
-    Duration Function(int retryCount) delay,
-    void Function(BaseRequest, BaseResponse, int retryCount) onRetry,
-  })  : _retries = retries ?? 3,
+    int retries: 3,
+    bool Function(BaseResponse)? when,
+    bool Function(dynamic, StackTrace)? whenError,
+    Duration Function(int retryCount)? delay,
+    void Function(int, BaseRequest, BaseResponse?)? onRetry,
+  })  : _retries = retries,
         _when = when ?? ((response) => response.statusCode == 503),
         _whenError = whenError ?? ((_, __) => false),
         _delay = delay ?? ((retryCount) => const Duration(milliseconds: 500) * math.pow(1.5, retryCount)),
-        _onRetry = onRetry {
+        _onRetry = onRetry ?? ((count, req, resp) => null) {
     RangeError.checkNotNegative(_retries, 'retries');
   }
 
@@ -77,9 +74,9 @@ class RetryClient extends BaseClient {
   RetryClient.withDelays(
     Client inner,
     Iterable<Duration> delays, {
-    bool Function(BaseResponse) when,
-    bool Function(Object, StackTrace) whenError,
-    void Function(BaseRequest, BaseResponse, int retryCount) onRetry,
+    bool Function(BaseResponse)? when,
+    bool Function(dynamic, StackTrace)? whenError,
+    void Function(int, BaseRequest, BaseResponse?)? onRetry,
   }) : this._withDelays(
           inner,
           delays.toList(),
@@ -91,9 +88,9 @@ class RetryClient extends BaseClient {
   RetryClient._withDelays(
     Client inner,
     List<Duration> delays, {
-    bool Function(BaseResponse) when,
-    bool Function(Object, StackTrace) whenError,
-    void Function(BaseRequest, BaseResponse, int) onRetry,
+    bool Function(BaseResponse)? when,
+    bool Function(dynamic, StackTrace)? whenError,
+    void Function(int, BaseRequest, BaseResponse?)? onRetry,
   }) : this(
           inner,
           retries: delays.length,
@@ -109,30 +106,29 @@ class RetryClient extends BaseClient {
 
     var i = 0;
     for (;;) {
-      StreamedResponse response;
+      StreamedResponse? response;
       try {
         response = await _inner.send(_copyRequest(request, splitter.split()));
       } catch (error, stackTrace) {
         if (i == _retries || !_whenError(error, stackTrace)) rethrow;
       }
-
-      if (response != null) {
-        if (i == _retries || !_when(response)) return response;
-
-        // Make sure the response stream is listened to so that we don't leave
-        // dangling connections.
-        unawaited(response.stream.listen((_) {}).cancel()?.catchError((_) {}));
+      // TODO
+      response = response ?? new StreamedResponse(Stream.empty(), 500);
+      if (i == _retries || !_when(response)) {
+        return response ?? new StreamedResponse(Stream.empty(), 500);
       }
-
+      // Make sure the response stream is listened to so that we don't leave
+      // dangling connections.
+      unawaited(response.stream.listen((_) {}).cancel().catchError((_) {}));
       await Future.delayed(_delay(i));
-      if (_onRetry != null) _onRetry(request, response, i);
+      _onRetry(i, request, response);
       i++;
     }
   }
 
   /// Returns a copy of [original] with the given [body].
   StreamedRequest _copyRequest(BaseRequest original, Stream<List<int>> body) {
-    final request = StreamedRequest(method: original.method, url: original.url)
+    final request = StreamedRequest(original.method, original.url)
       ..contentLength = original.contentLength
       ..followRedirects = original.followRedirects
       ..headers.addAll(original.headers)

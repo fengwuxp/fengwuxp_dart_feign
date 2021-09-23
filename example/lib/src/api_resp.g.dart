@@ -6,16 +6,16 @@ part of 'api_resp.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<ApiResp<Object>> _$apiRespSerializer = new _$ApiRespSerializer();
+Serializer<ApiResp<Object?>> _$apiRespSerializer = new _$ApiRespSerializer();
 
-class _$ApiRespSerializer implements StructuredSerializer<ApiResp<Object>> {
+class _$ApiRespSerializer implements StructuredSerializer<ApiResp<Object?>> {
   @override
   final Iterable<Type> types = const [ApiResp, _$ApiResp];
   @override
   final String wireName = 'ApiResp';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, ApiResp<Object> object,
+  Iterable<Object?> serialize(Serializers serializers, ApiResp<Object?> object,
       {FullType specifiedType = FullType.unspecified}) {
     final isUnderspecified =
         specifiedType.isUnspecified || specifiedType.parameters.isEmpty;
@@ -23,14 +23,14 @@ class _$ApiRespSerializer implements StructuredSerializer<ApiResp<Object>> {
     final parameterT =
         isUnderspecified ? FullType.object : specifiedType.parameters[0];
 
-    final result = <Object>[
+    final result = <Object?>[
       'code',
       serializers.serialize(object.code, specifiedType: const FullType(int)),
       'success',
       serializers.serialize(object.success,
           specifiedType: const FullType(bool)),
     ];
-    Object value;
+    Object? value;
     value = object.data;
     if (value != null) {
       result
@@ -48,8 +48,8 @@ class _$ApiRespSerializer implements StructuredSerializer<ApiResp<Object>> {
   }
 
   @override
-  ApiResp<Object> deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+  ApiResp<Object?> deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final isUnderspecified =
         specifiedType.isUnspecified || specifiedType.parameters.isEmpty;
@@ -58,14 +58,14 @@ class _$ApiRespSerializer implements StructuredSerializer<ApiResp<Object>> {
         isUnderspecified ? FullType.object : specifiedType.parameters[0];
 
     final result = isUnderspecified
-        ? new ApiRespBuilder<Object>()
-        : serializers.newBuilder(specifiedType) as ApiRespBuilder<Object>;
+        ? new ApiRespBuilder<Object?>()
+        : serializers.newBuilder(specifiedType) as ApiRespBuilder<Object?>;
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'data':
           result.data =
@@ -73,7 +73,7 @@ class _$ApiRespSerializer implements StructuredSerializer<ApiResp<Object>> {
           break;
         case 'message':
           result.message = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'code':
           result.code = serializers.deserialize(value,
@@ -92,18 +92,20 @@ class _$ApiRespSerializer implements StructuredSerializer<ApiResp<Object>> {
 
 class _$ApiResp<T> extends ApiResp<T> {
   @override
-  final T data;
+  final T? data;
   @override
-  final String message;
+  final String? message;
   @override
   final int code;
   @override
   final bool success;
 
-  factory _$ApiResp([void Function(ApiRespBuilder<T>) updates]) =>
+  factory _$ApiResp([void Function(ApiRespBuilder<T>)? updates]) =>
       (new ApiRespBuilder<T>()..update(updates)).build();
 
-  _$ApiResp._({this.data, this.message, this.code, this.success}) : super._() {
+  _$ApiResp._(
+      {this.data, this.message, required this.code, required this.success})
+      : super._() {
     BuiltValueNullFieldError.checkNotNull(code, 'ApiResp', 'code');
     BuiltValueNullFieldError.checkNotNull(success, 'ApiResp', 'success');
     if (T == dynamic) {
@@ -147,23 +149,23 @@ class _$ApiResp<T> extends ApiResp<T> {
 }
 
 class ApiRespBuilder<T> implements Builder<ApiResp<T>, ApiRespBuilder<T>> {
-  _$ApiResp<T> _$v;
+  _$ApiResp<T>? _$v;
 
-  T _data;
-  T get data => _$this._data;
-  set data(T data) => _$this._data = data;
+  T? _data;
+  T? get data => _$this._data;
+  set data(T? data) => _$this._data = data;
 
-  String _message;
-  String get message => _$this._message;
-  set message(String message) => _$this._message = message;
+  String? _message;
+  String? get message => _$this._message;
+  set message(String? message) => _$this._message = message;
 
-  int _code;
-  int get code => _$this._code;
-  set code(int code) => _$this._code = code;
+  int? _code;
+  int? get code => _$this._code;
+  set code(int? code) => _$this._code = code;
 
-  bool _success;
-  bool get success => _$this._success;
-  set success(bool success) => _$this._success = success;
+  bool? _success;
+  bool? get success => _$this._success;
+  set success(bool? success) => _$this._success = success;
 
   ApiRespBuilder();
 
@@ -186,7 +188,7 @@ class ApiRespBuilder<T> implements Builder<ApiResp<T>, ApiRespBuilder<T>> {
   }
 
   @override
-  void update(void Function(ApiRespBuilder<T>) updates) {
+  void update(void Function(ApiRespBuilder<T>)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -205,4 +207,4 @@ class ApiRespBuilder<T> implements Builder<ApiResp<T>, ApiRespBuilder<T>> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

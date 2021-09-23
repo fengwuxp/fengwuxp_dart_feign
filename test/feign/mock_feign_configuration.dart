@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_dart_openfeign/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/rest_operations.dart';
@@ -35,36 +37,43 @@ class MockFeignConfiguration implements FeignConfiguration {
 
   List<HttpMessageConverter> messageConverters;
 
-  ApiSignatureStrategy apiSignatureStrategy;
+  ApiSignatureStrategy? apiSignatureStrategy;
 
   List<ClientHttpRequestInterceptor> clientHttpRequestInterceptors;
 
-  AuthenticationBroadcaster authenticationBroadcaster;
+  AuthenticationBroadcaster? authenticationBroadcaster;
 
-  MockFeignConfiguration() {
-    this.feignClientExecutorFactory = DefaultFeignClientExecutorFactory();
-    this.requestURLResolver = RestfulRequestURLResolver();
-    this.requestHeaderResolver = DefaultRequestHeaderResolver();
-    this.requestParamsResolver = DefaultRequestParamsResolver();
-    var messageConverters = [new BuiltValueHttpMessageConverter(new BuiltJsonSerializers(serializers), null)];
-    this.messageConverters = messageConverters;
-    this.feignClientExecutorInterceptors = [
-      new UnifiedFailureToastExecutorInterceptor((data, BuiltValueSerializable serializer) {
-        var body = data;
-        if (data is ResponseEntity) {
-          body = data.body;
-        }
-        if (body == null) {
-          return data;
-        }
-        return ApiResp.formJsonBySerializer(body);
-      }, (result) {
-        print("==========>$result");
-        return Future.value();
-      })
-    ];
-    this.restTemplate = new RestTemplate(
-        messageConverters: messageConverters,
-        interceptors: [RoutingClientHttpRequestInterceptor('http://localhost:8090/api/')]);
-  }
+  MockFeignConfiguration()
+      : this.feignClientExecutorFactory = DefaultFeignClientExecutorFactory(),
+        this.requestURLResolver = RestfulRequestURLResolver(),
+        this.requestHeaderResolver = DefaultRequestHeaderResolver(),
+        this.requestParamsResolver = DefaultRequestParamsResolver(),
+        this.messageConverters = [
+          new BuiltValueHttpMessageConverter(new BuiltJsonSerializers(serializers), (responseBody) {
+            final resp = jsonDecode(responseBody);
+            if (resp["code"] != 0) {
+              return Future.error(resp);
+            }
+            return Future.value(resp);
+          })
+        ],
+        this.clientHttpRequestInterceptors = [],
+        this.feignClientExecutorInterceptors = [
+          new UnifiedFailureToastExecutorInterceptor((data, BuiltValueSerializable? serializer) {
+            var body = data;
+            if (data is ResponseEntity) {
+              body = data.body;
+            }
+            if (body == null) {
+              return data;
+            }
+            return ApiResp.formJsonBySerializer(body);
+          }, (result) {
+            print("==========>$result");
+            return Future.value();
+          })
+        ],
+        this.restTemplate = new RestTemplate(
+            messageConverters: [new BuiltValueHttpMessageConverter(new BuiltJsonSerializers(serializers), null)],
+            interceptors: [RoutingClientHttpRequestInterceptor('http://test.migustord.com/api/')]);
 }

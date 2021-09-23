@@ -9,45 +9,38 @@ import '../serializers.dart';
 
 part 'delete_article_action_req.g.dart';
 
-     /// 删除ArticleAction
+/// 删除ArticleAction
 
+abstract class DeleteArticleActionReq
+    implements Built<DeleteArticleActionReq, DeleteArticleActionReqBuilder>, JsonSerializableObject {
+  DeleteArticleActionReq._();
 
+  factory DeleteArticleActionReq([Function(DeleteArticleActionReqBuilder) updates]) = _$DeleteArticleActionReq;
 
+  /// ID
+  /// 在java中的类型为：Long
+  @BuiltValueField(wireName: 'id')
+  int? get id;
 
-abstract class DeleteArticleActionReq implements Built<DeleteArticleActionReq, DeleteArticleActionReqBuilder>, JsonSerializableObject {
+  /// ID集合
+  /// 在java中的类型为：数组
+  /// 在java中的类型为：Long
+  @BuiltValueField(wireName: 'ids')
+  BuiltList<int>? get ids;
 
-       DeleteArticleActionReq._();
+  @override
+  Map<String, dynamic> toMap() {
+    return serializers.serializeWith(DeleteArticleActionReq.serializer, this) as Map<String, dynamic>;
+  }
 
-      factory DeleteArticleActionReq([Function(DeleteArticleActionReqBuilder) updates]) = _$DeleteArticleActionReq;
+  @override
+  String toJson() {
+    return json.encode(toMap());
+  }
 
+  static Serializer<DeleteArticleActionReq> get serializer => _$deleteArticleActionReqSerializer;
 
-                    /// ID
-                    /// 在java中的类型为：Long
-                @nullable
-                @BuiltValueField(wireName: 'id')
-                int get id;
-
-                    /// ID集合
-                    /// 在java中的类型为：数组
-                    /// 在java中的类型为：Long
-                @nullable
-                @BuiltValueField(wireName: 'ids')
-                BuiltList<int> get ids;
-
-        @override
-        Map<String, dynamic> toMap() {
-            return serializers.serializeWith(DeleteArticleActionReq.serializer, this);
-        }
-
-        @override
-        String toJson() {
-           return json.encode(toMap());
-        }
-
-        static Serializer<DeleteArticleActionReq> get serializer => _$deleteArticleActionReqSerializer;
-
-        static DeleteArticleActionReq formJson(String json) {
-             return serializers.deserializeWith(DeleteArticleActionReq.serializer, jsonDecode(json));
-        }
-
+  static DeleteArticleActionReq formJson(String json) {
+    return serializers.deserializeWith(DeleteArticleActionReq.serializer, jsonDecode(json)) as DeleteArticleActionReq;
+  }
 }

@@ -10,67 +10,55 @@ import '../serializers.dart';
 
 part 'page_info.g.dart';
 
-     /// 分页对象
-
-
-
+/// 分页对象
 
 abstract class PageInfo<T> implements Built<PageInfo<T>, PageInfoBuilder<T>>, JsonSerializableObject {
+  PageInfo._();
 
-       PageInfo._();
+  factory PageInfo([Function(PageInfoBuilder<T>) updates]) = _$PageInfo<T>;
 
-      factory PageInfo([Function(PageInfoBuilder<T>) updates]) = _$PageInfo<T>;
+  /// 总数
+  /// 在java中的类型为：long
+  @BuiltValueField(wireName: 'total')
+  int? get total;
 
+  /// 查询类型
+  /// 在java中的类型为：QueryType
+  @BuiltValueField(wireName: 'queryType')
+  QueryType? get queryType;
 
-                    /// 总数
-                    /// 在java中的类型为：long
-                @nullable
-                @BuiltValueField(wireName: 'total')
-                int get total;
+  /// 查询结果列表
+  /// 在java中的类型为：List
+  @BuiltValueField(wireName: 'records')
+  BuiltList<T>? get records;
 
-                    /// 查询类型
-                    /// 在java中的类型为：QueryType
-                @nullable
-                @BuiltValueField(wireName: 'queryType')
-                QueryType get queryType;
+  /// 查询页码
+  /// 在java中的类型为：int
+  @BuiltValueField(wireName: 'queryPage')
+  num? get queryPage;
 
-                    /// 查询结果列表
-                    /// 在java中的类型为：List
-                @nullable
-                @BuiltValueField(wireName: 'records')
-                BuiltList<T> get records;
+  /// 查询大小
+  /// 在java中的类型为：int
+  @BuiltValueField(wireName: 'querySize')
+  num? get querySize;
 
-                    /// 查询页码
-                    /// 在java中的类型为：int
-                @nullable
-                @BuiltValueField(wireName: 'queryPage')
-                num get queryPage;
+  /// 在java中的类型为：boolean
+  @BuiltValueField(wireName: 'empty')
+  bool? get empty;
 
-                    /// 查询大小
-                    /// 在java中的类型为：int
-                @nullable
-                @BuiltValueField(wireName: 'querySize')
-                num get querySize;
+  @override
+  Map<String, dynamic> toMap() {
+    return serializers.serializeWith(PageInfo.serializer, this) as Map<String, dynamic>;
+  }
 
-                    /// 在java中的类型为：boolean
-                @nullable
-                @BuiltValueField(wireName: 'empty')
-                bool get empty;
+  @override
+  String toJson() {
+    return json.encode(toMap());
+  }
 
-        @override
-        Map<String, dynamic> toMap() {
-            return serializers.serializeWith(PageInfo.serializer, this);
-        }
+  static Serializer<PageInfo> get serializer => _$pageInfoSerializer;
 
-        @override
-        String toJson() {
-           return json.encode(toMap());
-        }
-
-        static Serializer<PageInfo> get serializer => _$pageInfoSerializer;
-
-        static PageInfo formJson(String json) {
-             return serializers.deserializeWith(PageInfo.serializer, jsonDecode(json));
-        }
-
+  static PageInfo formJson(String json) {
+    return serializers.deserializeWith(PageInfo.serializer, jsonDecode(json)) as PageInfo;
+  }
 }

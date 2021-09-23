@@ -1,47 +1,39 @@
 import 'dart:io';
 
-import 'package:fengwuxp_dart_openfeign/src/http/client/byte_stream.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/client_http_response.dart';
+import 'package:http/http.dart';
 
 class MessageBodyClientHttpResponseWrapper implements ClientHttpResponse {
-  final ClientHttpResponse _response;
 
-  const MessageBodyClientHttpResponseWrapper(this._response);
+  final ClientHttpResponse _delegate;
 
-  factory() {}
+  const MessageBodyClientHttpResponseWrapper(this._delegate);
 
   bool hasMessageBody() {
-    var statusCode = this.statusCode;
-    if (statusCode == null ||
-        statusCode <= 100 ||
-        statusCode == HttpStatus.noContent ||
-        statusCode == HttpStatus.notModified) {
+    final statusCode = this.statusCode;
+    if (statusCode <= 100 || statusCode == HttpStatus.noContent || statusCode == HttpStatus.notModified) {
       return false;
     }
 
-    var contentLength = this.headers[HttpHeaders.contentLengthHeader];
-    if (contentLength !=null && int.parse(contentLength) == 0) {
+    final contentLength = this.headers[HttpHeaders.contentLengthHeader];
+    if (contentLength != null && int.parse(contentLength) == 0) {
       return false;
     }
     return true;
   }
 
-  bool hasEmptyMessageBody() {
-    return this.stream == null;
-  }
+  @override
+  Map<String, String> get headers => this._delegate.headers;
 
   @override
-  Map<String, String> get headers => this._response.headers;
+  num get statusCode => this._delegate.statusCode;
 
   @override
-  num get statusCode => this._response.statusCode;
+  String get reasonPhrase => this._delegate.reasonPhrase;
 
   @override
-  String get reasonPhrase => this._response.reasonPhrase;
+  ByteStream get body => this._delegate.body;
 
   @override
-  ByteStream get stream => this._response.stream;
-
-  @override
-  bool get ok => this._response.ok;
+  bool get ok => this._delegate.ok;
 }

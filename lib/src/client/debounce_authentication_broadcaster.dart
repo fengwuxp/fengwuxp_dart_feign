@@ -13,36 +13,36 @@ class DebounceAuthenticationBroadcaster implements AuthenticationBroadcaster {
   @override
   void sendUnAuthorizedEvent() {
     EasyDebounce.debounce(DEBOUNCE_UNAUTHORIZED_TAG, Duration(milliseconds: 200), () {
-      this._authenticationBroadcaster?.sendUnAuthorizedEvent();
+      this._authenticationBroadcaster.sendUnAuthorizedEvent();
     });
   }
 
   @override
   void sendAuthorizedEvent() {
     EasyDebounce.debounce(DEBOUNCE_AUTHORIZED_TAG, Duration(milliseconds: 200), () {
-      this._authenticationBroadcaster?.sendAuthorizedEvent();
+      this._authenticationBroadcaster.sendAuthorizedEvent();
     });
   }
 
   @override
   void sendSignOutEvent() {
     EasyDebounce.debounce(DEBOUNCE_SIGN_OUT_TAG, Duration(milliseconds: 200), () {
-      this._authenticationBroadcaster?.sendSignOutEvent();
+      this._authenticationBroadcaster.sendSignOutEvent();
     });
   }
 
   @override
   receiveAuthorizedEvent(void Function() handle) {
-    this._authenticationBroadcaster?.receiveAuthorizedEvent(handle);
+    this._authenticationBroadcaster.receiveAuthorizedEvent(handle);
   }
 
   @override
   receiveUnAuthorizedEvent(void Function() handle) {
-    this._authenticationBroadcaster?.receiveUnAuthorizedEvent(handle);
+    this._authenticationBroadcaster.receiveUnAuthorizedEvent(handle);
   }
 
   @override
   receiveSignOutEvent(void Function() handle) {
-    this._authenticationBroadcaster?.receiveSignOutEvent(handle);
+    this._authenticationBroadcaster.receiveSignOutEvent(handle);
   }
 }

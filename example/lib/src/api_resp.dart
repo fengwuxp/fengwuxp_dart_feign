@@ -15,13 +15,11 @@ abstract class ApiResp<T> implements Built<ApiResp<T>, ApiRespBuilder<T>>, JsonS
 
   factory ApiResp([updates(ApiRespBuilder<T> b)]) = _$ApiResp<T>;
 
-  @nullable
   @BuiltValueField(wireName: 'data')
-  T get data;
+  T? get data;
 
-  @nullable
   @BuiltValueField(wireName: 'message')
-  String get message;
+  String? get message;
 
   @BuiltValueField(wireName: 'code')
   int get code;

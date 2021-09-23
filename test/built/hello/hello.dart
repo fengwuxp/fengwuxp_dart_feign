@@ -39,12 +39,12 @@ abstract class Hello implements Built<Hello, HelloBuilder>, JsonSerializableObje
   static Serializer<Hello> get serializer => _$helloSerializer;
 
   static Hello formJson(String json) {
-    return serializers.deserializeWith(Hello.serializer, jsonDecode(json));
+    return serializers.deserializeWith(Hello.serializer, jsonDecode(json)) as Hello;
   }
 
   @override
   Map<String, dynamic> toMap() {
-    return serializers.serializeWith(Hello.serializer, this);
+    return serializers.serializeWith(Hello.serializer, this) as Map<String, dynamic>;
   }
 
   @override

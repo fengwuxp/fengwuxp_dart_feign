@@ -1,6 +1,7 @@
 import 'package:fengwuxp_dart_openfeign/src/http/http_message.dart';
+import 'package:http/http.dart';
 
-import 'client/byte_stream.dart';
+
 
 /// Represents an HTTP input message, consisting of {@linkplain [HttpMessage.getHeaders()] headers}
 /// and a readable {@linkplain #getBody() body}.
@@ -12,5 +13,5 @@ abstract class HttpInputMessage implements HttpMessage {
   /// Return the body of the message as an input stream.
   /// @return the input stream body (never {@code null})
   /// @throws IOException in case of I/O errors
-  ByteStream get stream;
+  ByteStream get body;
 }

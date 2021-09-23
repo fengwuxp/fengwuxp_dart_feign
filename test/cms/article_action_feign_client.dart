@@ -13,13 +13,13 @@ class ArticleActionFeignClient extends FeignProxyClient {
   ArticleActionFeignClient._();
 
   @GetMapping(value: "/query")
-  Future<PageArticleActionInfo> query(FindArticleActionsReq req, [UIOptions feignOptions]) {
+  Future<PageArticleActionInfo> query(FindArticleActionsReq req, [UIOptions? feignOptions]) {
     return this.delegateInvoke<PageArticleActionInfo>("query", [req],
         feignOptions: feignOptions, serializer: BuiltValueSerializable(serializeType: PageArticleActionInfo));
   }
 
   @GetMapping(value: "/query")
-  Future<PageInfo<ArticleActionInfo>> query2(FindArticleActionsReq req, [UIOptions feignOptions]) {
+  Future<PageInfo<ArticleActionInfo>> query2(FindArticleActionsReq req, [UIOptions? feignOptions]) {
     return this.delegateInvoke<PageInfo<ArticleActionInfo>>("query2", [req],
         feignOptions: feignOptions,
         serializer: BuiltValueSerializable(

@@ -64,9 +64,7 @@ class _Parse extends Matcher {
 
   @override
   Description describe(Description description) {
-    return description
-        .add('parses to a value that ')
-        .addDescriptionOf(_matcher);
+    return description.add('parses to a value that ').addDescriptionOf(_matcher);
   }
 }
 
@@ -94,11 +92,9 @@ class _BodyMatches extends Matcher {
   Future<void> _checks(http.MultipartRequest item) async {
     var bodyBytes = await item.finalize().toBytes();
     var body = utf8.decode(bodyBytes);
-    var contentType = MediaType.parse(item.headers['content-type']);
+    var contentType = MediaType.parse(item.headers['content-type'] ?? "");
     var boundary = contentType.parameters['boundary'];
-    var expected = cleanUpLiteral(_pattern)
-        .replaceAll('\n', '\r\n')
-        .replaceAll('{{boundary}}', boundary);
+    var expected = cleanUpLiteral(_pattern).replaceAll('\n', '\r\n').replaceAll('{{boundary}}', boundary ?? "");
 
     expect(body, equals(expected));
     expect(item.contentLength, equals(bodyBytes.length));
@@ -114,5 +110,5 @@ class _BodyMatches extends Matcher {
 /// [http.ClientException] with the given [message].
 ///
 /// [message] can be a String or a [Matcher].
-Matcher throwsClientException(message) => throwsA(
-    isA<http.ClientException>().having((e) => e.message, 'message', message));
+Matcher throwsClientException(message) =>
+    throwsA(isA<http.ClientException>().having((e) => e.message, 'message', message));

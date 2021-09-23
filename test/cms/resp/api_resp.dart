@@ -15,31 +15,28 @@ abstract class ApiResp<T> implements Built<ApiResp<T>, ApiRespBuilder<T>>, JsonS
 
   factory ApiResp([updates(ApiRespBuilder<T> b)]) = _$ApiResp<T>;
 
-  @nullable
   @BuiltValueField(wireName: 'data')
-  T get data;
+  T? get data;
 
-  @nullable
   @BuiltValueField(wireName: 'message')
-  String get message;
+  String? get message;
 
   @BuiltValueField(wireName: 'code')
   int get code;
 
-  @BuiltValueField(wireName: 'success')
-  bool get success;
+  bool get success => code == 0;
 
   static ApiResp<T> formJson<T>(Map map, FullType specifiedType) {
-    return serializers.deserialize(map, specifiedType: FullType(ApiResp, [specifiedType]));
+    return serializers.deserialize(map, specifiedType: FullType(ApiResp, [specifiedType])) as ApiResp<T>;
   }
 
   static ApiResp formJsonBySerializer(Map map) {
-    return serializers.deserializeWith(ApiResp.serializer, map);
+    return serializers.deserializeWith(ApiResp.serializer, map) as ApiResp;
   }
 
   @override
   Map<String, dynamic> toMap() {
-    return serializers.serializeWith(ApiResp.serializer, this);
+    return serializers.serializeWith(ApiResp.serializer, this) as Map<String, dynamic>;
   }
 
   @override

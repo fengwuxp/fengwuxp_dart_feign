@@ -18,11 +18,9 @@ class SimpleNoneNetworkFailBack<T extends ClientHttpRequest> implements NoneNetw
   // max wait queue length
   final int maxWaitLength;
 
-  SimpleNoneNetworkFailBack({
-    int maxWaitTime,
-    int maxWaitLength,
-  })  : this.maxWaitTime = maxWaitTime ?? 5 * 60 * 1000,
-        this.maxWaitLength = maxWaitLength ?? 16;
+  SimpleNoneNetworkFailBack({int maxWaitTime = 5 * 60 * 1000, int maxWaitLength = 16})
+      : this.maxWaitTime = maxWaitTime,
+        this.maxWaitLength = maxWaitLength;
 
   @override
   Future<T> onNetworkClose(T request) async {
@@ -43,7 +41,8 @@ class SimpleNoneNetworkFailBack<T extends ClientHttpRequest> implements NoneNetw
       item.completer.complete(item.request);
       return true;
     });
-    waitQueue = null;
+    // clear
+    waitQueue = [];
   }
 
   Completer<T> _addWaitItem(T request) {

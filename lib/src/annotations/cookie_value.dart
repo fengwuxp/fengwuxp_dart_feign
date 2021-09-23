@@ -10,10 +10,9 @@ class CookieValue implements Named {
   final bool required;
 
   /// 默认值
-  final String defaultValue;
+  final String? defaultValue;
 
-  const CookieValue(
-      {String name: "", bool required: true, String defaultValue})
+  const CookieValue({String name: "", bool required: true, String? defaultValue})
       : this.name = name,
         this.required = required,
         this.defaultValue = defaultValue;

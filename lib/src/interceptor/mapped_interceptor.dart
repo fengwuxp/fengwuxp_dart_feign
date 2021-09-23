@@ -1,6 +1,12 @@
 import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/constant/http/http_method.dart';
 
+List<_HttpHeader> _converterHeaders(List<List<String>> headers) {
+  return List.of(headers.map((items) {
+    return _HttpHeader(items.first, items[1]);
+  }));
+}
+
 // use match interceptor is execute
 abstract class MappedInterceptor {
   List<String> _includePatterns;
@@ -19,24 +25,23 @@ abstract class MappedInterceptor {
   PathMatcher _pathMatcher = SimplePathMatcher();
 
   MappedInterceptor(
-      {List<String> includePatterns,
-      List<String> excludePatterns,
-      List<String> includeMethods,
-      List<String> excludeMethods,
-      List<List<String>> includeHeaders,
-      List<List<String>> excludeHeaders}) {
-    this._includePatterns = includePatterns ?? [];
-    this._excludePatterns = excludePatterns ?? [];
-    this._includeMethods = includeMethods ?? [];
-    this._excludeMethods = excludeMethods ?? [];
-    this._includeHeaders = this._converterHeaders(includeHeaders) ?? [];
-    this._excludeHeaders = this._converterHeaders(excludeHeaders) ?? [];
-  }
+      {List<String> includePatterns = const [],
+      List<String> excludePatterns = const [],
+      List<String> includeMethods = const [],
+      List<String> excludeMethods = const [],
+      List<List<String>> includeHeaders = const [],
+      List<List<String>> excludeHeaders = const []})
+      : this._includePatterns = includePatterns,
+        this._excludePatterns = excludePatterns,
+        this._includeMethods = includeMethods,
+        this._excludeMethods = excludeMethods,
+        this._includeHeaders = _converterHeaders(includeHeaders),
+        this._excludeHeaders = _converterHeaders(excludeHeaders);
 
 // Determine a match for the given lookup path.
 // @param req
 // @return {@code true} if the interceptor applies to the given request path or http methods or http headers
-  bool matches({String url, String httpMethod, headers}) {
+  bool matches(String url, String httpMethod, {headers = const {}}) {
     if (!this.matchesUrl(url)) {
       return false;
     }
@@ -54,7 +59,7 @@ abstract class MappedInterceptor {
   /// @param [lookupPath] the current request path
   /// @param [pathMatcher] a path matcher for path pattern matching
   /// @return {@code true} if the interceptor applies to the given request path
-  bool matchesUrl(String lookupPath, [PathMatcher pathMatcher]) {
+  bool matchesUrl(String lookupPath, [PathMatcher? pathMatcher]) {
     var pathMatcherToUse = this._pathMatcher;
     if (pathMatcher != null) {
       pathMatcherToUse = pathMatcher;
@@ -109,15 +114,6 @@ abstract class MappedInterceptor {
     }
 
     return false;
-  }
-
-  List<_HttpHeader> _converterHeaders(List<List<String>> headers) {
-    if (headers == null) {
-      return null;
-    }
-    return List.of(headers.map((items) {
-      return _HttpHeader(items.first, items[1] ?? null);
-    }));
   }
 }
 

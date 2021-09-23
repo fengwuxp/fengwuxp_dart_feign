@@ -11,7 +11,9 @@ import 'package:fengwuxp_dart_openfeign/src/constant/http/http_method.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/client_http_request.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/client_http_response.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/converter/http_message_converter.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/http_request_context.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
+import 'package:fengwuxp_dart_openfeign/src/utils/metadata_utils.dart';
 
 import 'response_extractor.dart';
 import 'rest_operations.dart';
@@ -30,99 +32,132 @@ class RestTemplate implements RestOperations {
     this.uriTemplateHandler = const DefaultUriTemplateHandler(),
     this.messageConverters = const [],
     this.interceptors = const [],
-  }); // GET
+  });
 
+  /// GET
   @override
   Future<T> getForObject<T>(String url, Type responseType,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout}) {
+      {Map<String, dynamic>? queryParams,
+      List<dynamic>? pathVariables,
+      Map<String, String>? headers,
+      int? timeout,
+      HttpRequestContext? context}) {
     return this.execute(url, HttpMethod.GET, this._httpMessageConverterExtractor<T>(responseType),
-        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout);
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout, context: context);
   }
 
   @override
   Future<ResponseEntity<T>> getForEntity<T>(String url,
-      {Type responseType,
-      Map<String, dynamic> queryParams,
-      List<dynamic> pathVariables,
-      Map<String, String> headers,
-      int timeout}) {
+      {Type? responseType,
+      Map<String, dynamic>? queryParams,
+      List<dynamic>? pathVariables,
+      Map<String, String>? headers,
+      int? timeout,
+      HttpRequestContext? context}) {
     return this.execute(url, HttpMethod.GET, this._responseEntityResponseExtractor(responseType),
-        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout);
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout, context: context);
   }
 
-  // HEAD
+  /// HEAD
 
   @override
   Future<Map<String, String>> headForHeaders(String url,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout}) {
+      {Map<String, dynamic>? queryParams,
+      List<dynamic>? pathVariables,
+      Map<String, String>? headers,
+      int? timeout,
+      HttpRequestContext? context}) {
     return this.execute(url, HttpMethod.HEAD, this._headResponseExtractor(),
-        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout);
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout, context: context);
   }
 
-  // POST
+  /// POST
 
   @override
   Future<T> postForObject<T>(String url, dynamic request, Type responseType,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout}) {
+      {Map<String, dynamic>? queryParams,
+      List<dynamic>? pathVariables,
+      Map<String, String>? headers,
+      int? timeout,
+      HttpRequestContext? context}) {
     return this.execute(url, HttpMethod.POST, this._httpMessageConverterExtractor<T>(responseType),
-        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout);
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout, context: context);
   }
 
   @override
   Future<ResponseEntity<T>> postForEntity<T>(String url, dynamic request,
-      {Type responseType,
-      Map<String, dynamic> queryParams,
-      List<dynamic> pathVariables,
-      Map<String, String> headers,
-      int timeout}) {
+      {Type? responseType,
+      Map<String, dynamic>? queryParams,
+      List<dynamic>? pathVariables,
+      Map<String, String>? headers,
+      int? timeout,
+      HttpRequestContext? context}) {
     return this.execute(url, HttpMethod.POST, this._responseEntityResponseExtractor(responseType),
-        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout);
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout, context: context);
   }
 
   @override
   Future<void> put(String url, dynamic request,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout}) {
-    return this.execute(url, HttpMethod.PUT, null,
-        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout);
+      {Map<String, dynamic>? queryParams,
+      List<dynamic>? pathVariables,
+      Map<String, String>? headers,
+      int? timeout,
+      HttpRequestContext? context}) {
+    return this.execute(url, HttpMethod.PUT, new VoidResponseExtractor(),
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout, context: context);
   }
 
   @override
-  Future<T> patchForObject<T>(String url, dynamic request, Type responseType,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout}) {
+  Future<T> patchForObject<T>(String url, dynamic request,
+      {Type? responseType,
+      Map<String, dynamic>? queryParams,
+      List<dynamic>? pathVariables,
+      Map<String, String>? headers,
+      int? timeout,
+      HttpRequestContext? context}) {
     return this.execute(url, HttpMethod.PATCH, this._httpMessageConverterExtractor(responseType),
-        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout);
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout, context: context);
   }
 
   @override
   Future<void> delete(String url,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, Map<String, String> headers, int timeout}) {
-    return this.execute(url, HttpMethod.DELETE, null,
-        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout);
+      {Map<String, dynamic>? queryParams,
+      List<dynamic>? pathVariables,
+      Map<String, String>? headers,
+      int? timeout,
+      HttpRequestContext? context}) {
+    return this.execute(url, HttpMethod.DELETE, new VoidResponseExtractor(),
+        queryParams: queryParams, pathVariables: pathVariables, headers: headers, timeout: timeout, context: context);
   }
 
   @override
   Future<Set<String>> optionsForAllow(String url,
-      {Map<String, dynamic> queryParams, List<dynamic> pathVariables, int timeout}) async {
+      {Map<String, dynamic>? queryParams,
+      List<dynamic>? pathVariables,
+      Map<String, String>? headers,
+      int? timeout,
+      HttpRequestContext? context}) async {
     return this.execute(url, HttpMethod.DELETE, OptionsForAllowResponseExtractor(),
-        queryParams: queryParams, pathVariables: pathVariables, timeout: timeout);
+        queryParams: queryParams, pathVariables: pathVariables, timeout: timeout, context: context);
   }
 
   @override
   Future<T> execute<T>(String url, String method, ResponseExtractor<T> responseExtractor,
       {dynamic request,
-      Map<String, dynamic> queryParams,
-      List<Object> pathVariables,
-      int timeout,
-      Map<String, String> headers = const {}}) async {
+      Map<String, dynamic>? queryParams,
+      List<dynamic>? pathVariables,
+      Map<String, String>? headers,
+      int? timeout,
+      HttpRequestContext? context}) async {
     // 处理url， 查询参数
-    var uri = uriTemplateHandler.expand(url, queryParams: queryParams, pathVariables: pathVariables);
-    var requestHttpHeaders = Map.of(headers);
-    if (!StringUtils.hasText(requestHttpHeaders[HttpHeaders.contentTypeHeader])) {
-      requestHttpHeaders[HttpHeaders.contentTypeHeader] = this.defaultProduce;
+    final uri = uriTemplateHandler.expand(url, queryParams: queryParams ?? {}, pathVariables: pathVariables ?? []);
+    final Map<String, String> requestHeaders = Map.of(headers ?? {});
+    if (supportRequestBody(method) && !StringUtils.hasText(requestHeaders[HttpHeaders.contentTypeHeader])) {
+      requestHeaders[HttpHeaders.contentTypeHeader] = this.defaultProduce;
     }
 
-    var clientHttpRequest = RestClientHttpRequest(uri, method, messageConverters,
-        requestBody: request, headers: requestHttpHeaders, timeout: timeout);
+    var clientHttpRequest = RestClientHttpRequest(uri, method, timeout, request, requestHeaders, messageConverters,
+        attributes: context?.attributes);
     // 处理请求体
     ClientHttpResponse clientHttpResponse;
     try {
@@ -133,39 +168,34 @@ class RestTemplate implements RestOperations {
       throw e;
     }
 
-    if (responseExtractor != null) {
-      try {
-        var result = await responseExtractor.extractData(clientHttpResponse);
-        if (clientHttpResponse.ok) {
-          return result;
-        } else {
-          // http error response
-          return Future.error(ResponseEntity(
-              clientHttpResponse.statusCode, clientHttpResponse.headers, result, clientHttpResponse.reasonPhrase));
-        }
-      } catch (e) {
-        return Future.error(e);
+    try {
+      final result = await responseExtractor.extractData(clientHttpResponse) as T;
+      if (clientHttpResponse.ok) {
+        return result;
+      } else {
+        // http error response
+        return Future.error(ResponseEntity(
+            clientHttpResponse.statusCode, clientHttpResponse.headers, result, clientHttpResponse.reasonPhrase));
       }
+    } catch (e) {
+      return Future.error(e);
     }
-    return Future.value(clientHttpResponse as T);
   }
 
-  void _preHandleInterceptor(ClientHttpRequest clientHttpRequest) async {
+  Future<void> _preHandleInterceptor(ClientHttpRequest clientHttpRequest) async {
     final interceptors = this.interceptors;
-    if (interceptors == null) {
-      return;
-    }
     final length = interceptors.length;
     for (int i = 0; i < length; i++) {
       await interceptors[i].interceptor(clientHttpRequest);
     }
+    return Future.value();
   }
 
-  HttpMessageConverterExtractor<T> _httpMessageConverterExtractor<T>(Type responseType) {
+  HttpMessageConverterExtractor<T> _httpMessageConverterExtractor<T>(Type? responseType) {
     return HttpMessageConverterExtractor<T>(this.messageConverters, responseType: responseType);
   }
 
-  ResponseEntityResponseExtractor<T> _responseEntityResponseExtractor<T>(Type responseType) {
+  ResponseEntityResponseExtractor<T> _responseEntityResponseExtractor<T>(Type? responseType) {
     return ResponseEntityResponseExtractor<T>(this.messageConverters, responseType);
   }
 
