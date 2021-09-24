@@ -32,7 +32,7 @@ class MessageBodyClientHttpResponseWrapper implements ClientHttpResponse {
   String get reasonPhrase => this._delegate.reasonPhrase;
 
   @override
-  ByteStream get body => this._delegate.body;
+  Stream<List<int>> get body => this._delegate.body;
 
   @override
   bool get ok => this._delegate.ok;

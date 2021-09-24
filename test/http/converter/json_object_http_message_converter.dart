@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:built_value/serializer.dart';
@@ -22,10 +23,10 @@ class JsonObjectHttpMessageConverter implements HttpMessageConverter<JsonSeriali
     return [];
   }
 
-  Future<E> read<E>(HttpInputMessage inputMessage,
+  Future<E> read<E>(HttpInputMessage inputMessage,ContentType mediaType,
       {Type? serializeType, FullType specifiedType = FullType.unspecified}) {
-    var body = inputMessage.body;
-    return body.bytesToString().then((data) {
+    final body = inputMessage.body;
+    return utf8.decodeStream(body).then((data) {
       var builtJsonSerializers = BuiltJsonSerializers(serializers);
       var deserializeWith =
           builtJsonSerializers.parseObject(data, resultType: serializeType, specifiedType: specifiedType);

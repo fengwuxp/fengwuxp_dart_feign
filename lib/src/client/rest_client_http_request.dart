@@ -53,16 +53,15 @@ class RestClientHttpRequest extends AbstractHttpRequestContext implements Client
     final request = Request(method, url);
     request.headers.addAll(headers);
     if (supportRequestBody(this.method)) {
-      this.body.stream.listen((event) {
-        request.contentLength = request.contentLength + event.length;
-        request.bodyBytes.addAll(event);
-      });
+      List<int> requestBytes = [];
+      this._controller.stream.listen(requestBytes.addAll);
       final contentType = ContentType.parse(this.headers[HttpHeaders.contentTypeHeader] as String);
       for (HttpMessageConverter messageConverter in this.messageConverters) {
         if (messageConverter.canWrite(contentType)) {
           await messageConverter.write(requestBody, contentType, this);
         }
       }
+      request.bodyBytes = requestBytes;
     }
 
     return request.send().then((response) => new StreamedClientHttpResponse(response)).onError((error, stackTrace) {
@@ -76,5 +75,5 @@ class RestClientHttpRequest extends AbstractHttpRequestContext implements Client
   }
 
   @override
-  StreamController<List<int>> get body => _controller;
+  StreamSink<List<int>> get body => _controller;
 }

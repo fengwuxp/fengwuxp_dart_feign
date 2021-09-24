@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fengwuxp_dart_openfeign/src/http/http_output_message.dart';
-import 'package:http/src/utils.dart';
 
 import 'http_message_converter.dart';
 
@@ -23,8 +22,8 @@ abstract class AbstractHttpMessageConverter<T> implements HttpMessageConverter<T
     return this._supportedMediaTypes;
   }
 
-  Encoding getEncoding(ContentType contentType) {
-    final charset = contentType.parameters["charset"] ?? "utf-8";
+  Encoding getEncoding(ContentType mediaType) {
+    final charset = mediaType.parameters["charset"] ?? "utf-8";
     return requiredEncodingForCharset(charset);
   }
 
@@ -32,7 +31,7 @@ abstract class AbstractHttpMessageConverter<T> implements HttpMessageConverter<T
     if (value == null) {
       return;
     }
-    var bytes = this.getEncoding(mediaType).encode(value);
+    final bytes = this.getEncoding(mediaType).encode(value);
     outputMessage.body.add(bytes);
   }
 
@@ -48,8 +47,8 @@ abstract class AbstractHttpMessageConverter<T> implements HttpMessageConverter<T
   /// [charset].
   ///
   /// [charset] may not be null.
-// Encoding requiredEncodingForCharset(String charset) => Encoding.getByName(charset) ??
-//         (throw FormatException('Unsupported encoding "$charset".'));
+  Encoding requiredEncodingForCharset(String charset) =>
+      Encoding.getByName(charset) ?? (throw FormatException('Unsupported encoding "$charset".'));
 }
 
 abstract class AbstractGenericHttpMessageConverter<T> extends AbstractHttpMessageConverter<T>
