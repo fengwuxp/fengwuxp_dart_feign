@@ -12,13 +12,12 @@ import '../../built/serializers.dart';
 import 'json_object_http_message_converter.dart';
 
 class InputStreamHttpInputMessage implements HttpInputMessage {
-
   ByteStream _inputStream;
 
   InputStreamHttpInputMessage(Stream<List<int>> source) : this._inputStream = ByteStream(source);
 
   @override
-  ByteStream get body => _inputStream;
+  Stream<List<int>> get body => _inputStream;
 
   @override
   Map<String, String> get headers => {};
@@ -47,7 +46,7 @@ void main() {
     var inputMessage = new InputStreamHttpInputMessage(Stream.value(codeUnits));
     JsonObjectHttpMessageConverter jsonObjectHttpMessageConverter = new JsonObjectHttpMessageConverter();
     if (jsonObjectHttpMessageConverter.canRead(ContentType.json)) {
-      var result = await jsonObjectHttpMessageConverter.read(inputMessage, serializeType: Hello);
+      var result = await jsonObjectHttpMessageConverter.read(inputMessage, ContentType.json, serializeType: Hello);
       print("===> $result");
     }
   });
@@ -57,7 +56,7 @@ void main() {
     var inputMessage = new InputStreamHttpInputMessage(Stream.value(codeUnits));
     var builtValueHttpMessageConverter = BuiltValueHttpMessageConverter(new BuiltJsonSerializers(serializers), null);
     if (builtValueHttpMessageConverter.canRead(ContentType.json)) {
-      Hello result = await builtValueHttpMessageConverter.read(inputMessage, serializeType: Hello);
+      Hello result = await builtValueHttpMessageConverter.read(inputMessage, ContentType.json, serializeType: Hello);
       print("==Hello=> $result");
     }
   });

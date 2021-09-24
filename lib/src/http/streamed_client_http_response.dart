@@ -16,7 +16,7 @@ class StreamedClientHttpResponse implements ClientHttpResponse {
   String get reasonPhrase => this._response.reasonPhrase ?? "unknown error";
 
   @override
-  ByteStream get body => this._response.stream;
+  Stream<List<int>> get body => this._response.stream;
 
   @override
   bool get ok => this.statusCode >= 200 && this.statusCode < 400;

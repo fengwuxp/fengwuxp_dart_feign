@@ -35,13 +35,14 @@ class HttpMessageConverterExtractor<T> implements ResponseExtractor<T> {
     for (HttpMessageConverter messageConverter in this._messageConverters) {
       if (this._responseType != HttpMessageConverterExtractor) {
         if (messageConverter.canRead(contentType, serializeType: this._responseType)) {
-          return messageConverter.read<T>(response,
+          return messageConverter.read<T>(response, contentType,
               serializeType: this._responseType, specifiedType: this._specifiedType);
         }
       }
       if (messageConverter is GenericHttpMessageConverter) {
         if (messageConverter.canRead(contentType, serializeType: serializeType)) {
-          return messageConverter.read<T>(response, serializeType: serializeType, specifiedType: this._specifiedType);
+          return messageConverter.read<T>(response, contentType,
+              serializeType: serializeType, specifiedType: this._specifiedType);
         }
       }
     }
@@ -111,4 +112,3 @@ class VoidResponseExtractor implements ResponseExtractor<Void> {
     return Future.value();
   }
 }
-

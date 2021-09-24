@@ -50,24 +50,28 @@ class RestClientHttpRequest extends AbstractHttpRequestContext implements Client
     if (_log.isLoggable(Level.FINER)) {
       _log.finer("请求方法：${this.method} 请求url:${this.url} 请求头：${this.headers} 请求体：${this.requestBody}");
     }
+
     final request = Request(method, url);
     request.headers.addAll(headers);
     if (supportRequestBody(this.method)) {
-      this.body.stream.listen((event) {
-        request.contentLength = request.contentLength + event.length;
-        request.bodyBytes.addAll(event);
-      });
-      final contentType = ContentType.parse(this.headers[HttpHeaders.contentTypeHeader] as String);
-      for (HttpMessageConverter messageConverter in this.messageConverters) {
-        if (messageConverter.canWrite(contentType)) {
-          await messageConverter.write(requestBody, contentType, this);
-        }
-      }
+      await _writeRequestBody(request);
     }
 
     return request.send().then((response) => new StreamedClientHttpResponse(response)).onError((error, stackTrace) {
       return Future.error(new HttpClientException(error.toString(), this, error), stackTrace);
     });
+  }
+
+  Future<void> _writeRequestBody(Request request) async {
+    final List<int> requestBytes = [];
+    this._controller.stream.listen(requestBytes.addAll);
+    final contentType = ContentType.parse(this.headers[HttpHeaders.contentTypeHeader] as String);
+    for (HttpMessageConverter messageConverter in this.messageConverters) {
+      if (messageConverter.canWrite(contentType)) {
+        await messageConverter.write(requestBody, contentType, this);
+      }
+    }
+    request.bodyBytes = requestBytes;
   }
 
   @override
@@ -76,5 +80,5 @@ class RestClientHttpRequest extends AbstractHttpRequestContext implements Client
   }
 
   @override
-  StreamController<List<int>> get body => _controller;
+  StreamSink<List<int>> get body => _controller;
 }
