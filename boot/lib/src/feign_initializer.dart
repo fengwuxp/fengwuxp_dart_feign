@@ -102,7 +102,7 @@ class FeignInitializer {
         new RestTemplate(
             defaultProduce: _defaultProduce,
             interceptors: clientHttpRequestInterceptors,
-            messageConverters: httpMessageConverters);
+            httpMessageConverters: httpMessageConverters);
   }
 
   List<HttpMessageConverter> _configureHttpMessageConverts() {

@@ -8,10 +8,14 @@ abstract class HttpRequestContext {
   dynamic getAttribute(String name);
 }
 
-abstract class AbstractHttpRequestContext implements HttpRequestContext {
+class DefaultHttpRequestContext implements HttpRequestContext {
   final Map<String, dynamic> attributes;
 
-  AbstractHttpRequestContext(Map<String, dynamic>? attributes) : this.attributes = attributes ?? {};
+  DefaultHttpRequestContext(Map<String, dynamic>? attributes) : this.attributes = attributes ?? {};
+
+  static DefaultHttpRequestContext form(HttpRequestContext context) {
+    return new DefaultHttpRequestContext(context.attributes);
+  }
 
   @override
   void putAttribute(String name, value) {

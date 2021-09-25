@@ -3,7 +3,7 @@ import 'package:fengwuxp_dart_openfeign/src/http/http_request_context.dart';
 
 import 'client/response_extractor.dart';
 
-abstract class FeignBaseRequest extends AbstractHttpRequestContext {
+abstract class FeignBaseRequest extends DefaultHttpRequestContext {
   /// external query parameters
   /// value is boolean | number | string | Date |  Array<boolean | string | number | Date>
   final Map<String, dynamic> queryParams;

@@ -23,14 +23,14 @@ class RestTemplate implements RestOperations {
 
   final UriTemplateHandler uriTemplateHandler;
 
-  final List<HttpMessageConverter> messageConverters;
+  final List<HttpMessageConverter> httpMessageConverters;
 
   final List<ClientHttpRequestInterceptor> interceptors;
 
   const RestTemplate({
     this.defaultProduce = HttpMediaType.FORM_DATA,
     this.uriTemplateHandler = const DefaultUriTemplateHandler(),
-    this.messageConverters = const [],
+    this.httpMessageConverters = const [],
     this.interceptors = const [],
   });
 
@@ -156,8 +156,12 @@ class RestTemplate implements RestOperations {
       requestHeaders[HttpHeaders.contentTypeHeader] = this.defaultProduce;
     }
 
-    var clientHttpRequest = RestClientHttpRequest(uri, method, timeout, request, requestHeaders, messageConverters,
-        attributes: context?.attributes);
+    final clientHttpRequest = RestClientHttpRequest(uri, method,
+        timeout: timeout,
+        requestBody: request,
+        headers: requestHeaders,
+        httpMessageConverters: httpMessageConverters,
+        context: context);
     // 处理请求体
     ClientHttpResponse clientHttpResponse;
     try {
@@ -192,11 +196,11 @@ class RestTemplate implements RestOperations {
   }
 
   HttpMessageConverterExtractor<T> _httpMessageConverterExtractor<T>(Type? responseType) {
-    return HttpMessageConverterExtractor<T>(this.messageConverters, responseType: responseType);
+    return HttpMessageConverterExtractor<T>(this.httpMessageConverters, responseType: responseType);
   }
 
   ResponseEntityResponseExtractor<T> _responseEntityResponseExtractor<T>(Type? responseType) {
-    return ResponseEntityResponseExtractor<T>(this.messageConverters, responseType);
+    return ResponseEntityResponseExtractor<T>(this.httpMessageConverters, responseType);
   }
 
   HeadResponseExtractor _headResponseExtractor<T>() {

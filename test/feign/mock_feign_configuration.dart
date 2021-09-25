@@ -74,6 +74,6 @@ class MockFeignConfiguration implements FeignConfiguration {
           })
         ],
         this.restTemplate = new RestTemplate(
-            messageConverters: [new BuiltValueHttpMessageConverter(new BuiltJsonSerializers(serializers), null)],
+            httpMessageConverters: [new BuiltValueHttpMessageConverter(new BuiltJsonSerializers(serializers), null)],
             interceptors: [RoutingClientHttpRequestInterceptor('http://localhost:8080/api/')]);
 }
