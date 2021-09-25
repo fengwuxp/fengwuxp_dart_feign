@@ -42,7 +42,8 @@ class RestClientHttpRequest extends AbstractClientHttpRequest {
 
     return request
         .send()
-        .timeout(Duration(milliseconds: timeout))
+        //TODO 超时处理
+        // .timeout(Duration(milliseconds: timeout))
         .then((response) => new StreamedClientHttpResponse(response))
         .onError(
             (error, stackTrace) => Future.error(new HttpClientException(error.toString(), this, error), stackTrace));
