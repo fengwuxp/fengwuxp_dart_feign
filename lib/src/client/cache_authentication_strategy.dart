@@ -1,5 +1,6 @@
 import 'package:fengwuxp_dart_openfeign/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/authentication_strategy.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/http_request.dart';
 
 /// cache AuthenticationStrategy
 /// [CacheCapableAuthenticationStrategy]
@@ -16,9 +17,9 @@ class CacheAuthenticationStrategy<T extends AuthenticationToken> implements Auth
   }
 
   @override
-  Future<T> getAuthorization(Uri uri, Map<String, String> headers, String method) async {
+  Future<T> getAuthorization(HttpRequest request) async {
     if (this._cacheAuthenticationToken == null) {
-      this._cacheAuthenticationToken = await this._authenticationStrategy.getAuthorization(uri, headers, method);
+      this._cacheAuthenticationToken = await this._authenticationStrategy.getAuthorization(request);
     }
     return this._cacheAuthenticationToken as T;
   }
@@ -29,8 +30,8 @@ class CacheAuthenticationStrategy<T extends AuthenticationToken> implements Auth
   }
 
   @override
-  Future<T> refreshAuthorization(T authorization, Uri uri, Map<String, String> headers, String method) async {
-    return this._authenticationStrategy.refreshAuthorization(authorization, uri, headers, method).then((value) {
+  Future<T> refreshAuthorization(T authorization, HttpRequest request) async {
+    return this._authenticationStrategy.refreshAuthorization(authorization, request).then((value) {
       this._cacheAuthenticationToken = value;
       return value;
     }).catchError((error) {

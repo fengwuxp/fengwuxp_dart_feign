@@ -1,4 +1,4 @@
-
+import 'package:fengwuxp_dart_openfeign/src/http/http_request.dart';
 
 /// marked authentication strategy cache support
 /// [CacheAuthenticationStrategy]
@@ -12,15 +12,17 @@ abstract class CacheCapableAuthenticationStrategy {
 
 /// authentication strategy
 abstract class AuthenticationStrategy<T extends AuthenticationToken> {
+  static const _DEFAULT_AUTHENTICATION_HEADER_NAMES = ["Authorization"];
+
   /// get authorization header names
   /// default :['Authorization']
   List<String> getAuthorizationHeaderNames() {
-    return ["Authorization"];
+    return _DEFAULT_AUTHENTICATION_HEADER_NAMES;
   }
 
-  Future<T> getAuthorization(Uri uri, Map<String, String> headers, String method);
+  Future<T> getAuthorization(HttpRequest request);
 
-  Future<T> refreshAuthorization(T authorization, Uri uri, Map<String, String> headers, String method);
+  Future<T> refreshAuthorization(T authorization, HttpRequest request);
 
   Map<String, String> appendAuthorizationHeader(T authorization, Map<String, String> headers) {
     headers.putIfAbsent(getAuthorizationHeaderNames().first, () => authorization.authorization);
@@ -42,7 +44,7 @@ abstract class AuthenticationToken {
   int get expireDate;
 
   // if never refresh token ,return [NEVER_REFRESH_FLAG]
-  int get refreshExpireDate;
+  int? get refreshExpireDate;
 }
 
 /// use broadcast event handle authentication

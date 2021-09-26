@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:fengwuxp_dart_openfeign/src/client/http_request_completer.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/client_http_request.dart';
 import 'package:fengwuxp_dart_openfeign/src/network/none_network_failback.dart';
 
@@ -10,7 +11,7 @@ import 'package:fengwuxp_dart_openfeign/src/network/none_network_failback.dart';
 ///  [SimpleNoneNetworkFailBack.maxWaitTime]
 /// [ SimpleNoneNetworkFailBack.maxWaitLength]
 class SimpleNoneNetworkFailBack<T extends ClientHttpRequest> implements NoneNetworkFailBack<T> {
-  List<WaitHttpRequest<T>> _waitQueue = [];
+  List<HttpRequestCompleter> _waitQueue = [];
 
   // max wait time millisecond
   final int maxWaitTime;
@@ -52,7 +53,7 @@ class SimpleNoneNetworkFailBack<T extends ClientHttpRequest> implements NoneNetw
       this._rejectHttpRequest(waitQueue.removeAt(0));
     }
     final completer = Completer<T>();
-    this._waitQueue.add(WaitHttpRequest(DateTime.now().millisecond + maxWaitTime, request, completer));
+    this._waitQueue.add(HttpRequestCompleter(DateTime.now().millisecond + maxWaitTime, request, completer));
     return completer;
   }
 
@@ -62,17 +63,16 @@ class SimpleNoneNetworkFailBack<T extends ClientHttpRequest> implements NoneNetw
     if (oldLength == 0) {
       return;
     }
-    var currentTime = DateTime.now().millisecond;
+    final currentTime = DateTime.now().millisecond;
     waitQueue.removeWhere((item) {
-      // 是否还在有效期内
-      var isEffective = currentTime - item.expireTime < 0;
-      var needRemove = !isEffective;
-      if (needRemove) {
+      // 是否过期
+      final isExpire = item.isExpire(currentTime);
+      if (isExpire) {
         this._rejectHttpRequest(item);
       }
-      return needRemove;
+      return isExpire;
     });
-    var newLength = waitQueue.length;
+    final newLength = waitQueue.length;
     if (newLength < maxWaitLength || newLength == 0) {
       return;
     }
@@ -80,17 +80,8 @@ class SimpleNoneNetworkFailBack<T extends ClientHttpRequest> implements NoneNetw
     this._rejectHttpRequest(waitQueue.removeAt(0));
   }
 
-  void _rejectHttpRequest(WaitHttpRequest<T> _waitHttpRequest) {
-    _waitHttpRequest.completer.completeError(new HttpException("网络不可用", uri: _waitHttpRequest.request.url));
+  void _rejectHttpRequest(HttpRequestCompleter _waitHttpRequest) {
+    _waitHttpRequest.completer
+        .completeError(new HttpException("token refresh failure", uri: _waitHttpRequest.request.url));
   }
-}
-
-class WaitHttpRequest<T> {
-  final int expireTime;
-
-  final T request;
-
-  final Completer completer;
-
-  WaitHttpRequest(this.expireTime, this.request, this.completer);
 }
