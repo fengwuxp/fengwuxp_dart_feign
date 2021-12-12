@@ -148,6 +148,16 @@ targets:
           formatted: true
 ```
 
+- 使用 build 命令生成 sdk 需要的 .g.dart 和 .reflectable.dart 依赖
+```shell
+// 生成项目目录下的文件
+flutter packages pub run build_runner build --delete-conflicting-outputs
+
+/// 生成测试用例下的文件
+flutter packages pub run build_runner build test --delete-conflicting-outputs
+
+```
+
 - 初始化 sdk
 ```dart
  FeignInitializer.form(new ExampleFeignConfigurationRegistry(), BuiltJsonSerializers(serializers))

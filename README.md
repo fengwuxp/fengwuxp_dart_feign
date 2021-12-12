@@ -7,7 +7,7 @@
 - 更多
 
 #### Quick-Start
-- [docs](./quick_star.md)
+- [快速开始](./quick_star.md)
 
 #### 通过注解标记和动态代理实现的声明式http请求库
 - [typescript版本](https://github.com/fengwuxp/fengwuxp-typescript-spring/tree/master/feign)
@@ -19,18 +19,6 @@
 - [reflectable](https://github.com/google/reflectable.dart)
 - [built_value](https://github.com/google/built_value.dart)
 - [build](https://github.com/dart-lang/build)
-
-##### 使用 built_value 命令生成 sdk 需要的 .g.dart 依赖
-- 命令
-```
-// 生成项目目录下的文件
-flutter packages pub run build_runner build --delete-conflicting-outputs
-
-/// 生成测试用例下的文件
-flutter packages pub run build_runner build test --delete-conflicting-outputs
-
-```
-
 
 #### RestTemplate
 - [RestTemplate](./lib/src/client/rest_template.dart) 标准的 http 请求 client
