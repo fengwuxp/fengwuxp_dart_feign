@@ -48,6 +48,9 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
     try {
       authorization = await this._authenticationStrategy.getAuthorization(request);
     } catch (e) {
+      if (_log.isLoggable(Level.INFO)) {
+        _log.info("get authorization failure", e);
+      }
       if (isTryAuthentication) {
         return request;
       }

@@ -1,11 +1,13 @@
 ### dart_openfeign
-
 借鉴 spring cloud openfeign 的思路提供的 dart 版本 openfeign
 
 - 支持自动序列化和反序列化请求响应对象
 - 支持表单、json 的等方式
 - 支持请求响应拦截
 - 更多
+
+#### Quick-Start
+- [docs](./quick_star.md)
 
 #### 通过注解标记和动态代理实现的声明式http请求库
 - [typescript版本](https://github.com/fengwuxp/fengwuxp-typescript-spring/tree/master/feign)
@@ -16,6 +18,7 @@
 #### 反射和 json 序列化支持
 - [reflectable](https://github.com/google/reflectable.dart)
 - [built_value](https://github.com/google/built_value.dart)
+- [build](https://github.com/dart-lang/build)
 
 ##### 使用 built_value 命令生成 sdk 需要的 .g.dart 依赖
 - 命令
@@ -28,22 +31,6 @@ flutter packages pub run build_runner build test --delete-conflicting-outputs
 
 ```
 
-##### 接入方式
-
-- 依赖 [fengwuxp_openfeign_boot](./build) ，可以参考 [example](./example)
-- 初始化 sdk 
-```dart
- FeignInitializer.form(new ExampleFeignConfigurationRegistry(), BuiltJsonSerializers(serializers))
-      .businessResponseExtractor((responseBody) {
-        final resp = jsonDecode(responseBody);
-        if (resp["code"] != 0) {
-          return Future.error(resp);
-        }
-        return Future.value(resp);
-      })
-      .apiSignatureStrategy(md5signatureStrategy)
-      .initialize();
-```
 
 #### RestTemplate
 - [RestTemplate](./lib/src/client/rest_template.dart) 标准的 http 请求 client
