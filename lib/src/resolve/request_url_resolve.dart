@@ -1,6 +1,7 @@
 import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/feign_client.dart';
 import 'package:fengwuxp_dart_openfeign/src/annotations/request_mapping.dart';
+import 'package:fengwuxp_dart_openfeign/src/constant/feign_constant_var.dart';
 
 abstract class RequestURLResolver {
   /// 从标记在类和方法上的 [FeignClient]和[RequestMapping]来解析url
@@ -22,27 +23,20 @@ class RestfulRequestURLResolver implements RequestURLResolver {
   }
 }
 
-String _getApiUriByFeignClient(
-  FeignClient feignClient,
-  String className,
-) {
+String _getApiUriByFeignClient(FeignClient feignClient, String className) {
   final url = feignClient.url;
   if (StringUtils.hasText(url)) {
     return url as String;
   }
   final apiModule = feignClient.apiModule;
   final value = (StringUtils.hasText(feignClient.value) ? feignClient.value : className) as String;
-  return "@${apiModule}${value.startsWith("/") ? value : "/" + value}";
+  return "$LB_SCHEMA://$apiModule${value.startsWith("/") ? value : "/" + value}";
 }
 
 String _getApiUriByFeignClientMethod(RequestMapping methodRequestMapping, String methodName) {
-  var value = "";
-  if (methodRequestMapping != null && methodRequestMapping.value != null) {
-    value = methodRequestMapping.value;
+  final value = methodRequestMapping.value ?? "";
+  if (StringUtils.hasText(value)) {
+    return value.startsWith("/") ? value : "/$value";
   }
-  if (!StringUtils.hasText(value)) {
-    return value;
-  }
-
-  return value.startsWith("/") ? value : "/${value}";
+  return methodName;
 }

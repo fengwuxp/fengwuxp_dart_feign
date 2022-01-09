@@ -18,4 +18,5 @@ final GATEWAY_TIME_RESPONSE = ResponseEntity(HttpStatus.gatewayTimeout, {}, null
 
 const NETWORK_NONE = "network none";
 
+const LB_SCHEMA = "lb";
 

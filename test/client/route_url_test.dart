@@ -3,19 +3,15 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('test normalize url', () {
-    var url = Uri.parse("@default/h//test/a");
-    print(url.scheme);
-    print(url.host);
-//    url = url.replace(scheme: "https", host: "www.test.com");
-    url = url.resolve("http://www.test.com//h//test/a");
-    print(url.scheme);
-    print(url.host);
-    print("$url");
-    print(normalizeUrl("http://www.test.com//h//test/a"));
+    expect(normalizeUrl("http://www.test.com//h//test/a"), "http://www.test.com/h/test/a");
   });
 
   test('test routing url', () {
-    var url = routing(Uri.parse("@default//h//test/a?a=2&b=2&c=3"), {"default": "http://www.test.com"});
-    print("$url");
+    expect(routing(Uri.parse("lb://default//h//test/a?a=2&b=2&c=3"), {"default": "http://www.test.com"}).toString(),
+        "http://www.test.com/h/test/a?a=2&b=2&c=3");
+    expect(routing(Uri.parse("lb://default//h//abc"), {"default": "https://www.test.com"}).toString(),
+        "https://www.test.com/h/abc");
+    expect(routing(Uri.parse("http://default//h//abc"), {"default": "https://www.test.com"}).toString(),
+        "http://default//h//abc");
   });
 }
