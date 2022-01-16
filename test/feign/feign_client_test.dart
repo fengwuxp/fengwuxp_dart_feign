@@ -15,7 +15,7 @@ void main() {
 
   tearDown(stopServer);
   initializeReflectable();
-  test("test feign", () async {
+  test("test http", () async {
 
     // This example uses the Google Books API to search for books about http.
     // https://developers.google.com/books/docs/overview
@@ -31,27 +31,5 @@ void main() {
     } else {
       print('Request failed with status: ${response.statusCode}.');
     }
-
-//     registryFeignConfiguration(MockFeignConfiguration());
-//     var helloFeignClient = HelloFeignClient();
-//
-//     /// 运行时泛型检查
-// //    var result = await helloFeignClient.getHello("name", 1);
-// //    print("==${result}==>");
-//     var hello = QueryHelloReq((b) => b
-//       ..id = 1
-//       ..date = "2"
-//       ..dateGmt = "3"
-//       ..type = "4"
-//       ..link = "5");
-//
-//     await helloFeignClient.putDataTest(hello);
-
-    // 返回Object
-   // helloFeignClient.queryHello(hello).then((data) {
-   //   print("===reslt 2===>  $data");
-   // });
-
-   // helloFeignClient.getTest("name", BuiltList([1]));
   });
 }

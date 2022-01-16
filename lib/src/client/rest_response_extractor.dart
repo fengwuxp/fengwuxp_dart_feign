@@ -12,7 +12,7 @@ import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 class HttpMessageConverterExtractor<T> implements ResponseExtractor<T> {
   List<HttpMessageConverter> _messageConverters;
 
-  Type _responseType;
+  Type? _responseType;
 
   FullType _specifiedType;
 
@@ -20,8 +20,7 @@ class HttpMessageConverterExtractor<T> implements ResponseExtractor<T> {
 
   factory HttpMessageConverterExtractor(List<HttpMessageConverter> messageConverters,
       {Type? responseType, FullType specifiedType = FullType.unspecified}) {
-    return HttpMessageConverterExtractor._(
-        messageConverters, responseType ?? HttpMessageConverterExtractor, specifiedType);
+    return HttpMessageConverterExtractor._(messageConverters, responseType, specifiedType);
   }
 
   Future<T?> extractData(ClientHttpResponse response,
@@ -33,19 +32,13 @@ class HttpMessageConverterExtractor<T> implements ResponseExtractor<T> {
 
     final contentType = ContentType.parse(response.headers[HttpHeaders.contentTypeHeader] as String);
     for (HttpMessageConverter messageConverter in this._messageConverters) {
-      if (this._responseType != HttpMessageConverterExtractor) {
-        if (messageConverter.canRead(contentType, serializeType: this._responseType)) {
-          return messageConverter.read<T>(response, contentType,
-              serializeType: this._responseType, specifiedType: this._specifiedType);
-        }
-      }
-      if (messageConverter is GenericHttpMessageConverter) {
-        if (messageConverter.canRead(contentType, serializeType: serializeType)) {
-          return messageConverter.read<T>(response, contentType,
-              serializeType: serializeType, specifiedType: this._specifiedType);
-        }
+      final _serializeType = this._responseType ?? serializeType;
+      if (messageConverter.canRead(contentType, serializeType: _serializeType)) {
+        return messageConverter.read<T>(response, contentType,
+            serializeType: _serializeType, specifiedType: this._specifiedType);
       }
     }
+    return Future.error(new Exception("not match http message converter can read contentType = $contentType"));
   }
 }
 
