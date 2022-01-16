@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/response_extractor.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/client_http_response.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/converter/abstract_http_message_converter.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/http_input_message.dart';
 import 'package:logging/logging.dart';
@@ -47,18 +46,23 @@ class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter
       if (_log.isLoggable(Level.FINER)) {
         _log.finer("read http response body ==> $responseBody");
       }
-      if (inputMessage is ClientHttpResponse) {
-        if (!inputMessage.ok) {
-          return responseBody as dynamic;
-        }
-      }
-      return this._businessResponseExtractor(responseBody).then((json) {
-        if (StringUtils.hasText(json)) {
-          return this._builtJsonSerializers.parseObject(json, resultType: serializeType, specifiedType: specifiedType);
-        }
-        throw new Exception("business response extractor return value must not empty");
+
+      return this._businessResponseExtractor(responseBody).then((result) {
+        return _resolveExtractorResult(result, serializeType, specifiedType);
       });
     });
+  }
+
+  _resolveExtractorResult(result, Type? serializeType, FullType specifiedType) {
+    if (result == null) {
+      throw new Exception("business response extractor return value must not null");
+    }
+    if (result is String) {
+      // json text
+      return this._builtJsonSerializers.parseObject(result, resultType: serializeType, specifiedType: specifiedType);
+    }
+    // none String type value
+    return result;
   }
 
   @override
