@@ -52,8 +52,11 @@ class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter
           return responseBody as dynamic;
         }
       }
-      return this._businessResponseExtractor(responseBody).then((value) {
-        return this._builtJsonSerializers.parseObject(value, resultType: serializeType, specifiedType: specifiedType);
+      return this._businessResponseExtractor(responseBody).then((json) {
+        if (StringUtils.hasText(json)) {
+          return this._builtJsonSerializers.parseObject(json, resultType: serializeType, specifiedType: specifiedType);
+        }
+        throw new Exception("business response extractor return value must not empty");
       });
     });
   }
