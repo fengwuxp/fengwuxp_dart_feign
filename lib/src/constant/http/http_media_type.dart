@@ -1,9 +1,10 @@
 // http media type
+
 abstract class HttpMediaType {
   // 表单
   static const FORM_DATA = "application/x-www-form-urlencoded";
 
-  // 文件上传
+  // 文件表单
   static const MULTIPART_FORM_DATA = "multipart/form-data";
 
   // json

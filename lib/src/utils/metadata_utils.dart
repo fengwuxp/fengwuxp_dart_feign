@@ -11,10 +11,7 @@ import 'package:fengwuxp_dart_openfeign/src/constant/http/http_method.dart';
 
 /// 请求方法[method是否支持RequestBody
 bool supportRequestBody(String method) {
-  if (method != HttpMethod.POST && method != HttpMethod.PUT && method != HttpMethod.PATCH) {
-    return false;
-  }
-  return true;
+  return method == HttpMethod.POST || method == HttpMethod.PUT || method == HttpMethod.PATCH;
 }
 
 // find type == [metaType] metadata
