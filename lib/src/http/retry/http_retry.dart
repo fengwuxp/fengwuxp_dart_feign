@@ -8,7 +8,6 @@ import 'dart:math' as math;
 import 'package:async/async.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/client_http_request.dart';
 import 'package:http/http.dart';
-import 'package:pedantic/pedantic.dart';
 
 /// TODO 基于 [ClientHttpRequest] 重新实现 retry
 /// An HTTP client wrapper that automatically retries failing requests.
@@ -111,11 +110,11 @@ class RetryClient extends BaseClient {
         response = await _inner.send(_copyRequest(request, splitter.split()));
       } catch (error, stackTrace) {
         if (i == _retries || !_whenError(error, stackTrace)) rethrow;
+        response = new StreamedResponse(Stream.empty(), 500);
       }
       // TODO
-      response = response ?? new StreamedResponse(Stream.empty(), 500);
       if (i == _retries || !_when(response)) {
-        return response ?? new StreamedResponse(Stream.empty(), 500);
+        return response;
       }
       // Make sure the response stream is listened to so that we don't leave
       // dangling connections.
