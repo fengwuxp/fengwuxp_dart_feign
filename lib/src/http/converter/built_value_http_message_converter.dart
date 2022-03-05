@@ -57,12 +57,7 @@ class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter
     if (result == null) {
       throw new Exception("business response extractor return value must not null");
     }
-    if (result is String) {
-      // json text
-      return this._builtJsonSerializers.parseObject(result, resultType: serializeType, specifiedType: specifiedType);
-    }
-    // none String type value
-    return result;
+    return this._builtJsonSerializers.parseObject(result, resultType: serializeType, specifiedType: specifiedType);
   }
 
   @override
