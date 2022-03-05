@@ -34,7 +34,7 @@ String _getApiUriByFeignClient(FeignClient feignClient, String className) {
 }
 
 String _getApiUriByFeignClientMethod(RequestMapping methodRequestMapping, String methodName) {
-  final value = methodRequestMapping.value ?? "";
+  final value = methodRequestMapping.value;
   if (StringUtils.hasText(value)) {
     return value.startsWith("/") ? value : "/$value";
   }

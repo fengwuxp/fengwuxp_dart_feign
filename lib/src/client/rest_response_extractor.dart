@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:built_value/serializer.dart';
@@ -99,9 +98,9 @@ class NoneResponseExtractor implements ResponseExtractor<ClientHttpResponse> {
   }
 }
 
-class VoidResponseExtractor implements ResponseExtractor<Void> {
+class VoidResponseExtractor implements ResponseExtractor<void> {
   @override
-  Future<Void?> extractData(ClientHttpResponse response, {Type? serializeType, specifiedType = FullType.unspecified}) {
+  Future<void> extractData(ClientHttpResponse response, {Type? serializeType, specifiedType = FullType.unspecified}) {
     return Future.value();
   }
 }
