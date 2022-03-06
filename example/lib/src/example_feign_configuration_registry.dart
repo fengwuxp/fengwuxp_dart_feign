@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:bot_toast/src/toast_widget/animation.dart';
 import 'package:fengwuxp_dart_openfeign/index.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/http_request.dart';
 import 'package:fengwuxp_openfeign_boot/index.dart';
 import 'package:fengwuxp_openfeign_example/src/api_resp.dart';
 import 'package:flutter/material.dart';
@@ -23,12 +24,12 @@ class ExampleAuthenticationToken implements AuthenticationToken {
 class ExampleAuthenticationStrategy extends AuthenticationStrategy<ExampleAuthenticationToken> {
   @override
   Future<ExampleAuthenticationToken> refreshAuthorization(
-      AuthenticationToken authorization, Uri uri, Map<String, String> headers, String method) {
+      ExampleAuthenticationToken authorization, HttpRequest request) {
     return Future.value(ExampleAuthenticationToken("12", -1));
   }
 
   @override
-  Future<ExampleAuthenticationToken> getAuthorization(Uri uri, Map<String, String> headers, String method) {
+  Future<ExampleAuthenticationToken> getAuthorization(HttpRequest request) {
     return Future.value(ExampleAuthenticationToken("32", -1));
   }
 }
