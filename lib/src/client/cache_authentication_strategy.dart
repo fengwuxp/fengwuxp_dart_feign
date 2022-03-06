@@ -36,11 +36,10 @@ class CacheAuthenticationStrategy<T extends AuthenticationToken> implements Auth
       return value;
     }).catchError((error) {
       this.clearCache();
-      return Future.error(error);
+      throw error;
     });
   }
 
-  @override
   clearCache() {
     this._cacheAuthenticationToken = null;
   }

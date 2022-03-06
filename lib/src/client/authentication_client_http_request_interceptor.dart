@@ -170,7 +170,7 @@ class AuthenticationClientHttpRequestInterceptor implements ClientHttpRequestInt
   /// [headers]
   bool _hasAuthorizationHeader(Map<String, String> headers) {
     final headerNames = this._authenticationStrategy.getAuthorizationHeaderNames();
-    return headerNames.firstWhere((name) => StringUtils.hasText(headers[name])).length == headerNames.length;
+    return headerNames.where((name) => StringUtils.hasText(headers[name])).length == headerNames.length;
   }
 
   bool _requestRequiresAuthorization(AuthenticationType authenticationType) {

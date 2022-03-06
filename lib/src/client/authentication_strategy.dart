@@ -34,16 +34,17 @@ abstract class AuthenticationStrategy<T extends AuthenticationToken> {
 const NEVER_REFRESH_FLAG = -1;
 
 abstract class AuthenticationToken {
-  // authorization token
+  /// authorization token
   String get authorization;
 
-  // refresh token
+  /// refresh token
   String get refreshToken;
 
-  //if never refresh token ,return [NEVER_REFRESH_FLAG]
+  /// token expire milli second
+  /// if never refresh token ,return [NEVER_REFRESH_FLAG]
   int get expireDate;
 
-  // if never refresh token ,return [NEVER_REFRESH_FLAG]
+  /// if never refresh token ,return [NEVER_REFRESH_FLAG]
   int? get refreshExpireDate;
 }
 
