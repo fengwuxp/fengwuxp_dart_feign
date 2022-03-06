@@ -62,6 +62,10 @@ class UnifiedFailureToastExecutorInterceptor<T extends FeignBaseRequest> impleme
       result = error;
     }
     result = this._transformerResponseData(result, serializer);
+    if (result == null) {
+      // hack 防止返回 null
+      result = error;
+    }
     _tryToast(result, uiOptions);
     return Future.error(result);
   }
