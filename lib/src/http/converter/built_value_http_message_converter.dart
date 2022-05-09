@@ -48,15 +48,19 @@ class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter
       }
 
       return this._businessResponseExtractor(responseBody).then((result) {
-        return _resolveExtractorResult(result, serializeType, specifiedType);
+        return _resolveExtractorResult(result, specifiedType, serializeType);
       });
     });
   }
 
-  _resolveExtractorResult(result, Type? serializeType, FullType specifiedType) {
+  _resolveExtractorResult(result, FullType specifiedType, Type? serializeType) {
     if (result == null) {
       // 可能是返回 void TODO 增加类型判断
       return null;
+    }
+    if (specifiedType.root == String || serializeType == String) {
+      // 结果类型为字符串直接返回
+      return result;
     }
     return this._builtJsonSerializers.parseObject(result, resultType: serializeType, specifiedType: specifiedType);
   }
