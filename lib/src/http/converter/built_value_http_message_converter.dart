@@ -15,9 +15,9 @@ import '../http_output_message.dart';
 class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter {
   static const String _TAG = "BuiltValueHttpMessageConverter";
 
-  // TODO 兼容个别服务器
+  ///  兼容一些旧服务器响应
   @deprecated
-  static final ContentType _text_json = new ContentType("text", "json", charset: "utf-8");
+  static final ContentType _textJson = new ContentType("text", "json", charset: "utf-8");
 
   static final _log = Logger(_TAG);
 
@@ -29,7 +29,7 @@ class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter
       BuiltJsonSerializers builtJsonSerializers, BusinessResponseExtractor? businessResponseExtractor)
       : this._builtJsonSerializers = builtJsonSerializers,
         this._businessResponseExtractor = businessResponseExtractor ?? noneBusinessResponseExtractor,
-        super([ContentType.json, _text_json]);
+        super([ContentType.json, _textJson]);
 
   factory(BuiltJsonSerializers builtJsonSerializers, {BusinessResponseExtractor? businessResponseExtractor}) {
     return new BuiltValueHttpMessageConverter(builtJsonSerializers, businessResponseExtractor);
@@ -54,15 +54,16 @@ class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter
   }
 
   _resolveExtractorResult(result, FullType specifiedType, Type? serializeType) {
-    if (result == null) {
-      // 可能是返回 void TODO 增加类型判断
-      return null;
-    }
-    if (specifiedType.root == String || serializeType == String) {
-      // 结果类型为字符串直接返回
+    if (_isBaseType(specifiedType, serializeType) || result == null) {
+      // 基础数据类型
       return result;
     }
     return this._builtJsonSerializers.parseObject(result, resultType: serializeType, specifiedType: specifiedType);
+  }
+
+  _isBaseType(FullType specifiedType, Type? serializeType) {
+    final type = serializeType == null ? specifiedType.root : serializeType;
+    return AbstractHttpMessageConverter.base_types.every((baseType) => baseType == type);
   }
 
   @override

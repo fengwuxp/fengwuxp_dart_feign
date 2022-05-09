@@ -6,6 +6,10 @@ import 'package:fengwuxp_dart_openfeign/src/http/http_output_message.dart';
 import 'http_message_converter.dart';
 
 abstract class AbstractHttpMessageConverter<T> implements HttpMessageConverter<T> {
+
+  /// 基础数据类型
+  static const List<Type> base_types = [String, bool, num];
+
   List<ContentType> _supportedMediaTypes;
 
   AbstractHttpMessageConverter(this._supportedMediaTypes);
