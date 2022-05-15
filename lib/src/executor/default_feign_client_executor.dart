@@ -54,7 +54,7 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
 
     /// 解析参数
     final requestParamsResolver = feignConfiguration.requestParamsResolver;
-    var uiOptions = namedArguments[FEIGN_OPTIONS_PARAMETER_NAME];
+    var uiOptions = namedArguments[Symbol(FEIGN_OPTIONS_PARAMETER_NAME)];
     if (uiOptions == null) {
       uiOptions = UIOptions();
     }
