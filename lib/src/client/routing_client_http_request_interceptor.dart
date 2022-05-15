@@ -3,28 +3,32 @@ import 'package:fengwuxp_dart_openfeign/src/context/request_url_mapping_holder.d
 
 import '../http/client_http_request.dart';
 
+typedef RouteMappingsSupplier = Future<Map<String, String>> Function();
+
 /// If the url starts with @xxx, replace 'xxx' with the value of name='xxx' in the routeMapping
-/// example url='@memberModule/find_member  routeMapping = {memberModule:"http://test.a.b.com/member"}
+/// example url='lb://memberModule/find_member  routeMapping = {memberModule:"http://test.a.b.com/member"}
 /// ==> 'http://test.a.b.com/member/find_member'
 class RoutingClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {
+  final RouteMappingsSupplier supplier;
 
-  Map<String, String> _routeMapping={};
+  RoutingClientHttpRequestInterceptor(this.supplier);
 
-  RoutingClientHttpRequestInterceptor(routeMapping) {
-    if (routeMapping is String) {
-      this._routeMapping = {"default": routeMapping};
-    } else {
-      this._routeMapping = routeMapping;
-    }
+  static form(String apiEntry) {
+    return RoutingClientHttpRequestInterceptor(() => Future.value({"default": apiEntry}));
   }
 
-  /// [routeMapping] String or Map<String,String>
-  factory(routeMapping) {
-    return new RoutingClientHttpRequestInterceptor(routeMapping);
+  static fromMapping(Map<String, String> routeMappings) {
+    return RoutingClientHttpRequestInterceptor(() => Future.value(routeMappings));
+  }
+
+  static fromSupplier(RouteMappingsSupplier supplier) {
+    return RoutingClientHttpRequestInterceptor(supplier);
   }
 
   Future<ClientHttpRequest> interceptor(ClientHttpRequest request) {
-    request.uri(routing(request.url, this._routeMapping));
-    return Future.value(request);
+    return this.supplier().then((routes) {
+      request.uri(routing(request.url, routes));
+      return Future.value(request);
+    });
   }
 }

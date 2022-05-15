@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:fengwuxp_dart_basic/index.dart';
+import 'package:fengwuxp_dart_openfeign/index.dart';
 import 'package:fengwuxp_openfeign_boot/index.dart';
 import 'package:fengwuxp_openfeign_example/src/example_feign_configuration_registry.dart';
 import 'package:fengwuxp_openfeign_example/src/feign/article_action_type.dart';
@@ -37,7 +38,9 @@ void main() {
   });
 
   test("feign client test 01, query api ", () async {
-    await articleActionFeignClient.query(QueryArticleActionReq((b) => b.id = 1)).then((result) {
+    await articleActionFeignClient
+        .query(QueryArticleActionReq((b) => b.id = 1), UIOptions(useProgressBar: true))
+        .then((result) {
       print("==result=>  $result");
     });
   });

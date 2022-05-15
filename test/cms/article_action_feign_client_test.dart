@@ -2,6 +2,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:fengwuxp_dart_basic/index.dart';
+import 'package:fengwuxp_dart_openfeign/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/configuration/feign_configuration_registry.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -34,9 +35,11 @@ void main() {
   test("test article action feign client,not generic", () async {
     registryFeignConfiguration(MockFeignConfiguration());
     await articleActionFeignClient
-        .query(FindArticleActionsReq((b) => b
-          ..articleId = 1
-          ..sourceCode = "2"))
+        .query(
+            FindArticleActionsReq((b) => b
+              ..articleId = 1
+              ..sourceCode = "2"),
+            UIOptions(useUnifiedToast: false))
         .then((data) {
       print("$data");
     }).catchError((error) {
