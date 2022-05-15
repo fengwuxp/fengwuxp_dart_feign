@@ -41,7 +41,7 @@ class ExampleFeignConfigurationRegistry extends FeignConfigurationRegistry {
   @override
   void registryClientHttpRequestInterceptors(ClientHttpInterceptorRegistry registry) {
 //    registry.addInterceptor(NetworkClientHttpRequestInterceptor(networkFailBack: SimpleNoneNetworkFailBack()));
-    registry.addInterceptor(RoutingClientHttpRequestInterceptor("http://localhost:8080/api/"));
+    registry.addInterceptor(RoutingClientHttpRequestInterceptor.form("http://localhost:8080/api/"));
     registry.addInterceptor(AuthenticationClientHttpRequestInterceptor(new ExampleAuthenticationStrategy()));
   }
 
