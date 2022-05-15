@@ -63,7 +63,15 @@ class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter
 
   _isBaseType(FullType specifiedType, Type? serializeType) {
     final type = serializeType == null ? specifiedType.root : serializeType;
-    return AbstractHttpMessageConverter.base_types.every((baseType) => baseType == type);
+    if (type == null) {
+      return true;
+    }
+    for (final baseType in AbstractHttpMessageConverter.base_types) {
+      if (baseType == type) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @override
