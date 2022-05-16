@@ -17,17 +17,26 @@ import 'package:logging/logging.dart';
 
 void main() {
   final md5signatureStrategy = Md5SignatureStrategy("app", "5a5c8218a3146f63be322e171cdd26cc", "web");
-  final configuration = FeignInitializer.form(new ExampleFeignConfigurationRegistry(), BuiltJsonSerializers(serializers))
-      .businessResponseExtractor((responseBody) {
-        final resp = jsonDecode(responseBody);
-        if (resp["code"] != 0) {
-          return Future.error(resp);
-        }
-        return Future.value(resp);
-      })
-      .apiSignatureStrategy(md5signatureStrategy)
-      .initialize();
-  
+  final configuration =
+      FeignInitializer.form(new ExampleFeignConfigurationRegistry(), BuiltJsonSerializers(serializers))
+          .businessResponseExtractor((responseBody) {
+            final resp = jsonDecode(responseBody);
+            if (resp["code"] != 0) {
+              return Future.error(resp);
+            }
+            return Future.value(resp);
+          })
+          .apiSignatureStrategy(md5signatureStrategy)
+          .initialize();
+  configuration.httpResponseEventListener.onError((request, entity, options) {
+    final Map<String, Object> resp = entity.json();
+    // TODO
+  });
+
+  // 401
+  configuration.httpResponseEventListener.onUnAuthorized((request, entity, options) {
+    // TODO
+  });
 
   /// 日志打印
   Logger.root.level = Level.ALL;

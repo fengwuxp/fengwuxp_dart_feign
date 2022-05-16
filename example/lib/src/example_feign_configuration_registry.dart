@@ -48,17 +48,9 @@ class ExampleFeignConfigurationRegistry extends FeignConfigurationRegistry {
   @override
   void registryFeignClientExecutorInterceptors(FeignClientInterceptorRegistry registry) {
     // registry.addInterceptor(ProcessBarExecutorInterceptor(ExampleRequestProgressBar()));
-    registry.addInterceptor(new UnifiedFailureToastExecutorInterceptor((data, BuiltValueSerializable? serializer) {
-      var body = data;
-      if (data is ResponseEntity) {
-        body = data.body;
-      }
-      if (body == null) {
-        return null;
-      }
-      return ApiResp.formJsonBySerializer(body);
-    }, (result) async {
-      print("===>$result");
+    registry.addInterceptor(HttpErrorResponseEventPublisherExecutorInterceptor((request, entity, options) {
+      final resp = ApiResp.formJsonBySerializer(entity.json());
+      // TODO
     }));
   }
 }
