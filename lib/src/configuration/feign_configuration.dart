@@ -1,6 +1,7 @@
-import 'package:fengwuxp_dart_openfeign/index.dart';
-import 'package:fengwuxp_dart_openfeign/src/client/authentication_strategy.dart';
+import 'package:fengwuxp_dart_openfeign/src/cache_capable_support.dart';
+import 'package:fengwuxp_dart_openfeign/src/client/client_http_request_interceptor.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/rest_operations.dart';
+import 'package:fengwuxp_dart_openfeign/src/event/http_response_event.dart';
 import 'package:fengwuxp_dart_openfeign/src/executor/feign_client_executor_factory.dart';
 import 'package:fengwuxp_dart_openfeign/src/executor/feign_client_executor_interceptor.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/converter/http_message_converter.dart';
@@ -8,10 +9,6 @@ import 'package:fengwuxp_dart_openfeign/src/resolve/request_header_resolver.dart
 import 'package:fengwuxp_dart_openfeign/src/resolve/request_params_resolver.dart';
 import 'package:fengwuxp_dart_openfeign/src/resolve/request_url_resolve.dart';
 import 'package:fengwuxp_dart_openfeign/src/signature/api_signature_strategy.dart';
-
-import '../cache_capable_support.dart';
-
-
 
 abstract class FeignConfiguration extends CacheCapableSupport {
   FeignClientExecutorFactory get feignClientExecutorFactory;
@@ -33,6 +30,7 @@ abstract class FeignConfiguration extends CacheCapableSupport {
 
   List<FeignClientExecutorInterceptor> get feignClientExecutorInterceptors;
 
-  AuthenticationBroadcaster? get authenticationBroadcaster;
+  HttpResponseEventPublisher get httpResponseEventPublisher;
 
+  SmartHttpResponseEventListener get httpResponseEventListener;
 }

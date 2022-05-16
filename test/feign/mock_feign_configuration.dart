@@ -11,15 +11,14 @@ import 'package:fengwuxp_dart_openfeign/src/executor/feign_client_executor_facto
 import 'package:fengwuxp_dart_openfeign/src/executor/feign_client_executor_interceptor.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/converter/built_value_http_message_converter.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/converter/http_message_converter.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 import 'package:fengwuxp_dart_openfeign/src/resolve/request_header_resolver.dart';
 import 'package:fengwuxp_dart_openfeign/src/resolve/request_params_resolver.dart';
 import 'package:fengwuxp_dart_openfeign/src/resolve/request_url_resolve.dart';
 import 'package:fengwuxp_dart_openfeign/src/signature/api_signature_strategy.dart';
-import 'package:fengwuxp_dart_openfeign/src/ui/unified_failure_toast_executor_interceptor.dart';
 
 import '../built/serializers.dart';
-import '../cms/resp/api_resp.dart';
+
+final simpleHttpResponseEventListener = SimpleHttpResponseEventListener();
 
 class MockFeignConfiguration implements FeignConfiguration {
   FeignClientExecutorFactory feignClientExecutorFactory;
@@ -41,13 +40,21 @@ class MockFeignConfiguration implements FeignConfiguration {
 
   List<ClientHttpRequestInterceptor> clientHttpRequestInterceptors;
 
-  AuthenticationBroadcaster? authenticationBroadcaster;
+  @override
+  // TODO: implement httpResponseEventListener
+  SmartHttpResponseEventListener httpResponseEventListener;
+
+  @override
+  // TODO: implement httpResponseEventPublisher
+  HttpResponseEventPublisher httpResponseEventPublisher;
 
   MockFeignConfiguration()
       : this.feignClientExecutorFactory = DefaultFeignClientExecutorFactory(),
         this.requestURLResolver = RestfulRequestURLResolver(),
         this.requestHeaderResolver = DefaultRequestHeaderResolver(),
         this.requestParamsResolver = DefaultRequestParamsResolver(),
+        this.httpResponseEventListener = simpleHttpResponseEventListener,
+        this.httpResponseEventPublisher = new SimpleHttpResponseEventPublisher(simpleHttpResponseEventListener),
         this.httpMessageConverters = [
           new BuiltValueHttpMessageConverter(new BuiltJsonSerializers(serializers), (responseBody) {
             final resp = jsonDecode(responseBody);
@@ -58,21 +65,7 @@ class MockFeignConfiguration implements FeignConfiguration {
           })
         ],
         this.clientHttpRequestInterceptors = [],
-        this.feignClientExecutorInterceptors = [
-          new UnifiedFailureToastExecutorInterceptor((data, BuiltValueSerializable? serializer) {
-            var body = data;
-            if (data is ResponseEntity) {
-              body = data.body;
-            }
-            if (body == null) {
-              return data;
-            }
-            return ApiResp.formJsonBySerializer(body);
-          }, (result) {
-            print("==========>$result");
-            return Future.value();
-          })
-        ],
+        this.feignClientExecutorInterceptors = [HttpErrorResponseEventPublisherExecutorInterceptor.of()],
         this.restTemplate = new RestTemplate(
             httpMessageConverters: [new BuiltValueHttpMessageConverter(new BuiltJsonSerializers(serializers), null)],
             interceptors: [RoutingClientHttpRequestInterceptor.form('http://localhost:8080/api/')]);

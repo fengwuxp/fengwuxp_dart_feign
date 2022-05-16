@@ -10,7 +10,7 @@ class StreamedClientHttpResponse implements ClientHttpResponse {
   Map<String, String> get headers => this._response.headers;
 
   @override
-  num get statusCode => this._response.statusCode;
+  int get statusCode => this._response.statusCode;
 
   @override
   String get reasonPhrase => this._response.reasonPhrase ?? "unknown error";

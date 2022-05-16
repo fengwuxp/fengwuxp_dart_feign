@@ -8,7 +8,7 @@ import 'package:fengwuxp_dart_openfeign/src/http/converter/http_message_converte
 import 'package:fengwuxp_dart_openfeign/src/http/http_client_exception.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/http_request_context.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/streamed_client_http_response.dart';
-import 'package:fengwuxp_dart_openfeign/src/utils/metadata_utils.dart';
+import 'package:fengwuxp_dart_openfeign/src/util/metadata_utils.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 

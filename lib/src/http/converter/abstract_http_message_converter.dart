@@ -1,12 +1,10 @@
-import 'dart:convert';
 import 'dart:io';
 
+import 'package:fengwuxp_dart_openfeign/src/http/converter/http_message_converter.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/http_output_message.dart';
-
-import 'http_message_converter.dart';
+import 'package:fengwuxp_dart_openfeign/src/util/encoding_utils.dart';
 
 abstract class AbstractHttpMessageConverter<T> implements HttpMessageConverter<T> {
-
   /// 基础数据类型
   static const List<Type> base_types = [String, bool, num];
 
@@ -26,17 +24,11 @@ abstract class AbstractHttpMessageConverter<T> implements HttpMessageConverter<T
     return this._supportedMediaTypes;
   }
 
-  Encoding getEncoding(ContentType mediaType) {
-    final charset = mediaType.parameters["charset"] ?? "utf-8";
-    return requiredEncodingForCharset(charset);
-  }
-
   void writeBody(String? value, ContentType mediaType, HttpOutputMessage outputMessage) {
     if (value == null) {
       return;
     }
-    final bytes = this.getEncoding(mediaType).encode(value);
-    outputMessage.body.add(bytes);
+    outputMessage.body.add(getContentTypeEncoding(mediaType).encode(value));
   }
 
   bool _matchContentType(ContentType mediaType) {
@@ -44,15 +36,6 @@ abstract class AbstractHttpMessageConverter<T> implements HttpMessageConverter<T
       return item.value == mediaType.value;
     });
   }
-
-  /// Returns the [Encoding] that corresponds to [charset].
-  ///
-  /// Throws a [FormatException] if no [Encoding] was found that corresponds to
-  /// [charset].
-  ///
-  /// [charset] may not be null.
-  Encoding requiredEncodingForCharset(String charset) =>
-      Encoding.getByName(charset) ?? (throw FormatException('Unsupported encoding "$charset".'));
 }
 
 abstract class AbstractGenericHttpMessageConverter<T> extends AbstractHttpMessageConverter<T>

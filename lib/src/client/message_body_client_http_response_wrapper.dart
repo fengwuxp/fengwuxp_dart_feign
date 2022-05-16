@@ -26,7 +26,7 @@ class MessageBodyClientHttpResponseWrapper implements ClientHttpResponse {
   Map<String, String> get headers => this._delegate.headers;
 
   @override
-  num get statusCode => this._delegate.statusCode;
+  int get statusCode => this._delegate.statusCode;
 
   @override
   String get reasonPhrase => this._delegate.reasonPhrase;

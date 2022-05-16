@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_dart_openfeign/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/named_support.dart';
-import 'package:fengwuxp_dart_openfeign/src/utils/metadata_utils.dart';
+import 'package:fengwuxp_dart_openfeign/src/util/metadata_utils.dart';
 import 'package:reflectable/reflectable.dart';
 
 import '../feign_request_options.dart';

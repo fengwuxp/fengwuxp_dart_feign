@@ -6,6 +6,7 @@ import 'package:fengwuxp_dart_basic/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/client/response_extractor.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/converter/abstract_http_message_converter.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/http_input_message.dart';
+import 'package:fengwuxp_dart_openfeign/src/util/encoding_utils.dart';
 import 'package:logging/logging.dart';
 
 import '../http_output_message.dart';
@@ -37,7 +38,7 @@ class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter
 
   Future<E> read<E>(HttpInputMessage inputMessage, ContentType mediaType,
       {Type? serializeType, FullType specifiedType = FullType.unspecified}) {
-    return getEncoding(mediaType).decodeStream(inputMessage.body).catchError((error) {
+    return getContentTypeEncoding(mediaType).decodeStream(inputMessage.body).catchError((error) {
       if (_log.isLoggable(Level.FINER)) {
         _log.finer("read data error ==> $error");
       }

@@ -13,7 +13,7 @@ import 'package:fengwuxp_dart_openfeign/src/http/client_http_response.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/converter/http_message_converter.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/http_request_context.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
-import 'package:fengwuxp_dart_openfeign/src/utils/metadata_utils.dart';
+import 'package:fengwuxp_dart_openfeign/src/util/metadata_utils.dart';
 
 import 'response_extractor.dart';
 import 'rest_operations.dart';

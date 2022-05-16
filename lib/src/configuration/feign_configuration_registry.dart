@@ -1,8 +1,6 @@
 import 'package:fengwuxp_dart_openfeign/src/annotations/feign_client.dart';
 import 'package:fengwuxp_dart_openfeign/src/configuration/feign_configuration.dart';
 
-import 'feign_configuration.dart';
-
 final Map<Type, FeignConfiguration> _CONFIGURATION_CACHE = {};
 
 /// get  feign configuration

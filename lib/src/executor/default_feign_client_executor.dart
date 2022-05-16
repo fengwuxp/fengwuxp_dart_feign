@@ -11,7 +11,7 @@ import 'package:fengwuxp_dart_openfeign/src/constant/http/http_method.dart';
 import 'package:fengwuxp_dart_openfeign/src/context/request_context_holder.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 import 'package:fengwuxp_dart_openfeign/src/interceptor/mapped_feign_client_executor_interceptor.dart';
-import 'package:fengwuxp_dart_openfeign/src/utils/metadata_utils.dart';
+import 'package:fengwuxp_dart_openfeign/src/util/metadata_utils.dart';
 import 'package:logging/logging.dart';
 import 'package:reflectable/reflectable.dart';
 
@@ -84,6 +84,7 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
     }
 
     setFeignMethodMirror(request, methodMirror);
+    setRequestFeignConfiguration(request, this.feignConfiguration);
 
     /// 处理签名
     final apiSignatureStrategy = feignConfiguration.apiSignatureStrategy;
@@ -163,13 +164,10 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
   Future<dynamic> _executeInterceptor<T extends FeignBaseRequest, R>(FeignBaseRequest request, UIOptions uiOptions,
       String url, RequestMapping requestMapping, R defaultValue, ExecuteInterceptor<T> execute,
       [bool needTry = false]) async {
-    final feignClientExecutorInterceptors = this.feignConfiguration.feignClientExecutorInterceptors;
-    if (feignClientExecutorInterceptors == null) {
-      return defaultValue;
-    }
-    var result = defaultValue, len = feignClientExecutorInterceptors.length, index = 0;
+    final interceptors = this.feignConfiguration.feignClientExecutorInterceptors;
+    var result = defaultValue, len = interceptors.length, index = 0;
     while (index < len) {
-      var feignClientExecutorInterceptor = feignClientExecutorInterceptors[index];
+      var feignClientExecutorInterceptor = interceptors[index];
       FeignClientExecutorInterceptor? interceptor =
           this._getInterceptor(feignClientExecutorInterceptor, url, request.headers, requestMapping);
       if (interceptor != null) {

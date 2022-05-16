@@ -1,24 +1,28 @@
+import 'dart:convert';
+
+import 'package:fengwuxp_dart_openfeign/src/http/client_http_response.dart';
+
 class ResponseEntity<T> {
-  num _statusCode;
+  int _statusCode;
 
   Map<String, String> _headers;
 
-  String _reasonPhrase;
-
   T _body;
 
-  ResponseEntity._(this._statusCode, this._headers, this._body, this._reasonPhrase); // http status code
+  String _reasonPhrase;
 
-  factory ResponseEntity(
-    num statusCode,
+  ResponseEntity(this._statusCode, this._headers, this._body, this._reasonPhrase); // http status code
+
+  static ResponseEntity<T> of<T>(
+    int statusCode,
     Map<String, String> headers,
     T body,
     String statusText,
   ) {
-    return ResponseEntity._(statusCode, headers, body, statusText);
+    return ResponseEntity(statusCode, headers, body, statusText);
   }
 
-  num get statusCode => _statusCode;
+  int get statusCode => _statusCode;
 
   ///  http status text
   String get reasonPhrase => _reasonPhrase;
@@ -30,4 +34,13 @@ class ResponseEntity<T> {
 
   // http response headers
   Map<String, String> get headers => _headers;
+}
+
+class StringResponseEntity extends ResponseEntity<String> {
+  StringResponseEntity(int status, Map<String, String> headers, String body, String reasonPhrase)
+      : super(status, headers, body, reasonPhrase);
+
+  json() {
+    return jsonDecode(this.body);
+  }
 }

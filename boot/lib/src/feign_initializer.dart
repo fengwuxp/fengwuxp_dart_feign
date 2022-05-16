@@ -22,9 +22,11 @@ class FeignInitializer {
 
   RequestHeaderResolver _requestHeaderResolver = new DefaultRequestHeaderResolver();
 
-  ApiSignatureStrategy? _apiSignatureStrategy;
+  SmartHttpResponseEventListener _smartHttpResponseEventListener = SimpleHttpResponseEventListener();
 
-  AuthenticationBroadcaster? _authenticationBroadcaster;
+  HttpResponseEventPublisher? _httpResponseEventPublisher;
+
+  ApiSignatureStrategy? _apiSignatureStrategy;
 
   BusinessResponseExtractor? _businessResponseExtractor;
 
@@ -59,13 +61,18 @@ class FeignInitializer {
     return this;
   }
 
-  FeignInitializer apiSignatureStrategy(ApiSignatureStrategy apiSignatureStrategy) {
-    this._apiSignatureStrategy = apiSignatureStrategy;
+  FeignInitializer smartHttpResponseEventListener(SmartHttpResponseEventListener listener) {
+    this._smartHttpResponseEventListener = listener;
     return this;
   }
 
-  FeignInitializer authenticationBroadcaster(AuthenticationBroadcaster authenticationBroadcaster) {
-    this._authenticationBroadcaster = authenticationBroadcaster;
+  FeignInitializer httpResponseEventPublisher(HttpResponseEventPublisher publisher) {
+    this._httpResponseEventPublisher = publisher;
+    return this;
+  }
+
+  FeignInitializer apiSignatureStrategy(ApiSignatureStrategy apiSignatureStrategy) {
+    this._apiSignatureStrategy = apiSignatureStrategy;
     return this;
   }
 
@@ -83,17 +90,20 @@ class FeignInitializer {
   _FeignConfigurationBoot _buildConfiguration() {
     final List<ClientHttpRequestInterceptor> clientHttpRequestInterceptors = _configureClientRequestInterceptors();
     final List<HttpMessageConverter> httpMessageConverters = _configureHttpMessageConverts();
+    final httpResponseEventPublisher =
+        this._httpResponseEventPublisher ?? SimpleHttpResponseEventPublisher(this._smartHttpResponseEventListener);
     return new _FeignConfigurationBoot(
         _feignClientExecutorFactory,
         _buildRestOperations(clientHttpRequestInterceptors, httpMessageConverters),
         _requestURLResolver,
         _requestParamsResolver,
         _requestHeaderResolver,
+        _smartHttpResponseEventListener,
+        httpResponseEventPublisher,
         clientHttpRequestInterceptors,
         _configureFeignRequestInterceptors(),
         httpMessageConverters,
-        _apiSignatureStrategy,
-        _authenticationBroadcaster);
+        _apiSignatureStrategy);
   }
 
   RestOperations _buildRestOperations(List<ClientHttpRequestInterceptor> clientHttpRequestInterceptors,
@@ -139,6 +149,10 @@ class _FeignConfigurationBoot implements FeignConfiguration {
 
   final RequestHeaderResolver requestHeaderResolver;
 
+  final SmartHttpResponseEventListener httpResponseEventListener;
+
+  final HttpResponseEventPublisher httpResponseEventPublisher;
+
   final List<ClientHttpRequestInterceptor> clientHttpRequestInterceptors;
 
   final List<FeignClientExecutorInterceptor> feignClientExecutorInterceptors;
@@ -147,17 +161,16 @@ class _FeignConfigurationBoot implements FeignConfiguration {
 
   final ApiSignatureStrategy? apiSignatureStrategy;
 
-  final AuthenticationBroadcaster? authenticationBroadcaster;
-
   _FeignConfigurationBoot(
       this.feignClientExecutorFactory,
       this.restTemplate,
       this.requestURLResolver,
       this.requestParamsResolver,
       this.requestHeaderResolver,
+      this.httpResponseEventListener,
+      this.httpResponseEventPublisher,
       this.clientHttpRequestInterceptors,
       this.feignClientExecutorInterceptors,
       this.httpMessageConverters,
-      this.apiSignatureStrategy,
-      this.authenticationBroadcaster);
+      this.apiSignatureStrategy);
 }

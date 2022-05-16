@@ -17,7 +17,7 @@ import 'package:logging/logging.dart';
 
 void main() {
   final md5signatureStrategy = Md5SignatureStrategy("app", "5a5c8218a3146f63be322e171cdd26cc", "web");
-  FeignInitializer.form(new ExampleFeignConfigurationRegistry(), BuiltJsonSerializers(serializers))
+  final configuration = FeignInitializer.form(new ExampleFeignConfigurationRegistry(), BuiltJsonSerializers(serializers))
       .businessResponseExtractor((responseBody) {
         final resp = jsonDecode(responseBody);
         if (resp["code"] != 0) {
@@ -27,6 +27,7 @@ void main() {
       })
       .apiSignatureStrategy(md5signatureStrategy)
       .initialize();
+  
 
   /// 日志打印
   Logger.root.level = Level.ALL;
