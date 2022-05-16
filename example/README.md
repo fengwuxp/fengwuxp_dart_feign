@@ -3,7 +3,7 @@
 #### 使用java代码进行生成的例子
 - [生成工具](https://github.com/fengwuxp/common-codegen)
 
-
+- [初始化配置](./test/feign_clients_test.dart);
 ```dart
    final configuration = FeignInitializer.form(new ExampleFeignConfigurationRegistry(), BuiltJsonSerializers(serializers))
       .businessResponseExtractor((responseBody) {
