@@ -5,14 +5,14 @@ import 'package:fengwuxp_dart_openfeign/src/util/metadata_utils.dart';
 
 const _REQUEST_METHOD_MIRROR_ATTRIBUTE_NAME = "requestMethodMirror";
 
-const _REQUEST_FEIGN_CONFIG_ATTRIBUTE_NAME = "REQUEST_FEIGN_CONFIG";
+const _REQUEST_FEIGN_CONFIG_ATTRIBUTE_NAME = "requestFeignConfig";
 
 void setFeignMethodMirror(HttpRequestContext context, methodMirror) {
   context.putAttribute(_REQUEST_METHOD_MIRROR_ATTRIBUTE_NAME, methodMirror);
 }
 
 void setRequestFeignConfiguration(HttpRequestContext context, FeignConfiguration configuration) {
-  context.putAttribute(_REQUEST_METHOD_MIRROR_ATTRIBUTE_NAME, configuration);
+  context.putAttribute(_REQUEST_FEIGN_CONFIG_ATTRIBUTE_NAME, configuration);
 }
 
 /// 从请求上下文中获取 FeignClientMethodConfig
