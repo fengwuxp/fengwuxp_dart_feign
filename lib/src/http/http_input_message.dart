@@ -14,6 +14,4 @@ abstract class HttpInputMessage implements HttpMessage {
   /// @return the input stream body (never {@code null})
   /// @throws IOException in case of I/O errors
   Stream<List<int>> get body;
-
-  Future<String> bodyAsString();
 }

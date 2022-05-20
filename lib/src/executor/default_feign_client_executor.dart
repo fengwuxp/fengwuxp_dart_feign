@@ -121,12 +121,7 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
             context: request)
         .catchError((error) {
       /// 请求失败或异常
-      return this._postHandleError(request, uiOptions, requestUrl, requestMapping, error, serializer).catchError((e) {
-        if (error is Error) {
-          return Future.error(e, error.stackTrace);
-        }
-        return Future.error(e);
-      });
+      return this._postHandleError(request, uiOptions, requestUrl, requestMapping, error, serializer);
     }).then((response) {
       return this._postHandle(request, uiOptions, requestUrl, requestMapping, response, serializer);
     });
@@ -151,8 +146,8 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
   }
 
   /// 拦截器后置错误处理
-  Future _postHandleError(FeignBaseRequest request, UIOptions uiOptions, String url, RequestMapping requestMapping,
-      error, BuiltValueSerializable? serializer) async {
+  Future<void> _postHandleError(FeignBaseRequest request, UIOptions uiOptions, String url,
+      RequestMapping requestMapping, error, BuiltValueSerializable? serializer) async {
     return this._executeInterceptor<FeignBaseRequest, Object>(request, uiOptions, url, requestMapping, error, (
         [FeignClientExecutorInterceptor<FeignBaseRequest>? interceptor]) {
       if (interceptor == null) {

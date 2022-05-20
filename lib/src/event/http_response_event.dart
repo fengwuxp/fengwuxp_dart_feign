@@ -2,15 +2,12 @@ import 'dart:io';
 
 import 'package:fengwuxp_dart_openfeign/index.dart';
 import 'package:fengwuxp_dart_openfeign/src/feign_request_options.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/client_http_response.dart';
-
-
 
 abstract class HttpResponseEventPublisher {
-  publishEvent(FeignRequest request, StringResponseEntity entity, UIOptions options);
+  publishEvent(FeignRequest request, UIOptions options, dynamic entity,int statusCode);
 }
 
-typedef HttpResponseEventHandler = void Function(FeignRequest request, StringResponseEntity entity, UIOptions options);
+typedef HttpResponseEventHandler = void Function(FeignRequest request, UIOptions options, dynamic entity);
 
 abstract class HttpResponseEventHandlerSupplier {
   List<HttpResponseEventHandler> getHandlers(int status);

@@ -30,7 +30,7 @@ class MappedFeignClientExecutorInterceptor extends MappedInterceptor implements 
     return this._feignClientExecutorInterceptor.postHandle<E>(request, uiOptions, response, serializer: serializer);
   }
 
-  postError<E>(FeignBaseRequest request, UIOptions uiOptions, response, {BuiltValueSerializable? serializer}) {
-    return this._feignClientExecutorInterceptor.postError<E>(request, uiOptions, response, serializer: serializer);
+  postError(FeignBaseRequest request, UIOptions uiOptions, response, {BuiltValueSerializable? serializer}) {
+    return this._feignClientExecutorInterceptor.postError(request, uiOptions, response, serializer: serializer);
   }
 }

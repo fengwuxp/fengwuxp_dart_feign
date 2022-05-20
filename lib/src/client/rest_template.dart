@@ -181,7 +181,7 @@ class RestTemplate implements RestOperations {
         return Future.error(response);
       }
     } catch (error) {
-     return Future.error(response);
+     return Future.error(error);
     }
   }
 

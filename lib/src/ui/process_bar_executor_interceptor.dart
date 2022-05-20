@@ -60,7 +60,7 @@ class ProcessBarExecutorInterceptor<T extends FeignBaseRequest> implements Feign
     return response;
   }
 
-  Future postError<E>(T options, UIOptions uiOptions, error, {BuiltValueSerializable? serializer}) {
+  Future<void> postError(T options, UIOptions uiOptions, error, {BuiltValueSerializable? serializer}) {
     if (!this._needShowProcessBar(uiOptions)) {
       // 不使用进度条
       return Future.error(error);

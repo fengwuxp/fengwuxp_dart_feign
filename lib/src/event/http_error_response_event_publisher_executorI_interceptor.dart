@@ -6,7 +6,6 @@ import 'package:fengwuxp_dart_openfeign/src/event/http_response_event.dart';
 import 'package:fengwuxp_dart_openfeign/src/executor/feign_client_executor_interceptor.dart';
 import 'package:fengwuxp_dart_openfeign/src/feign_request_options.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/client_http_response.dart';
-import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
 
 class HttpErrorResponseEventPublisherExecutorInterceptor implements FeignClientExecutorInterceptor<FeignRequest> {
   final HttpResponseEventHandler _eventHandler;
@@ -39,11 +38,12 @@ class HttpErrorResponseEventPublisherExecutorInterceptor implements FeignClientE
   }
 
   @override
-  Future postError<E>(FeignRequest request, UIOptions uiOptions, error, {BuiltValueSerializable? serializer}) {
-    if (error is ClientHttpResponse) {
-      this._registerErrorListener(request, uiOptions);
-      this._publishEvent(request, uiOptions, error);
+  Future<void> postError(FeignRequest request, UIOptions uiOptions, error, {BuiltValueSerializable? serializer}) {
+    if (error is Error || error is Exception) {
+      return Future.error(error);
     }
+    this._registerErrorListener(request, uiOptions);
+    this._publishEvent(request, uiOptions, error);
     return Future.error(error);
   }
 
@@ -60,13 +60,14 @@ class HttpErrorResponseEventPublisherExecutorInterceptor implements FeignClientE
     feignConfiguration.httpResponseEventListener.onError(this._eventHandler);
   }
 
-  _publishEvent(FeignRequest request, UIOptions uiOptions, ClientHttpResponse response) {
+  _publishEvent(FeignRequest request, UIOptions uiOptions, error) {
     final configuration = getRequestFeignConfiguration(request);
     if (configuration != null) {
-      response.bodyAsString().then((value) {
-        final entity = StringResponseEntity(response.statusCode, response.headers, value, response.reasonPhrase);
-        configuration.httpResponseEventPublisher.publishEvent(request, entity, uiOptions);
-      });
+      var statusCode = HttpStatus.internalServerError;
+      if (error is ClientHttpResponse) {
+        statusCode = error.statusCode;
+      }
+      configuration.httpResponseEventPublisher.publishEvent(request, uiOptions, error, statusCode);
     }
   }
 }

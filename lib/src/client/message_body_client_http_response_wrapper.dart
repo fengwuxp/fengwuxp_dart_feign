@@ -34,9 +34,4 @@ class MessageBodyClientHttpResponseWrapper extends ClientHttpResponse {
 
   @override
   bool get ok => this._delegate.ok;
-
-  @override
-  Future<String> bodyAsString() {
-    return _delegate.bodyAsString();
-  }
 }
