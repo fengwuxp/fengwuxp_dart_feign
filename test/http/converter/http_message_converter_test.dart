@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:fengwuxp_dart_basic/index.dart';
+import 'package:fengwuxp_dart_openfeign/src/http/client_http_response.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/converter/built_value_http_message_converter.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/http_input_message.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,7 +12,7 @@ import '../../built/hello/hello.dart';
 import '../../built/serializers.dart';
 import 'json_object_http_message_converter.dart';
 
-class InputStreamHttpInputMessage implements HttpInputMessage {
+class InputStreamHttpInputMessage extends ClientHttpResponse {
   ByteStream _inputStream;
 
   InputStreamHttpInputMessage(Stream<List<int>> source) : this._inputStream = ByteStream(source);
@@ -20,7 +21,19 @@ class InputStreamHttpInputMessage implements HttpInputMessage {
   Stream<List<int>> get body => _inputStream;
 
   @override
-  Map<String, String> get headers => {};
+  Map<String, String> get headers => {
+    "content-type":"application/json"
+  };
+
+  @override
+  // TODO: implement reasonPhrase
+  String get reasonPhrase => '';
+
+  @override
+  // TODO: implement statusCode
+  int get statusCode => 200;
+
+
 }
 
 void main() {

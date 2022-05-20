@@ -1,13 +1,11 @@
 import 'dart:io';
 
 import 'package:fengwuxp_dart_openfeign/src/http/client_http_response.dart';
-import 'package:http/http.dart';
 
-class MessageBodyClientHttpResponseWrapper implements ClientHttpResponse {
-
+class MessageBodyClientHttpResponseWrapper extends ClientHttpResponse {
   final ClientHttpResponse _delegate;
 
-  const MessageBodyClientHttpResponseWrapper(this._delegate);
+  MessageBodyClientHttpResponseWrapper(this._delegate);
 
   bool hasMessageBody() {
     final statusCode = this.statusCode;
@@ -36,4 +34,9 @@ class MessageBodyClientHttpResponseWrapper implements ClientHttpResponse {
 
   @override
   bool get ok => this._delegate.ok;
+
+  @override
+  Future<String> bodyAsString() {
+    return _delegate.bodyAsString();
+  }
 }

@@ -105,30 +105,31 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
       });
     }
 
-    /// 发起请求
-    final restTemplate = feignConfiguration.restTemplate;
-    var response;
-    try {
-      if (_log.isLoggable(Level.FINER)) {
-        _log.finer("send http request ==> $requestUrl");
-      }
-      response = await restTemplate.execute(requestUrl, requestMapping.method, responseExtractor,
-          request: request.body,
-          queryParams: request.queryParams,
-          pathVariables: request.pathVariables,
-          headers: request.headers,
-          timeout: uiOptions.timeout,
-          context: request);
-    } catch (error) {
-      // 请求失败或异常
-      final result = await this._postHandleError(request, uiOptions, requestUrl, requestMapping, error, serializer);
-      if (error is Error) {
-        return Future.error(result, error.stackTrace);
-      }
-      return Future.error(result);
+    if (_log.isLoggable(Level.FINER)) {
+      _log.finer("send http request ==> $requestUrl");
     }
 
-    return this._postHandle(request, uiOptions, requestUrl, requestMapping, response, serializer);
+    /// 发起请求
+    final restTemplate = feignConfiguration.restTemplate;
+    return restTemplate
+        .execute(requestUrl, requestMapping.method, responseExtractor,
+            request: request.body,
+            queryParams: request.queryParams,
+            pathVariables: request.pathVariables,
+            headers: request.headers,
+            timeout: uiOptions.timeout,
+            context: request)
+        .catchError((error) {
+      /// 请求失败或异常
+      return this._postHandleError(request, uiOptions, requestUrl, requestMapping, error, serializer).catchError((e) {
+        if (error is Error) {
+          return Future.error(e, error.stackTrace);
+        }
+        return Future.error(e);
+      });
+    }).then((response) {
+      return this._postHandle(request, uiOptions, requestUrl, requestMapping, response, serializer);
+    });
   }
 
   /// 前置拦截器
@@ -158,12 +159,11 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
         return Future.error(error);
       }
       return interceptor.postError(request, uiOptions, error, serializer: serializer);
-    }, true);
+    });
   }
 
   Future<dynamic> _executeInterceptor<T extends FeignBaseRequest, R>(FeignBaseRequest request, UIOptions uiOptions,
-      String url, RequestMapping requestMapping, R defaultValue, ExecuteInterceptor<T> execute,
-      [bool needTry = false]) async {
+      String url, RequestMapping requestMapping, R defaultValue, ExecuteInterceptor<T> execute) async {
     final interceptors = this.feignConfiguration.feignClientExecutorInterceptors;
     var result = defaultValue, len = interceptors.length, index = 0;
     while (index < len) {
@@ -171,15 +171,7 @@ class DefaultFeignClientExecutor implements FeignClientExecutor {
       FeignClientExecutorInterceptor? interceptor =
           this._getInterceptor(feignClientExecutorInterceptor, url, request.headers, requestMapping);
       if (interceptor != null) {
-        if (needTry) {
-          try {
-            result = await execute(interceptor as FeignClientExecutorInterceptor<T>);
-          } catch (error) {
-            return error;
-          }
-        } else {
-          result = await execute(interceptor as FeignClientExecutorInterceptor<T>);
-        }
+        return execute(interceptor as FeignClientExecutorInterceptor<T>);
       }
       index++;
     }

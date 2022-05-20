@@ -7,7 +7,6 @@ import 'package:fengwuxp_dart_openfeign/src/executor/feign_client_executor_inter
 import 'package:fengwuxp_dart_openfeign/src/feign_request_options.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/client_http_response.dart';
 import 'package:fengwuxp_dart_openfeign/src/http/response_entity.dart';
-import 'package:fengwuxp_dart_openfeign/src/util/encoding_utils.dart';
 
 class HttpErrorResponseEventPublisherExecutorInterceptor implements FeignClientExecutorInterceptor<FeignRequest> {
   final HttpResponseEventHandler _eventHandler;
@@ -43,7 +42,7 @@ class HttpErrorResponseEventPublisherExecutorInterceptor implements FeignClientE
   Future postError<E>(FeignRequest request, UIOptions uiOptions, error, {BuiltValueSerializable? serializer}) {
     if (error is ClientHttpResponse) {
       this._registerErrorListener(request, uiOptions);
-      return this._publishEvent(request, uiOptions, error);
+      this._publishEvent(request, uiOptions, error);
     }
     return Future.error(error);
   }
@@ -64,14 +63,10 @@ class HttpErrorResponseEventPublisherExecutorInterceptor implements FeignClientE
   _publishEvent(FeignRequest request, UIOptions uiOptions, ClientHttpResponse response) {
     final configuration = getRequestFeignConfiguration(request);
     if (configuration != null) {
-      final contentType = ContentType.parse(response.headers[HttpHeaders.contentTypeHeader] as String);
-      return getContentTypeEncoding(contentType).decodeStream(response.body).then((value) {
+      response.bodyAsString().then((value) {
         final entity = StringResponseEntity(response.statusCode, response.headers, value, response.reasonPhrase);
         configuration.httpResponseEventPublisher.publishEvent(request, entity, uiOptions);
-      }).then((value) {
-        return Future.error(response);
       });
     }
-    return Future.error(response);
   }
 }

@@ -15,7 +15,9 @@ abstract class FeignClientExecutorInterceptor<T extends FeignBaseRequest> {
   /// in request exception or failure invoke
   /// [request]
   /// [error] [ClientException] or other data
-  Future postError<E>(T request, UIOptions uiOptions, error, {BuiltValueSerializable? serializer});
+  Future postError<E>(T request, UIOptions uiOptions, error, {BuiltValueSerializable? serializer}) {
+    return Future.error(error);
+  }
 }
 
 /// execute interceptor

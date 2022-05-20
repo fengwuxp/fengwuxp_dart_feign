@@ -36,9 +36,8 @@ class BuiltValueHttpMessageConverter extends AbstractGenericHttpMessageConverter
     return new BuiltValueHttpMessageConverter(builtJsonSerializers, businessResponseExtractor);
   }
 
-  Future<E> read<E>(HttpInputMessage inputMessage, ContentType mediaType,
-      {Type? serializeType, FullType specifiedType = FullType.unspecified}) {
-    return getContentTypeEncoding(mediaType).decodeStream(inputMessage.body).catchError((error) {
+  Future<E> read<E>(HttpInputMessage inputMessage, ContentType mediaType, {Type? serializeType, FullType specifiedType = FullType.unspecified}) {
+    return inputMessage.bodyAsString().catchError((error) {
       if (_log.isLoggable(Level.FINER)) {
         _log.finer("read data error ==> $error");
       }

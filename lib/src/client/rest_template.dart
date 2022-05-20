@@ -163,26 +163,25 @@ class RestTemplate implements RestOperations {
         httpMessageConverters: httpMessageConverters,
         context: context);
     // 处理请求体
-    ClientHttpResponse clientHttpResponse;
+    ClientHttpResponse response;
     try {
       await this._preHandleInterceptor(clientHttpRequest);
-      clientHttpResponse = await clientHttpRequest.send();
+      response = await clientHttpRequest.send();
     } catch (e) {
       // 请求异常处理
       throw e;
     }
 
     try {
-      final result = await responseExtractor.extractData(clientHttpResponse) as T;
-      if (clientHttpResponse.ok) {
+      final result = await responseExtractor.extractData(response) as T;
+      if (response.ok) {
         return result;
       } else {
         // http error response
-        return Future.error(ResponseEntity(
-            clientHttpResponse.statusCode, clientHttpResponse.headers, result, clientHttpResponse.reasonPhrase));
+        return Future.error(response);
       }
-    } catch (e) {
-      return Future.error(e);
+    } catch (error) {
+     return Future.error(response);
     }
   }
 

@@ -7,7 +7,7 @@ import 'file_upload_strategy.dart';
 
 /// handle file upload
 /// example upload file to cloud platform oss
-class UploadClientExecutorInterceptor implements FeignClientExecutorInterceptor<FeignRequest> {
+class UploadClientExecutorInterceptor extends FeignClientExecutorInterceptor<FeignRequest> {
   FileUploadStrategy _fileUploadStrategy;
 
   // parallel upload file
@@ -62,11 +62,6 @@ class UploadClientExecutorInterceptor implements FeignClientExecutorInterceptor<
     // 清空请求对象中的文件
     request.files.clear();
     return request;
-  }
-
-  @override
-  Future postError<E>(FeignRequest request, UIOptions uiOptions, error, {BuiltValueSerializable? serializer}) async {
-    return error;
   }
 
   @override
